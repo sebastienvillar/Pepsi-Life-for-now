@@ -1,0 +1,48 @@
+
+span {
+	display: inline-block;
+	float: left;
+}
+
+.content {
+	width: 210px;
+	height: 110px;
+}
+
+.content2 {
+	background-color: red;
+	height: 100px;
+}
+
+.left {
+	background-image: url("cell-left.png");
+	width: 5px;
+	height: 7px;
+	background-repeat: no-repeat;
+}
+
+.middle {
+	background-image: url("cell-middle.png");
+	background-repeat: repeat-x;
+	width: 200px;
+	height: 7px;
+}
+
+.right {
+	background-image: url("cell-right.png");
+	width: 5px;
+	height: 7px;
+	background-repeat: no-repeat;
+}
+
+.left:selected {
+	background-image: url("cell-left-selected.png");
+}
+
+.middle:selected {
+	background-image: url("cell-middle-selected.png");
+}
+
+.right:selected {
+	background-image: url("cell-right-selected.png");
+}
