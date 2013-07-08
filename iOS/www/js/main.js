@@ -1,45 +1,77 @@
-require(["tabBarController", "navigationController"], function(t, n) {
-	controllers = [];
-	for (var i = 0; i < 5; i++) {
-		navigationController = new n();
-		controllers.push(navigationController);
-	}
+require(["domReady"], function(domReady) {
+	/*document.ontouchstart = function(e){ 
+    	e.preventDefault(); 
+    }*/
 
-	tabBarController = new t(controllers);
+domReady(function() {
+	require(["tabBarController", "navigationController", "controller"], function(TabBarController, NavigationController, Controller) {
+		var controllers = [];
+		var controller1 = new Controller();
+		controllers.push(controller1);
+		controller1.$container.addClass("full-size");
+		controller1.$container.css({"background-color": "green"})
 
-	newController = new n();
-	newController.$container.css("background-color", "green");
-	setTimeout(function() {
-		controllers[0].pushController(newController, false);
-	}, 3000);
-	$("body").append(tabBarController.$container);
+		var controller2 = new Controller();
+		controllers.push(controller2);
+		controller2.$container.addClass("full-size");
+		controller2.$container.css({"background-color": "red"});
 
-	/*var A = function() {
-		this.a = 1;
-	};
+		var controller3 = new Controller();
+		controllers.push(controller3);
+		controller3.$container.addClass("full-size");
+		controller3.$container.css({"background-color": "yellow"});
 
-	var a = new A();
-	var b = Object.create(a);
-	console.log(a === b.prototype);*/
+		var controller4 = new Controller();
+		controllers.push(controller4);
+		controller4.$container.addClass("full-size");
+		controller4.$container.css({"background-color": "gray"});
 
-	/*function Parent() {
-		this.a = 0;
-	};
+		var controller5 = new NavigationController(controller1);
 
-	function Child() {
-		Parent.call(this);
-	}
+		controllers.push(controller5);
+		setTimeout(function() {
+			controller5.pushController(controller2, true);
+		}, 3000)
+		controller5.pushController(controller3, true);
 
-	Child.prototype = new Parent();
+		var tabBarController = new TabBarController(controllers);
+		$("body").append(tabBarController.$container);
+	});
+	//document.addEventListener("deviceready", onDeviceReady, false);
+	// controllers = [];
+	// for (var i = 0; i < 5; i++) {
+	// 	controller = new c();
+	// 	controller.$container.css("background-color", "blue");
+	// 	navigationController = new n(controller);
+	// 	controllers.push(navigationController);
+	// }
+});
 
-	parent = new Parent();
-	child = new Child();
-	child2 = new Child();
-	parent.a = 1;
-	child.a = 2;
-	child2.a = 3;
 
-	console.log(parent.a);
-	console.log(child.a);
-	console.log(child2.a);*/
+
+// function onDeviceReady() {
+// 	cameraOptions = { 
+// 		destinationType: Camera.DestinationType.FILE_URI,
+// 		sourcetype: Camera.PictureSourceType.CAMERA
+// 	}
+// 	navigator.camera.getPicture(onSuccess, onFail, cameraOptions);
+// }
+
+// function onSuccess(fileURI) {
+// 	$image = $("<img>");
+// 	$image.attr("src", fileURI);
+// 	$image.css("width", "500%")
+// 	$image.css("height", "100%");
+// 	$image.css("display", "inline-block");
+// 	$image.css("position", "absolute");
+// 	$image.css("top", 0);
+// 	$image.css("left", 0);
+// 	$("body").append($image);
+
+// }
+
+// function onFail(message) {
+// 	alert('Please take a picture');
+// }
+
 });
