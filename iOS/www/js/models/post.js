@@ -4,12 +4,12 @@ function parseDate(dateString) {
 	var components = regex.exec(dateString);
 	if (!components)
 		return null;
-	var year = components[1];
-	var month = components[2];
-	var day = components[3];
-	var hours = components[4];
-	var minutes = components[5];
-	var seconds = components[6];
+	var year = parseInt(components[1]);
+	var month = parseInt(components[2] - 1);
+	var day = parseInt(components[3]);
+	var hours = parseInt(components[4]);
+	var minutes = parseInt(components[5]);
+	var seconds = parseInt(components[6]);
 	return new Date(Date.UTC(year, month, day, hours, minutes, seconds));
 }
 
