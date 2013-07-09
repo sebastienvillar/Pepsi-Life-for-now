@@ -102,8 +102,8 @@ TrendsCell.prototype.setUsername = function(username) {
 };
 
 TrendsCell.prototype.setDate = function(date) {
-	var msDifference = new Date() - date;
-	var daysDifference = Math.ceil(msDifference / (1000.0 * 3600.0 * 20.0));
+	var msDifference = new Date().getTime() - date.getTime();
+	var daysDifference = Math.floor(msDifference / (1000.0 * 3600.0 * 24.0));
 	if (daysDifference == 0) {
 		var hours = date.getHours();
 		var minutes = date.getMinutes();
