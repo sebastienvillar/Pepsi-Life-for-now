@@ -1,0 +1,186 @@
+.trendsCell-container {
+	display: block;
+	margin-left: 8px;
+	margin-right: 8px;
+	background-color: none;
+}
+
+/*Header*/
+
+.trendsCell-header {
+	position: relative;
+	display: block;
+	height: 38px;
+	background-color: #ffffff;
+}
+
+.trendsCell-headerSeparationLine {
+	position: absolute;
+	right: 50px;
+	width: 1px;
+	height: 25px;
+	background-color: #1f5383;
+}
+
+.trendsCell-avatar {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	top: 4px;
+	left: 4px;
+	border-radius: 11px;
+}
+
+.trendsCell-avatarWrapper {
+	position: absolute;
+	left: 11px;
+	top: 5px;
+	width: 28px;
+	height: 28px;
+	background-color: #c7d20c;
+	border-radius: 14px;
+	overflow: hidden;
+}
+
+.trendsCell-avatarWrapper.friend {
+	border-color: #d32433;
+}
+
+.trendsCell-username {
+	position: absolute;
+	font-size: 8pt;
+	color: #c9c9c9;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	top: 7px;
+	left: 48px;
+	right: 100px;
+	height: 14px;
+}
+
+.trendsCell-date {
+	position: absolute;
+	font-size: 8pt;
+	color: #134c83;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	top: 18px;
+	left: 48px;
+	right: 100px;
+	height: 14px;
+}
+
+.trendsCell-likesButton {
+	position: absolute;
+	top: 9px;
+	right: 79px;
+	width: 10px;
+	height: 9px;
+	background-image: url("../img/common/like-button.png");
+	background-repeat: no-repeat;
+}
+
+.trendsCell-likesCount {
+	position: absolute;
+	top: 7px;
+	right: 58px;
+	width: 18px;
+	height: 12px;
+	color: #124d83;
+	font-size: 8pt;
+	font-weight: bold;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.trendsCell-commentsButton {
+	position: absolute;
+	top: 10px;
+	right: 26px;
+	width: 10px;
+	height: 10px;
+	background-image: url("../img/common/comment-button.png");
+	background-repeat: no-repeat;
+}
+
+.trendsCell-commentsCount {
+	position: absolute;
+	top: 7px;
+	right: 5px;
+	width: 18px;
+	height: 12px;
+	color: #124d83;
+	font-size: 8pt;
+	font-weight: bold;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/*Separation*/
+
+.trendsCell-separationLine {
+	display: block;
+	height: 1px;
+	background-color: #d5d5d5;
+}
+
+/*Body*/
+
+.trendsCell-body {
+	display: block;
+	background-color: #ffffff;
+	padding: 15px;
+	overflow: hidden;
+}
+
+.trendsCell-text {
+	display: inline;
+	font-size: 9pt;
+	color: #666666;
+}
+
+.trendsCell-tags {
+	font-size: 9pt;
+	color: #134c83;
+}
+
+.trendsCell-tags a {
+	margin-left: 2px;
+}
+
+/*Footer*/
+
+.trendsCell-footer {
+	display: block;
+	position: relative;
+	height: 7px;
+}
+
+.trendsCell-leftFooterPart {
+	float: left;
+	background-image: url("../img/common/cell-footer-left.png");
+	background-repeat: no-repeat;
+	width: 5px;
+	height: 7px;
+}
+
+.trendsCell-centerFooterPart {
+	position: absolute;
+	left: 5px;
+	right: 5px;
+	background-image: url("../img/common/cell-footer-center.png");
+	background-repeat: repeat-x;
+	height: 7px;
+}
+
+.trendsCell-rightFooterPart {
+	float: right;
+	background-image: url("../img/common/cell-footer-right.png");
+	background-repeat: no-repeat;
+	width: 5px;
+	height: 7px;
+}

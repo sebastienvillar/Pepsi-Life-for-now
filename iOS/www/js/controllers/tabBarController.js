@@ -1,4 +1,4 @@
-define(["controller"], function(Controller) {
+define(["controllers/controller"], function(Controller) {
 function TabBarController(controllers) {
 	Controller.call(this);
 

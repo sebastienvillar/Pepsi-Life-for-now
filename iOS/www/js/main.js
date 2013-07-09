@@ -1,15 +1,32 @@
-require(["domReady"], function(domReady) {
+require(["lib/domReady"], function(domReady) {
 	/*document.ontouchstart = function(e){ 
     	e.preventDefault(); 
     }*/
 
 domReady(function() {
-	require(["tabBarController", "navigationController", "controller"], function(TabBarController, NavigationController, Controller) {
+	require(["controllers/tabBarController", "controllers/navigationController", "controllers/controller", "views/tableView", "views/trendsCell"], function(TabBarController, NavigationController, Controller, TableView, TrendsCell) {
 		var controllers = [];
 		var controller1 = new Controller();
 		controllers.push(controller1);
 		controller1.$container.addClass("full-size");
 		controller1.$container.css({"background-color": "green"})
+
+		var tableView = new TableView();
+		tableView.setBackgroundColor("#124c8f");
+
+		controller1.$container.append(tableView.$container);
+		tableView.setCellsSpacing("8px");
+
+		for (var i = 0; i < 6; i++) {
+			var cell = new TrendsCell();
+			cell.setLikesCount(34);
+			cell.setCommentsCount(57);
+			cell.setUsername("Sebastien");
+			cell.setDate(new Date());
+			cell.setText("Donec at commodo erat, sit amet cursus ligula. Quisque dictum risus ante, vel venenatis libero malesuada a. Duis congue turpis quis nisi rhoncus tincidunt.");
+			cell.setTags(["#tag1", "#tag2", "#tag3"]);
+			tableView.pushCell(cell);
+		}
 
 		var controller2 = new Controller();
 		controllers.push(controller2);

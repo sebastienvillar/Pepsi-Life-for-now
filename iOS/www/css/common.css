@@ -5,8 +5,13 @@
 	background: none;
 }
 
+a {
+	text-decoration: none;
+}
+
 html, body {
 	overflow: hidden;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, "Arial";
 }
 
 .full-size {

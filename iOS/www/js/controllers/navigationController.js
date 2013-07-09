@@ -1,4 +1,4 @@
-define(["controller"], function(Controller) {
+define(["controllers/controller"], function(Controller) {
 function NavigationController(controller) {
 	Controller.call(this);
 	this.$container.addClass("full-size");
