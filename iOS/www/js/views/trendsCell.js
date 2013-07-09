@@ -1,5 +1,5 @@
 define(function() {
-function TrendsCell() {
+function TrendsCell(post) {
 	this.$container = $("<div>");
 	this.$container.addClass("trendsCell-container");
 
@@ -81,6 +81,14 @@ function TrendsCell() {
 	this.$centerFooterPart.addClass("trendsCell-centerFooterPart");
 	this.$centerFooterPart.appendTo(this.$footer);
 
+	if (post) {
+		this.setLikesCount(post.likesCount);
+		//this.setCommentsCount(post.commentsCount);
+		this.setUsername(post.ownerName);
+		this.setDate(post.creationDate);
+		this.setText(post.text);
+		this.setTags(post.tags);
+	}
 }
 
 TrendsCell.prototype.setAvatarBorderColor = function(color) {
@@ -102,9 +110,8 @@ TrendsCell.prototype.setUsername = function(username) {
 };
 
 TrendsCell.prototype.setDate = function(date) {
-	var msDifference = new Date().getTime() - date.getTime();
-	var daysDifference = Math.floor(msDifference / (1000.0 * 3600.0 * 24.0));
-	if (daysDifference == 0) {
+	var now = new Date();
+	if (now.getDay() == date.getDay() && now.getMonth() == date.getMonth() && now.getYear() == date.getYear()) {
 		var hours = date.getHours();
 		var minutes = date.getMinutes();
 		var minutesString = minutes.toString();
@@ -116,6 +123,11 @@ TrendsCell.prototype.setDate = function(date) {
 			var text = hours - 12 + ":" + minutesString + " PM";
 	}
 	else {
+		now.setHours(23);
+		now.setMinutes(59);
+		now.setSeconds(59);
+		var msDifference = now - date.getTime();
+		var daysDifference = Math.floor(msDifference / (1000.0 * 3600.0 * 24.0));
 		var text = daysDifference + " JOUR";
 		if (daysDifference != 1)
 			text += "S";
