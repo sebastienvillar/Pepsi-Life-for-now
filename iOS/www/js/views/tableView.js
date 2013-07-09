@@ -2,7 +2,7 @@ define(function() {
 function TableView() {
 	this.$container = $("<div>");
 	this.$container.addClass("full-size");
-	this.$container.css("overflow", "scroll");
+	this.$container.css({"overflow": "scroll", "-webkit-overflow-scrolling": "touch"});
 	this.spacing = 0;
 	this.cells = [];
 }
