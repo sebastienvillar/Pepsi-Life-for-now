@@ -1,7 +1,7 @@
 require(["lib/domReady"], function(domReady) {
-	/*document.ontouchstart = function(e){ 
-    	e.preventDefault(); 
-    }*/
+	// document.ontouchstart = function(e){ 
+ //    	e.preventDefault(); 
+ //    }
 
 domReady(function() {
 	var requireArray = [
