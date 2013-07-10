@@ -15,6 +15,7 @@ function TableView() {
 	this.spinner
 	this.spinner.$container.css({"margin": "0 auto 20px auto"});
 	this.spacing = 0;
+	this.selectedCell = null;
 	this.cells = [];
 
 	//Events
@@ -43,6 +44,7 @@ TableView.prototype.setCellsSpacing = function(spacing) {
 
 TableView.prototype.pushCell = function(cell) {
 	cell.$container.appendTo(this.$container);
+	cell.$container.on("tap", didSelectCell.bind(this, cell));
 	if (this.cells.length != 0)
 		cell.$container.css("margin-top", this.spacing);
 	this.cells.push(cell);
@@ -68,6 +70,22 @@ TableView.prototype.setPadding = function(padding) {
 	this.$container.css({"padding": padding})
 };
 
-//didSelectRowAtIndex
+///////////////////////////////
+// Private
+//////////////////////////////
+
+function didSelectCell(cell, event) {
+	var row = this.cells.indexOf(cell);
+	if (row == -1)
+		return;
+	if (cell.setSelected)
+		cell.setSelected(true);
+	if (this.selectedCell && this.selectedCell.setSelected)
+		this.selectedCell.setSelected(false);
+	this.selectedCell = cell;
+	this.trigger("didSelectRow", row);
+}
+
 return TableView;
 });
+

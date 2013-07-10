@@ -21,12 +21,8 @@ var TrendsController = function() {
 	this.posts = [];
 
 	//Event Handlers
-	this.tableView.on("didScrollToBottom", function() {
-		if (!this.tableView.loading && this.postsRemaining) {
-			this.tableView.enterLoadingMode();
-			this.pushNewCells();
-		}
-	}.bind(this));
+	this.tableView.on("didScrollToBottom", didScrollToBottom.bind(this));
+	this.tableView.on("didSelectRow", didSelectRow.bind(this));
 
 	this.init();
 };

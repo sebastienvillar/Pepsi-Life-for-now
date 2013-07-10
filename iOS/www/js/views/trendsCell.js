@@ -151,6 +151,39 @@ TrendsCell.prototype.setTags = function(tags) {
 	}
 };
 
+TrendsCell.prototype.setSelected = function(selected) {
+	if (selected) {
+		this.$body.addClass("selected");
+		this.$leftFooterPart.addClass("selected");
+		this.$centerFooterPart.addClass("selected");
+		this.$rightFooterPart.addClass("selected");
+		this.$tags.addClass("selected");
+		this.$text.addClass("selected");
+	}
+	else {
+		this.$body.removeClass("selected");
+		this.$leftFooterPart.removeClass("selected");
+		this.$centerFooterPart.removeClass("selected");
+		this.$rightFooterPart.removeClass("selected");
+		this.$tags.removeClass("selected");
+		this.$text.removeClass("selected");
+	}
+}
+
+///////////////////////////////
+// Private
+//////////////////////////////
+
+function didClickLike(event) {
+	event.stopPropagation();
+	this.trigger("didClickLike");
+}
+
+function didClickComment(event) {
+	event.stopPropagation();
+	this.trigger("didClickComment");
+}
+
 return TrendsCell;
 
 });
