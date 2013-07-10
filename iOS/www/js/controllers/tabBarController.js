@@ -19,6 +19,12 @@ function TabBarController(controllers) {
 	//Position the buttons and add listeners
 	for (var i in this.buttons) {
 		var $button = this.buttons[i];
+
+		//Preload images
+		var $preloadDiv = $("<div>", {"id": $button.attr("id") + "-preload"});
+		$preloadDiv.appendTo($("body"));
+		///////////////
+
 		var $div = $("<div>", {class: "tabbar-stretch"});
 		$div.appendTo(this.$footer);
 		$button.appendTo($div);
