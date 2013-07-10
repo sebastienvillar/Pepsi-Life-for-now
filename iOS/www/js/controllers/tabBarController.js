@@ -5,7 +5,7 @@ function TabBarController(controllers) {
 	this.$container.addClass("full-size");
 	this.childControllers = controllers;
 	this.currentChildController = null;
-	this.$content = $("<div>", {id: "tabbar-content", });
+	this.$content = $("<div>", {id: "tabbar-content"});
 	this.$container.append(this.$content);
 	this.$footer = $("<footer>", {id: "tabbar-footer"});
 	this.$container.append(this.$footer);
@@ -55,7 +55,6 @@ TabBarController.prototype.setCurrentChildController = function(childController)
 		this.currentChildController = childController;
 	}
 };
-
 
 return TabBarController;
 });

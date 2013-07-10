@@ -1,0 +1,34 @@
+#trendsController {
+	background-color: #181818;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
+#trendsController-tableView {
+	position: absolute;
+	top: 26px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+#trendsController-searchForm {
+	position: absolute;
+	top: 0px;
+	width: 180px;
+	height: 20px;
+	margin: 0px 0 2px 50%;	
+	left: -90px;
+}
+
+#trendsController-searchField {
+	width: 180px;
+	height: 20px;
+	background-color: #ffffff;
+	-webkit-appearance: none;
+	outline: none;
+}
+

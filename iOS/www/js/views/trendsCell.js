@@ -168,9 +168,11 @@ TrendsCell.prototype.setText = function(text) {
 
 TrendsCell.prototype.setTags = function(tags) {
 	for (var i in tags) {
-		var $link = $("<a>");
-		$link.text(tags[i]);
-		$link.appendTo(this.$tags);
+		var tag = tags[i]
+		var $button = $("<button>");
+		$button.text(tag);
+		$button.appendTo(this.$tags);
+		$button.on("tap", didClickTag.bind(this, tag))
 	}
 };
 
@@ -205,6 +207,11 @@ function didClickLike(event) {
 function didClickComment(event) {
 	event.stopPropagation();
 	this.trigger("didClickComment");
+}
+
+function didClickTag(tag, event) {
+	event.stopPropagation();
+	this.trigger("didClickTag", tag);
 }
 
 return TrendsCell;

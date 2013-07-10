@@ -11,18 +11,31 @@ define(requireArray, function(Controller, TableView, TrendsCell, ServerRequest, 
 var TrendsController = function() {
 	Controller.call(this);
 
-	this.$container.addClass("full-size");
+	this.$container.attr("id", "trendsController");
+	this.$searchForm = $("<form>");
+	this.$searchForm.attr("id", "trendsController-searchForm");
+	this.$searchForm.appendTo(this.$container);
+	this.$searchField = $("<input>");
+	this.$searchField.attr("id", "trendsController-searchField");
+	this.$searchField.attr("type", "search");
+	this.$searchField.attr("placeholder", "Search a tag");
+	this.$searchField.appendTo(this.$searchForm);
 	this.tableView = new TableView();
 	this.tableView.setCellsSpacing("8px");
 	this.tableView.setBackgroundColor("#124c8f");
 	this.tableView.setPadding("8px");
+	this.tableView.$container.attr("id", "trendsController-tableView")
 	this.tableView.$container.appendTo(this.$container);
 	this.postsRemaining = true;
 	this.posts = [];
 
+	this.currentSearchTag = null;
+
 	//Event Handlers
 	this.tableView.on("didScrollToBottom", didScrollToBottom.bind(this));
 	this.tableView.on("didSelectRow", didSelectRow.bind(this));
+	this.$searchForm.on("submit", didSearch.bind(this));
+
 
 	this.init();
 };
@@ -36,9 +49,15 @@ TrendsController.prototype.init = function() {
 TrendsController.prototype.pushNewCells = function() {
 	var request = new ServerRequest();
 	request.method = "GET";
-	request.path = "posts";
+	request.path = "posts/";
+	request.data = {};
 	if (this.posts.length != 0)
-		request.data = {"last_id": this.posts[this.posts.length - 1].id};
+		request.data["last_id"] = this.posts[this.posts.length - 1].id;
+	if (this.currentSearchTag)
+		request.data["tag"] = this.currentSearchTag;
+
+	console.log("data.ta ", request.data);
+
 	request.onSuccess = function(json) {
 		this.tableView.exitLoadingMode();
 		var posts = json.posts;
@@ -49,6 +68,7 @@ TrendsController.prototype.pushNewCells = function() {
 
 			cell.on("didClickLike", didClickLike.bind(this, this.posts.length, cell));
 			cell.on("didClickComment", didClickComment.bind(this, this.posts.length, cell));
+			cell.on("didClickTag", didClickTag.bind(this));
 
 			this.tableView.pushCell(cell);
 			this.posts.push(post);
@@ -78,7 +98,6 @@ function didSelectRow(row) {
 }
 
 function didClickLike(row, cell) {
-	console.log("did click like");
 	var post = this.posts[row];
 	var request = new ServerRequest();
 	request.path = "posts/" + post.id + "/likes";
@@ -95,6 +114,26 @@ function didClickLike(row, cell) {
 
 function didClickComment(row, cell) {
 
+}
+
+function didClickTag(tag) {
+}
+
+function didSearch() {
+	var tag = this.$searchField.val();
+	if (tag.length == 0)
+		return;
+	if (tag.charAt(0) != "#") {
+		tag = "#" + tag;
+	}
+	if (tag == this.currentSearchTag)
+		return;
+
+	this.currentSearchTag = tag;
+	this.posts = [];
+	this.tableView.removeAllRows();
+	this.tableView.enterLoadingMode();
+	this.pushNewCells();
 }
 
 return TrendsController;

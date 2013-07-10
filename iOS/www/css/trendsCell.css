@@ -17,7 +17,7 @@
 	right: 50px;
 	width: 1px;
 	height: 25px;
-	background-color: #1f5383;
+	background-color: #d5d5d5;
 }
 
 .trendsCell-avatar {
@@ -158,8 +158,9 @@
 	color: #90b8df;
 }
 
-.trendsCell-tags a {
+.trendsCell-tags button {
 	margin-left: 2px;
+	color: inherit;
 }
 
 

@@ -8,11 +8,9 @@ function TableView() {
 	EventEmitter.call(this);
 
 	this.$container = $("<div>");
-	this.$container.addClass("full-size");
 	this.$container.css({"overflow": "scroll", "-webkit-overflow-scrolling": "touch"});
 	this.loading = false;
 	this.spinner = new Spinner();
-	this.spinner
 	this.spinner.$container.css({"margin": "0 auto 20px auto"});
 	this.spacing = 0;
 	this.selectedCell = null;
@@ -51,8 +49,17 @@ TableView.prototype.pushCell = function(cell) {
 };
 
 TableView.prototype.removeRowAtIndex = function(i) {
-	if (i < this.cells.length)
+	if (i < this.cells.length) {
 		this.cells[i].$container.remove();
+		this.cells.splice(i, 1);
+	}
+};
+
+TableView.prototype.removeAllRows = function() {
+	for (var i = 0 in this.cells) {
+		var cell = this.cells[i];
+		cell.$container.remove();
+	}
 };
 
 TableView.prototype.enterLoadingMode = function() {

@@ -18,8 +18,6 @@ domReady(function() {
 		var controllers = [];
 		var controller1 = new TrendsController();
 		controllers.push(controller1);
-		controller1.$container.addClass("full-size");
-		controller1.$container.css({"background-color": "green"})
 
 		// var tableView = new TableView();
 		// tableView.setBackgroundColor("#124c8f");
