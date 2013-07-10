@@ -111,7 +111,7 @@ TrendsCell.prototype.setUsername = function(username) {
 
 TrendsCell.prototype.setDate = function(date) {
 	var now = new Date();
-	if (now.getDay() == date.getDay() && now.getMonth() == date.getMonth() && now.getYear() == date.getYear()) {
+	if (now.getDate() == date.getDate() && now.getMonth() == date.getMonth() && now.getYear() == date.getYear()) {
 		var hours = date.getHours();
 		var minutes = date.getMinutes();
 		var minutesString = minutes.toString();

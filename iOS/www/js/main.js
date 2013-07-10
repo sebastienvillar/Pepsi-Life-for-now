@@ -14,6 +14,7 @@ domReady(function() {
 	];
 
 	require(requireArray, function(TabBarController, NavigationController, Controller, TableView, TrendsCell, TrendsController) {
+
 		var controllers = [];
 		var controller1 = new TrendsController();
 		controllers.push(controller1);
