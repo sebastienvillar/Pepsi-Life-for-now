@@ -1,5 +1,16 @@
-define(function() {
+var requireArray = [
+	"helpers/eventEmitter"
+];
+
+define(requireArray, function(EventEmitter) {
 function TrendsCell(post) {
+	EventEmitter.call(this);
+
+	/////////////////////////////////
+	this._likesCount = 0;
+	this._commentsCount = 0;
+	/////////////////////////////////
+
 	this.$container = $("<div>");
 	this.$container.addClass("trendsCell-container");
 
@@ -33,6 +44,7 @@ function TrendsCell(post) {
 	this.$likesButton = $("<div>");
 	this.$likesButton.addClass("trendsCell-likesButton");
 	this.$likesButton.appendTo(this.$header);
+	this.$likesButton.on("tap", didClickLike.bind(this));
 
 	this.$likesCount = $("<p>");
 	this.$likesCount.addClass("trendsCell-likesCount");
@@ -41,6 +53,7 @@ function TrendsCell(post) {
 	this.$commentsButton = $("<div>");
 	this.$commentsButton.addClass("trendsCell-commentsButton");
 	this.$commentsButton.appendTo(this.$header);
+	this.$commentsButton.on("tap", didClickComment.bind(this));
 
 	this.$commentsCount = $("<p>");
 	this.$commentsCount.addClass("trendsCell-commentsCount");
@@ -91,18 +104,28 @@ function TrendsCell(post) {
 	}
 }
 
+TrendsCell.prototype = new EventEmitter();
+
 TrendsCell.prototype.setAvatarBorderColor = function(color) {
 	this.$avatarWrapper.css("background-color", color);
 };
 
 TrendsCell.prototype.setLikesCount = function(count) {
-	count = count > 999 ? 999 : count;
-	this.$likesCount.text(count.toString());
+	this._likesCount = count > 999 ? 999 : count;
+	this.$likesCount.text(this._likesCount.toString());
+};
+
+TrendsCell.prototype.getLikesCount = function() {
+	return this._likesCount;
 };
 
 TrendsCell.prototype.setCommentsCount = function(count) {
-	count = count > 999 ? 999 : count;
-	this.$commentsCount.text(count.toString());
+	this._commentsCount = count > 999 ? 999 : count;
+	this.$commentsCount.text(this._commentsCount.toString());
+};
+
+TrendsCell.prototype.getCommentsCount = function() {
+	return this._commentsCount;
 };
 
 TrendsCell.prototype.setUsername = function(username) {
