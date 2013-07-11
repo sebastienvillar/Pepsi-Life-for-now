@@ -4,18 +4,19 @@ require(["lib/domReady"], function(domReady) {
  //    }
 
 domReady(function() {
-document.addEventListener("deviceready", onDeviceReady, false);
-function onDeviceReady() {
+//document.addEventListener("deviceready", onDeviceReady, false);
+//function onDeviceReady() {
 	var requireArray = [
 		"controllers/tabBarController",
 	 	"controllers/navigationController",
 	  	"controllers/controller",
 	   	"views/tableView",
 	    "views/trendsCell",
-	    "controllers/trendsController"
+	    "controllers/trendsController",
+	    "controllers/cameraController"
 	];
 
-	require(requireArray, function(TabBarController, NavigationController, Controller, TableView, TrendsCell, TrendsController) {
+	require(requireArray, function(TabBarController, NavigationController, Controller, TableView, TrendsCell, TrendsController, CameraController) {
 
 		var controllers = [];
 		var controller1 = new TrendsController();
@@ -26,10 +27,8 @@ function onDeviceReady() {
 		controller2.$container.css({"position": "absolute", "left": 0, "top": 0, "right": 0, "bottom": 0});
 		controller2.$container.css({"background-color": "red"});
 
-		var controller3 = new Controller();
+		var controller3 = new CameraController();
 		controllers.push(controller3);
-		controller3.$container.css({"position": "absolute", "left": 0, "top": 0, "right": 0, "bottom": 0});
-		controller3.$container.css({"background-color": "yellow"});
 
 		var controller4 = new Controller();
 		controllers.push(controller4);
@@ -54,7 +53,7 @@ function onDeviceReady() {
 		var tabBarController = new TabBarController(controllers);
 		$("body").append(tabBarController.$container);
 	});
-}
+//}
 });
 
 });

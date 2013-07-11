@@ -44,21 +44,22 @@ TabBarController.prototype = new Controller();
 
 TabBarController.prototype.setCurrentChildController = function(childController) {
 	if (childController != this.currentChildController) {
-		if (childController != this.childControllers[2]) {
-			if (this.currentChildController) {
-				var index = this.childControllers.indexOf(this.currentChildController);
-				this.buttons[index].toggleClass("selected");
-				this.currentChildController.$container.remove();
-			}
-			this.$content.append(childController.$container);
-			var index = this.childControllers.indexOf(childController);
-			this.buttons[index].toggleClass("selected");
+		var index = this.childControllers.indexOf(childController);
+		this.buttons[index].toggleClass("selected");
+		if (childController == this.childControllers[2]) {
+			var content = this.$content.html();
+			var $copy = $("<div>").html(content);
+			childController.setBackground($copy);
 		}
-		else {
 
+		this.$content.append(childController.$container);
+
+		if (this.currentChildController) {
+			var index = this.childControllers.indexOf(this.currentChildController);
+			this.buttons[index].toggleClass("selected");
+			this.currentChildController.$container.remove();
 		}
 		this.currentChildController = childController;
-
 	}
 };
 
