@@ -4,6 +4,8 @@ require(["lib/domReady"], function(domReady) {
  //    }
 
 domReady(function() {
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
 	var requireArray = [
 		"controllers/tabBarController",
 	 	"controllers/navigationController",
@@ -52,41 +54,7 @@ domReady(function() {
 		var tabBarController = new TabBarController(controllers);
 		$("body").append(tabBarController.$container);
 	});
-	//document.addEventListener("deviceready", onDeviceReady, false);
-	// controllers = [];
-	// for (var i = 0; i < 5; i++) {
-	// 	controller = new c();
-	// 	controller.$container.css("background-color", "blue");
-	// 	navigationController = new n(controller);
-	// 	controllers.push(navigationController);
-	// }
+}
 });
-
-
-
-// function onDeviceReady() {
-// 	cameraOptions = { 
-// 		destinationType: Camera.DestinationType.FILE_URI,
-// 		sourcetype: Camera.PictureSourceType.CAMERA
-// 	}
-// 	navigator.camera.getPicture(onSuccess, onFail, cameraOptions);
-// }
-
-// function onSuccess(fileURI) {
-// 	$image = $("<img>");
-// 	$image.attr("src", fileURI);
-// 	$image.css("width", "500%")
-// 	$image.css("height", "100%");
-// 	$image.css("display", "inline-block");
-// 	$image.css("position", "absolute");
-// 	$image.css("top", 0);
-// 	$image.css("left", 0);
-// 	$("body").append($image);
-
-// }
-
-// function onFail(message) {
-// 	alert('Please take a picture');
-// }
 
 });

@@ -52,7 +52,6 @@
     <preference name="SuppressesIncrementalRendering" value="false" />
     <preference name="TopActivityIndicator" value="gray" />
 
-
     <feature name="Geolocation">
       <param name="ios-package" value="CDVLocation"/>
     </feature>
