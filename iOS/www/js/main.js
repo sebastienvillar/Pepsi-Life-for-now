@@ -19,45 +19,35 @@ domReady(function() {
 		var controller1 = new TrendsController();
 		controllers.push(controller1);
 
-		// var tableView = new TableView();
-		// tableView.setBackgroundColor("#124c8f");
-
-		// controller1.$container.append(tableView.$container);
-		// tableView.setCellsSpacing("8px");
-
-		// for (var i = 0; i < 6; i++) {
-		// 	var cell = new TrendsCell();
-		// 	cell.setLikesCount(34);
-		// 	cell.setCommentsCount(57);
-		// 	cell.setUsername("Sebastien");
-		// 	cell.setDate(new Date());
-		// 	cell.setText("Donec at commodo erat, sit amet cursus ligula. Quisque dictum risus ante, vel venenatis libero malesuada a. Duis congue turpis quis nisi rhoncus tincidunt.");
-		// 	cell.setTags(["#tag1", "#tag2", "#tag3"]);
-		// 	tableView.pushCell(cell);
-		// }
-
 		var controller2 = new Controller();
 		controllers.push(controller2);
-		controller2.$container.addClass("full-size");
+		controller2.$container.css({"position": "absolute", "left": 0, "top": 0, "right": 0, "bottom": 0});
 		controller2.$container.css({"background-color": "red"});
 
 		var controller3 = new Controller();
 		controllers.push(controller3);
-		controller3.$container.addClass("full-size");
+		controller3.$container.css({"position": "absolute", "left": 0, "top": 0, "right": 0, "bottom": 0});
 		controller3.$container.css({"background-color": "yellow"});
 
 		var controller4 = new Controller();
 		controllers.push(controller4);
-		controller4.$container.addClass("full-size");
+		controller4.$container.css({"position": "absolute", "left": 0, "top": 0, "right": 0, "bottom": 0});
 		controller4.$container.css({"background-color": "gray"});
 
-		var controller5 = new NavigationController(controller1);
+		var navigationControllerController1 = new Controller();
+		navigationControllerController1.$container.css({"position": "absolute", "left": 0, "top": 0, "right": 0, "bottom": 0});
+		navigationControllerController1.$container.css({"background-color": "green"});
+		var controller5 = new NavigationController(navigationControllerController1);
 
 		controllers.push(controller5);
-		setTimeout(function() {
-			controller5.pushController(controller2, true);
-		}, 3000)
-		controller5.pushController(controller3, true);
+
+		// setTimeout(function() {
+			var newController = new Controller();
+			newController.$container.css({"position": "absolute", "left": 0, "top": 0, "right": 0, "bottom": 0});
+			newController.$container.css({"background-color": "gray"});
+		 	controller5.pushController(newController, true);
+		// }, 3000)
+		// controller5.pushController(controller3, true);
 
 		var tabBarController = new TabBarController(controllers);
 		$("body").append(tabBarController.$container);

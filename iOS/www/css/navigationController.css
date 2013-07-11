@@ -1,3 +1,11 @@
+#navigationController {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
 .navigationController-back-button {
 	position: absolute;
 	width: 100px;
@@ -8,9 +16,41 @@
 }
 
 .navigationController-slidein {
-	background-color: yellow;
-	animation-duration: 2s;
-	animation-name: slidein;
+	/*name duration timing delay iteration-count direction*/
+	-webkit-animation: slidein 0.3s ease-in-out 0 1;
+	-moz-animation: slidein 0.3s ease-in-out 0 1;
+	-o-animation: slidein 0.3s ease-in-out 0 1;
+	animation: slidein 0.3s ease-in-out 0 1;
+}
+
+@-webkit-keyframes slidein {
+	0% {
+		left: 100%;
+	}
+
+	100% {
+		left: 0;
+	}
+}
+
+@-moz-keyframes slidein {
+	0% {
+		left: 100%;
+	}
+
+	100% {
+		left: 0;
+	}
+}
+
+@-o-keyframes slidein {
+	0% {
+		left: 100%;
+	}
+
+	100% {
+		left: 0;
+	}
 }
 
 @keyframes slidein {
@@ -24,11 +64,43 @@
 }
 
 .navigationController-slideout {
-	animation-duration: 1s;
-	animation-name: slideout;
+	-webkit-animation: slideout 0.3s ease-in-out 0 1;
+	-moz-animation: slideout 0.3s ease-in-out 0 1;
+	-o-animation: slideout 0.3s ease-in-out 0 1;
+	animation: slideout 0.3s ease-in-out 0 1;
 }
 
-@keyframes slideout {
+@-webkit-keyframes slideout {
+	0% {
+		left: 0;
+	}
+
+	100% {
+		left: 100%;
+	}
+}
+
+@-moz-keyframes slideout {
+	0% {
+		left: 0;
+	}
+
+	100% {
+		left: 100%;
+	}
+}
+
+@-o-keyframes slidein {
+	0% {
+		left: 0;
+	}
+
+	100% {
+		left: 100%;
+	}
+}
+
+@keyframes slidein {
 	0% {
 		left: 0;
 	}

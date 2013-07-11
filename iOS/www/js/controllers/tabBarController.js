@@ -2,7 +2,7 @@ define(["controllers/controller"], function(Controller) {
 function TabBarController(controllers) {
 	Controller.call(this);
 
-	this.$container.addClass("full-size");
+	this.$container.attr("id", "tabbarController");
 	this.childControllers = controllers;
 	this.currentChildController = null;
 	this.$content = $("<div>", {id: "tabbar-content"});

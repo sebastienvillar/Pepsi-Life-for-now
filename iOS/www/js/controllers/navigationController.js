@@ -1,7 +1,7 @@
 define(["controllers/controller"], function(Controller) {
 function NavigationController(controller) {
 	Controller.call(this);
-	this.$container.addClass("full-size");
+	this.$container.attr("id", "navigationController");
 	this.controllers = [];
 	this.controllersBackButtons = []
 	this.pushController(controller, false);
@@ -26,8 +26,13 @@ NavigationController.prototype.pushController = function(controller, animated) {
 		this.controllersBackButtons.push($backButton);
 	}
 
-	//if (animated)
-	//	$controllerContainer.addClass("navigationController-slidein");
+	if (animated) {
+		$controllerContainer.addClass("navigationController-slidein");
+		$controllerContainer.on("webkitAnimationEnd mozAnimationEnd oAnimationEnd animationEnd", function(){
+			$controllerContainer.removeClass("navigationController-slidein");
+			$controllerContainer.off("webkitAnimationEnd mozAnimationEnd oAnimationEnd animationEnd")
+		}); 
+	}
 	this.$container.append($controllerContainer);
 	controller.navigationController = this;
 	this.controllers.push(controller);
@@ -39,8 +44,16 @@ NavigationController.prototype.popController = function(animated) {
 	}
 	var controller = this.controllers.pop();
 	var $controllerContainer = controller.$container;
-	//if animated ...
-	$controllerContainer.remove();
+	var $backButton = this.controllersBackButtons.pop();
+	if (animated) {
+	 	$controllerContainer.addClass("navigationController-slideout");
+	 	$controllerContainer.on("webkitAnimationEnd mozAnimationEnd oAnimationEnd animationEnd", function(){
+			$controllerContainer.removeClass("navigationController-slideout");
+			$controllerContainer.off("webkitAnimationEnd mozAnimationEnd oAnimationEnd animationEnd");
+			$backButton.remove();
+			$controllerContainer.remove();
+		});
+	 }
 
 };
 

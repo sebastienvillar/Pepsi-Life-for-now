@@ -44,7 +44,6 @@ TableView.prototype.pushCell = function(cell) {
 	cell.$container.appendTo(this.$container);
 	cell.$container.on("tap", didSelectCell.bind(this, cell));
 	if (this.cells.length != 0) {
-		console.log(this.cells.length)
 		cell.$container.css("margin-top", this.spacing);
 	}
 	this.cells.push(cell);
