@@ -50,13 +50,10 @@ TrendsController.prototype.pushNewCells = function() {
 	var request = new ServerRequest();
 	request.method = "GET";
 	request.path = "posts/";
-	request.data = {};
 	if (this.posts.length != 0)
 		request.data["last_id"] = this.posts[this.posts.length - 1].id;
 	if (this.currentSearchTag)
 		request.data["tag"] = this.currentSearchTag;
-
-	console.log("data.ta ", request.data);
 
 	request.onSuccess = function(json) {
 		this.tableView.exitLoadingMode();
