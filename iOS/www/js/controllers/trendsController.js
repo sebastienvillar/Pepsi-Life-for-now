@@ -32,9 +32,9 @@ var TrendsController = function() {
 	this.currentSearchTag = null;
 
 	//Event Handlers
-	this.tableView.on("didScrollToBottom", didScrollToBottom.bind(this));
-	this.tableView.on("didSelectRow", didSelectRow.bind(this));
-	this.$searchForm.on("submit", didSearch.bind(this));
+	this.tableView.on("didScrollToBottom", this._didScrollToBottom.bind(this));
+	this.tableView.on("didSelectRow", this._didSelectRow.bind(this));
+	this.$searchForm.on("submit", this._didSearch.bind(this));
 
 
 	this.init();
@@ -63,9 +63,9 @@ TrendsController.prototype.pushNewCells = function() {
 			var post = Post.postFromJSONObject(posts[i]);
 			var cell = new TrendsCell(post);
 
-			cell.on("didClickLike", didClickLike.bind(this, this.posts.length, cell));
-			cell.on("didClickComment", didClickComment.bind(this, this.posts.length, cell));
-			cell.on("didClickTag", didClickTag.bind(this));
+			cell.on("didClickLike", this._didClickLike.bind(this, this.posts.length, cell));
+			cell.on("didClickComment", this._didClickComment.bind(this, this.posts.length, cell));
+			cell.on("didClickTag", this._didClickTag.bind(this));
 
 			this.tableView.pushCell(cell);
 			this.posts.push(post);
@@ -83,46 +83,49 @@ TrendsController.prototype.pushNewCells = function() {
 // Private
 //////////////////////////////
 
-function didScrollToBottom() {
+TrendsController.prototype._didScrollToBottom = function() {
 	if (!this.tableView.loading && this.postsRemaining) {
 		this.tableView.enterLoadingMode();
 		this.pushNewCells();
 	}
-}
+};
 
-function didSelectRow(row) {
+TrendsController.prototype._didSelectRow = function(row) {
 
-}
+};
 
-function didClickLike(row, cell) {
+TrendsController.prototype._didClickLike = function(row, cell) {
 	var post = this.posts[row];
 	var request = new ServerRequest();
 	request.path = "posts/" + post.id + "/likes";
 	request.method = "POST";
-	request.onSuccess = function() {
+	request.onSuccess = function(json) {
 		cell.setLikesCount(cell.getLikesCount() + 1);
 	}.bind(this);
-	request.onError = function(statusCode, message) {
+	request.onError = function(status, message) {
 		if (statusCode != 403)
 			alert("Error in TrendsController post like request: " + statusCode + ": " + message);
 	}.bind(this);
 	request.execute();
+};
+
+TrendsController.prototype._didClickComment = function(row, cell) {
+
+};
+
+TrendsController.prototype._didClickTag = function(tag) {
+	this.$searchField.val(tag);
+	this._didSearch();
 }
 
-function didClickComment(row, cell) {
-
-}
-
-function didClickTag(tag) {
-}
-
-function didSearch() {
+TrendsController.prototype._didSearch = function() {
 	var tag = this.$searchField.val();
 	if (tag.length == 0)
-		return;
-	if (tag.charAt(0) != "#") {
+		tag = null;
+	else if (tag.charAt(0) != "#") {
 		tag = "#" + tag;
 	}
+
 	if (tag == this.currentSearchTag)
 		return;
 
