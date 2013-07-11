@@ -54,6 +54,9 @@ TabBarController.prototype.setCurrentChildController = function(childController)
 			var index = this.childControllers.indexOf(childController);
 			this.buttons[index].toggleClass("selected");
 		}
+		else {
+
+		}
 		this.currentChildController = childController;
 
 	}

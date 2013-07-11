@@ -4,6 +4,7 @@
 	top: 0;
 	right: 0;
 	bottom: 0;
+	background-color: red;
 }
 
 #tabbar-content {
@@ -42,7 +43,7 @@
 #tabbar-trends-button {
 	background-image: url('../img/tabbar/trends-button.png');
 	width: 36px;
-	height: 49px;
+	height: 47px;
 	margin-left: -18px;
 	margin-top: 2px;
 }
