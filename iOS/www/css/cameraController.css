@@ -1,0 +1,55 @@
+
+#cameraController {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background-color: #124c8f;
+}
+
+.cameraController-pictureContainer {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	overflow: hidden;
+}
+
+.cameraController-picture-portrait {
+	max-height: 100%;
+}
+
+.cameraController-picture-landscape {
+	position: absolute;
+	top: 50%;
+	max-width: 100%;
+}
+
+.cameraController-picture-preload {
+	position: absolute;
+	left: -9999px;
+	top: -9999px;
+}
+
+#cameraController-spinnerContainer {
+	position: absolute;
+	width: 20px;
+	height: 24px;
+	left: 50%;
+	top: 50%;
+	margin-left: -10px;
+	margin-top: -12px;
+}
+
+#cameraController-retakeButton {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 81px;
+	height: 37px;
+	background-color: white;
+	color: #e00127;
+	font-size: 10pt;
+}

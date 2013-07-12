@@ -4,8 +4,8 @@ require(["lib/domReady"], function(domReady) {
  //    }
 
 domReady(function() {
-//document.addEventListener("deviceready", onDeviceReady, false);
-//function onDeviceReady() {
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
 	var requireArray = [
 		"controllers/tabBarController",
 	 	"controllers/navigationController",
@@ -53,7 +53,7 @@ domReady(function() {
 		var tabBarController = new TabBarController(controllers);
 		$("body").append(tabBarController.$container);
 	});
-//}
+}
 });
 
 });
