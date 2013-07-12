@@ -46,7 +46,7 @@
 
 .trendsCell-username {
 	position: absolute;
-	font-size: 8pt;
+	font-size: 10px;
 	color: #c9c9c9;
 	white-space: nowrap;
 	overflow: hidden;
@@ -59,7 +59,7 @@
 
 .trendsCell-date {
 	position: absolute;
-	font-size: 8pt;
+	font-size: 10px;
 	color: #134c83;
 	white-space: nowrap;
 	overflow: hidden;
@@ -87,7 +87,7 @@
 	width: 18px;
 	height: 12px;
 	color: #124d83;
-	font-size: 8pt;
+	font-size: 10px;
 	font-weight: bold;
 	white-space: nowrap;
 	overflow: hidden;
@@ -111,7 +111,7 @@
 	width: 18px;
 	height: 12px;
 	color: #124d83;
-	font-size: 8pt;
+	font-size: 10px;
 	font-weight: bold;
 	white-space: nowrap;
 	overflow: hidden;
@@ -141,7 +141,7 @@
 
 .trendsCell-text {
 	display: inline;
-	font-size: 9pt;
+	font-size: 11px;
 	color: #666666;
 }
 
@@ -150,7 +150,7 @@
 }
 
 .trendsCell-tags {
-	font-size: 9pt;
+	font-size: 9px;
 	color: #134c83;
 }
 
