@@ -4,7 +4,6 @@
 	top: 0;
 	right: 0;
 	bottom: 0;
-	background-color: red;
 }
 
 #tabbar-content {
@@ -100,9 +99,9 @@
 
 #tabbar-friends-button {
 	background-image: url('../img/tabbar/friends-button.png');
-	width: 36px;
+	width: 38px;
 	height: 49px;
-	margin-left: -18px;
+	margin-left: -19px;
 }
 
 #tabbar-friends-button-preload {

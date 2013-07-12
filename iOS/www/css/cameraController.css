@@ -19,12 +19,14 @@
 
 .cameraController-picture-portrait {
 	max-height: 100%;
+	width: auto;
 }
 
 .cameraController-picture-landscape {
 	position: absolute;
 	top: 50%;
 	max-width: 100%;
+	height: auto;
 }
 
 .cameraController-picture-preload {
@@ -52,4 +54,42 @@
 	background-color: white;
 	color: #e00127;
 	font-size: 10pt;
+}
+
+#cameraController-filtersContainer {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 69px;
+	font-size: 0;
+	width: 100%;
+	border-width: 3px 0 0 0;
+	border-style: solid;
+	border-color: #181818;
+}
+
+.cameraController-filter {
+	display: block;
+	max-width: 100%;
+}
+
+.cameraController-filterContainer {
+	display: inline-block;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 20%;
+	height: 69px;
+	border-width: 0 1px 0 1px;
+	border-style: solid;
+	border-color: #181818;
+	overflow: hidden;
+}
+
+.cameraController-filterContainer.extremeLeft {
+	border-width: 0 1px 0 0;
+}
+
+.cameraController-filterContainer.extremeRight {
+	border-width: 0 0 0 1px;
 }
