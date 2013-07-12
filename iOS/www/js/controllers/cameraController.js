@@ -48,6 +48,28 @@ CameraController.prototype.didAppear = function() {
 		this.showCamera();
 };
 
+CameraController.prototype.addImage = function() {
+	if (this.$image && this.$imageContainer) {
+		this.$image.appendTo(this.$imageContainer);
+		this.$imageContainer.appendTo(this.$container);
+	}
+};
+
+CameraController.prototype.removeImage = function() {
+	if (this.$image && this.$imageContainer) {
+		this.$image.detach();
+		this.$imageContainer.detach();
+	}
+};
+
+CameraController.prototype.addRetakeButton = function() {
+	this.$retakeButton.appendTo(this.$container);
+};
+
+CameraController.prototype.removeRetakeButton = function() {
+	this.$retakeButton.detach();
+};
+
 CameraController.prototype.didDisappear = function() {
 };
 
@@ -59,7 +81,6 @@ CameraController.prototype.showCamera = function() {
 	var onCameraSuccess = function(dataURL) {
 		this.$imageContainer = $("<div>");
 		this.$imageContainer.addClass("cameraController-pictureContainer");
-		this.$imageContainer.appendTo(this.$container);
 
 		this.$image = $("<img>");
 		this.$image.on("load", function() {
@@ -69,37 +90,46 @@ CameraController.prototype.showCamera = function() {
 			}
 			else
 				this.$image.addClass("cameraController-picture-portrait");
+
 			this.$image.removeClass("cameraController-picture-preload");
-			this.$retakeButton.appendTo(this.$container);
 			this.removeSpinner();
 		}.bind(this));
 		this.$image.attr("src", "data:image/jpeg;base64," + dataURL);
 		this.$image.addClass("cameraController-picture-preload")
-		this.$image.appendTo(this.$imageContainer);
+		this.addImage();
+		this.addRetakeButton();
 	}.bind(this);
 
 	var onError = function() {
-		if (this.$image) {
-			this.$imageContainer.appendTo(this.$container);
+		if (this.timerFired) {
+			this.addImage();
+			this.addRetakeButton();
+			this.removeSpinner();
 		}
-		this.$retakeButton.appendTo(this.$container);
-		this.removeSpinner();
+		else {
+			clearTimeout(this.timer);
+			if (!this.$image) {
+				this.removeBackground();
+				this.addRetakeButton();
+			}
+		}
 	}.bind(this);
 
+	this.timerFired = false;
 	navigator.camera.getPicture(onCameraSuccess, onError, cameraOptions);
 
-	setTimeout(function() {
+	this.timer = setTimeout(function() {
 		this.resetScreen();
 		this.addSpinner();
-	}.bind(this), 300);
+		this.timerFired = true;
+	}.bind(this), 1000);
 };
 
 CameraController.prototype.resetScreen = function() {
 	this.removeBackground();
 	this.removeSpinner();
-	this.$retakeButton.detach();
-	if (this.$imageContainer)
-		this.$imageContainer.remove();
+	this.removeImage();
+	this.removeRetakeButton();
 };
 
 return CameraController;
