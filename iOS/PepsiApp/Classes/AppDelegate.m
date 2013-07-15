@@ -88,16 +88,6 @@
 
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
-	
-	if ([ self.viewController.webView respondsToSelector:@selector(scrollView) ]) {
-		((UIScrollView *) [self.viewController.webView scrollView]).bounces = NO;
-	} else {
-		for (id subview in self.viewController.webView.subviews)
-			if ([[subview class] isSubclassOfClass: [UIScrollView class]])
-				((UIScrollView *)subview).bounces = NO;
-	}
-	
-	
 
     return YES;
 }
