@@ -58,7 +58,8 @@ TrendsController.prototype.pushNewCells = function() {
 	request.onSuccess = function(json) {
 		this.tableView.exitLoadingMode();
 		var posts = json.posts;
-		this.postsRemaining = posts.length != 0;
+		this.postsRemaining = posts.length == 10;
+		console.log("remaining:", this.postsRemaining);
 		for (var i in posts) {
 			var post = Post.postFromJSONObject(posts[i]);
 			var cell = new TrendsCell(post);

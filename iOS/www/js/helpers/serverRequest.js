@@ -13,7 +13,7 @@ define(["helpers/constants"], function(Constants) {
 		var password = "testuser";
 		if (this.path && this.method && this.onSuccess && this.onError) {
 			var ajaxRequest = {
-				url: "http://" + username + ":" + password + "@" + Constants.SERVER_URL + this.path + "?api_key=" + Constants.SERVER_API_KEY + "&method=" + this.method,
+				url: "https://" + username + ":" + password + "@" + Constants.SERVER_URL + this.path + "?api_key=" + Constants.SERVER_API_KEY + "&method=" + this.method,
 				success: function(json) {
 					if (json.status == 200) {
 						this.onSuccess(json.body);
