@@ -85,7 +85,7 @@ TableView.prototype.setPadding = function(padding) {
 
 function didSelectCell(cell, event) {
 	var row = this.cells.indexOf(cell);
-	if (row == -1)
+	if (row == -1 || cell == this.selectedCell)
 		return;
 	if (cell.setSelected)
 		cell.setSelected(true);
