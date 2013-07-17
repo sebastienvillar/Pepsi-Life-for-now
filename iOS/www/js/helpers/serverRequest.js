@@ -3,6 +3,8 @@ define(["helpers/constants"], function(Constants) {
 	var ServerRequest = function(){
 		this.path = null;
 		this.method = "GET";
+		this.queryParameters = {};
+		this.body = null;
 		this.onSuccess = null;
 		this.onError = null;
 		this.data = {};
@@ -11,26 +13,32 @@ define(["helpers/constants"], function(Constants) {
 	ServerRequest.prototype.execute = function() {
 		var username = "testuser";
 		var password = "testuser";
-		if (this.path && this.method && this.onSuccess && this.onError) {
-			var ajaxRequest = {
-				url: "https://" + username + ":" + password + "@" + Constants.SERVER_URL + this.path + "?api_key=" + Constants.SERVER_API_KEY + "&method=" + this.method,
-				success: function(json) {
-					if (json.status == 200) {
-						this.onSuccess(json.body);
-					}
-					else {
-						this.onError(json.status, json.message);
-					}
-				}.bind(this),
-				error: function(request, message, exception) {this.onError(request.status, message)}.bind(this),
-				data: this.data,
-				cache: false,
-				contentType: "application/json",
-				dataType: "jsonp",
-				crossDomain: true
-			};
-			$.ajax(ajaxRequest);
+
+		var request = new XMLHttpRequest();
+		request.onload = function() {
+			var response = JSON.parse(request.responseText);
+			if (request.status == 200) {
+				this.onSuccess(response.body);
+			}
+			else {
+				this.onError(request.status, response.message);
+			}
+		}.bind(this);
+		var url = Constants.SERVER_URL + this.path + "?api_key=" + Constants.SERVER_API_KEY;
+		for (var key in this.queryParameters) {
+			var queryParameter = this.queryParameters[key];
+			if (typeof queryParameter == "string")
+				queryParameter = queryParameter.replace("#", "%23");
+			url += "&" + key + "=" + queryParameter;
 		}
+		request.open(this.method, url, true);
+		request.setRequestHeader("Authorization", "Basic dGVzdHVzZXI6dGVzdHVzZXI=")
+		request.setRequestHeader("Cache-Control", "no-cache")
+		request.setRequestHeader("Content-Type", "application/json")
+		if (this.body)
+			request.send(body);
+		else
+			request.send();
 	}
 
 	return ServerRequest;

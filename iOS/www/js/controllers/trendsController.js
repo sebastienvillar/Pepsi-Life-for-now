@@ -51,15 +51,14 @@ TrendsController.prototype.pushNewCells = function() {
 	request.method = "GET";
 	request.path = "posts/";
 	if (this.posts.length != 0)
-		request.data["last_id"] = this.posts[this.posts.length - 1].id;
+		request.queryParameters["last_id"] = this.posts[this.posts.length - 1].id;
 	if (this.currentSearchTag)
-		request.data["tag"] = this.currentSearchTag;
+		request.queryParameters["tag"] = this.currentSearchTag;
 
 	request.onSuccess = function(json) {
 		this.tableView.exitLoadingMode();
 		var posts = json.posts;
 		this.postsRemaining = posts.length == 10;
-		console.log("remaining:", this.postsRemaining);
 		for (var i in posts) {
 			var post = Post.postFromJSONObject(posts[i]);
 			var cell = new TrendsCell(post);
@@ -73,6 +72,7 @@ TrendsController.prototype.pushNewCells = function() {
 		}
 	}.bind(this);
 	request.onError = function(statusCode, message) {
+		console.log("error");
 		this.tableView.exitLoadingMode();
 		alert("Error in TrendsController get posts request: " + statusCode + ": " + message);
 	}.bind(this);
