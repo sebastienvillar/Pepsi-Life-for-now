@@ -1,4 +1,5 @@
 .DS_Store
 iOS/PepsiApp.xcodeproj/project.xcworkspace/*
 iOS/PepsiApp.xcodeproj/xcuserdata/*
+iOS/PepsiApp.xcodeproj/project.pbxproj
 Android/*

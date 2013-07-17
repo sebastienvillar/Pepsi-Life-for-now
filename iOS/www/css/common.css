@@ -3,11 +3,23 @@
 	padding: 0;
 	border: none;
 	background: none;
+	-webkit-user-select: none;
+	user-select: none;
 }
 
 a {
 	text-decoration: none;
 }
+
+p, input {
+	-webkit-user-select: auto;
+	user-select: auto;
+}
+
+button {
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
 
 html, body {
 	background-color: red;

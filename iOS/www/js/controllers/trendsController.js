@@ -72,7 +72,6 @@ TrendsController.prototype.pushNewCells = function() {
 		}
 	}.bind(this);
 	request.onError = function(statusCode, message) {
-		console.log("error");
 		this.tableView.exitLoadingMode();
 		alert("Error in TrendsController get posts request: " + statusCode + ": " + message);
 	}.bind(this);
