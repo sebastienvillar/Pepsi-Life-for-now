@@ -5,37 +5,19 @@
 	right: 0;
 	top: 0;
 	bottom: 0;
-	background-color: #124c8f;
+	background-color: #747474;
 }
 
-.cameraController-pictureContainer {
+#cameraController .mainCanvasContainer {
 	position: absolute;
 	left: 0;
 	right: 0;
 	top: 0;
-	bottom: 0;
+	bottom: 69px;
 	overflow: hidden;
 }
 
-.cameraController-picture-portrait {
-	max-height: 100%;
-	width: auto;
-}
-
-.cameraController-picture-landscape {
-	position: absolute;
-	top: 50%;
-	max-width: 100%;
-	height: auto;
-}
-
-.cameraController-picture-preload {
-	position: absolute;
-	left: -9999px;
-	top: -9999px;
-}
-
-#cameraController-spinnerContainer {
+#cameraController .spinnerContainer {
 	position: absolute;
 	width: 20px;
 	height: 24px;
@@ -45,7 +27,7 @@
 	margin-top: -12px;
 }
 
-#cameraController-retakeButton {
+#cameraController .retakeButton {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -56,7 +38,7 @@
 	font-size: 10px;
 }
 
-#cameraController-filtersContainer {
+#cameraController #filtersBar {
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -69,12 +51,7 @@
 	border-color: #181818;
 }
 
-.cameraController-filter {
-	display: block;
-	max-width: 100%;
-}
-
-.cameraController-filterContainer {
+#cameraController .filterCanvasContainer {
 	display: inline-block;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -84,12 +61,13 @@
 	border-style: solid;
 	border-color: #181818;
 	overflow: hidden;
+	position: relative;
 }
 
-.cameraController-filterContainer.extremeLeft {
+#cameraController .filterCanvasContainer.extremeLeft {
 	border-width: 0 1px 0 0;
 }
 
-.cameraController-filterContainer.extremeRight {
+#cameraController .filterCanvasContainer.extremeRight {
 	border-width: 0 0 0 1px;
 }

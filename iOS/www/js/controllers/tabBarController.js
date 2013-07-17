@@ -47,9 +47,11 @@ TabBarController.prototype.setCurrentChildController = function(childController)
 		var index = this.childControllers.indexOf(childController);
 		this.buttons[index].toggleClass("selected");
 		if (childController == this.childControllers[2]) {
-			var content = this.$content.html();
-			var $copy = $("<div>").html(content);
-			childController.setBackground($copy);
+			if (childController.firstLaunch) {
+				var content = this.$content.html();
+				var $copy = $("<div>").html(content);
+				childController.setBackground($copy);
+			}
 		}
 
 		this.$content.append(childController.$container);
