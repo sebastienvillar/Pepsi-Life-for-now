@@ -42,7 +42,7 @@ TableView.prototype.setCellsSpacing = function(spacing) {
 
 TableView.prototype.pushCell = function(cell) {
 	cell.$container.appendTo(this.$container);
-	cell.$container.on("tap", didSelectCell.bind(this, cell));
+	//cell.$container.on("tap", didSelectCell.bind(this, cell));
 	if (this.cells.length != 0) {
 		cell.$container.css("margin-top", this.spacing);
 	}
@@ -51,6 +51,8 @@ TableView.prototype.pushCell = function(cell) {
 
 TableView.prototype.removeRowAtIndex = function(i) {
 	if (i < this.cells.length) {
+		if (this.selectedCell = this.cells[i])
+			this.selectedCell = null;
 		this.cells[i].$container.remove();
 		this.cells.splice(i, 1);
 	}
@@ -61,6 +63,7 @@ TableView.prototype.removeAllRows = function() {
 		var cell = this.cells[i];
 		cell.$container.remove();
 	}
+	this.selectedCell = null;
 	this.cells = [];
 };
 
