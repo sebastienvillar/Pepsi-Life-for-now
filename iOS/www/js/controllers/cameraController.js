@@ -11,6 +11,7 @@ var CameraController = function() {
 	this.$background = null;
 	this.firstLaunch = true;
 	this.photoWasTaken = false;
+	this.applyingFilter = false;
 
 	this.filters = [];
 	this.filterCanvasContainers = [];
@@ -27,11 +28,29 @@ var CameraController = function() {
 			$filterCanvasContainer.addClass("extremeRight");
 		$filterCanvasContainer.on("tap", this.didSelectFilter.bind(this, i));
 		this.filterCanvasContainers.push($filterCanvasContainer);
-		this.filters.push({
-			effect: "coloradjust",
-			value: {red:0.5,green:0,blue:0}
-		});
 	}
+
+	this.filters.push({
+		effect: "desaturate",
+		value: {average: false}
+	});
+
+	this.filters.push({
+		effect: "coloradjust",
+		value: {red:0.4,green:0,blue:0.10}
+	});
+
+	this.filters.push({});
+
+	this.filters.push({
+		effect: "coloradjust",
+		value: {red:0.10,green:0,blue:0.4}
+	});
+
+	this.filters.push({
+		effect: "glow",
+		value: {amount:0.63,radius:0.57}
+	})
 };
 
 CameraController.prototype = new Controller();
@@ -104,7 +123,7 @@ CameraController.prototype.showCamera = function() {
 			//Show when everything's loaded
 			var pixasticCallback = function() {
 				pixasticCallback._currentCount += 1;
-				if (pixasticCallback._currentCount == this.filterCanvasContainers.length) {
+				if (pixasticCallback._currentCount == this.filters.length - 1) {
 					this.$mainCanvas.css("opacity", "1");
 					this.$filtersBar.css("opacity", "1");
 					this.$retakeButton = $("<button>");
@@ -131,7 +150,12 @@ CameraController.prototype.showCamera = function() {
 				$canvas.attr("width", $container.width());
 				$canvas.attr("height", $container.height());
 				this.fillCanvas($canvas, image, true);
-				Pixastic.process($canvas[0], "coloradjust", {red:0.5,green:0,blue:0}, pixasticCallback);
+
+				if (i != 2) {
+					var filter = this.filters[i];
+					var filterCopy = $.extend(true, {}, filter);
+					Pixastic.process($canvas[0], filterCopy.effect, filterCopy.value, pixasticCallback);
+				}
 			}
 		}.bind(this);
 		image.src = fileURI;
@@ -178,31 +202,37 @@ CameraController.prototype.showCamera = function() {
 		this.spinner.$container.appendTo(this.$spinnerContainer);
 		this.$spinnerContainer.appendTo(this.$container);
 
-	}.bind(this), 4000);
+	}.bind(this), 600);
 };
 
 CameraController.prototype.didSelectFilter = function(i) {
-	console.log("start");
-	if (!this.photoWasTaken)
+	if (!this.photoWasTaken || this.applyingFilter)
 		return;
 
-	console.log("after photo");
 	if (!this.$originalMainCanvas) {
-		console.log("in original");
 		this.$originalMainCanvas = this.$mainCanvas;
 	}
-	console.log("after original");
-	var filter = this.filters[i];
 
-	var $spinnerContainer = $("<div>");
-	$spinnerContainer.addClass("spinnerContainer");
-	var spinner = new Spinner();
-	spinner.$container.appendTo($spinnerContainer);
-	$spinnerContainer.appendTo(this.$mainCanvasContainer);
-	Pixastic.process(this.$originalMainCanvas[0], filter.effect, filter.value, function() {
-		$spinnerContainer.remove();
-	});
-	console.log("after process");
+	this.$mainCanvas.remove();
+	this.$mainCanvas = this.$originalMainCanvas;
+	this.$mainCanvas.appendTo(this.$mainCanvasContainer);
+
+	// var $spinnerContainer = $("<div>");
+	// $spinnerContainer.addClass("spinnerContainer");
+	// var spinner = new Spinner();
+	// spinner.$container.appendTo($spinnerContainer);
+	// $spinnerContainer.appendTo(this.$mainCanvasContainer);
+
+	if (i != 2) {
+		var filter = this.filters[i];
+		var filterCopy = $.extend(true, {}, filter);
+		this.applyingFilter = true;
+		Pixastic.process(this.$mainCanvas[0], filterCopy.effect, filterCopy.value, function(newCanvas) {
+			this.$mainCanvas = $(newCanvas);
+			//$spinnerContainer.remove();
+			this.applyingFilter = false;
+		}.bind(this));
+	}
 };
 
 return CameraController;
