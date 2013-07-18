@@ -7,7 +7,7 @@ define(["helpers/constants"], function(Constants) {
 		this.body = null;
 		this.onSuccess = null;
 		this.onError = null;
-		this.data = {};
+		this.jsonHeader = true;
 	};
 
 	ServerRequest.prototype.execute = function() {
@@ -34,9 +34,10 @@ define(["helpers/constants"], function(Constants) {
 		request.open(this.method, url, true);
 		request.setRequestHeader("Authorization", "Basic dGVzdHVzZXI6dGVzdHVzZXI=")
 		request.setRequestHeader("Cache-Control", "no-cache")
-		request.setRequestHeader("Content-Type", "application/json")
+		if (this.jsonHeader)
+			request.setRequestHeader("Content-Type", "application/json")
 		if (this.body)
-			request.send(body);
+			request.send(this.body);
 		else
 			request.send();
 	}
