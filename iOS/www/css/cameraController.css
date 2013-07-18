@@ -27,14 +27,25 @@
 	margin-top: -12px;
 }
 
-#cameraController .retakeButton {
+#cameraController .whiteButton {
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 81px;
-	height: 37px;
-	background-color: white;
+	width: 80px;
+	height: 36px;
+	background-color: #ffffff;
 	color: #e00127;
+	font-size: 10px;
+}
+
+#cameraController .redButton {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 80px;
+	height: 36px;
+	background-color: #e00127;
+	color: #ffffff;
 	font-size: 10px;
 }
 

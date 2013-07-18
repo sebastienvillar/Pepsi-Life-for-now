@@ -1,9 +1,10 @@
 var requireArray = [
 	"controllers/controller",
-	"views/spinner"
+	"views/spinner",
+	"helpers/serverRequest"
 ];
 
-define(requireArray, function(Controller, Spinner) {
+define(requireArray, function(Controller, Spinner, ServerRequest) {
 var CameraController = function() {
 	Controller.call(this);
 
@@ -126,11 +127,19 @@ CameraController.prototype.showCamera = function() {
 				if (pixasticCallback._currentCount == this.filters.length - 1) {
 					this.$mainCanvas.css("opacity", "1");
 					this.$filtersBar.css("opacity", "1");
+
 					this.$retakeButton = $("<button>");
-					this.$retakeButton.addClass("retakeButton");
+					this.$retakeButton.addClass("whiteButton");
 					this.$retakeButton.text("RETAKE");
 					this.$retakeButton.on("tap", this.showCamera.bind(this));
 					this.$retakeButton.appendTo(this.$mainCanvasContainer);
+
+					this.$nextButton = $("<button>");
+					this.$nextButton.addClass("redButton");
+					this.$nextButton.text("NEXT");
+					this.$nextButton.on("tap", this.showTextArea.bind(this));
+					this.$nextButton.appendTo(this.$mainCanvasContainer);
+
 					if (this.$spinnerContainer)
 						this.$spinnerContainer.remove();
 					this.photoWasTaken = true;
@@ -164,36 +173,37 @@ CameraController.prototype.showCamera = function() {
 
 	var onError = function() {
 		clearTimeout(this.timer);
-		var $newMainCanvasContainer = null;
+
+		this.removeBackground();
+		this.$filtersBar.detach();
+		if (this.$mainCanvasContainer)
+			this.$mainCanvasContainer.detach();
+		if (this.$spinnerContainer)
+			this.$spinnerContainer.detach();
+
 		if (!this.photoWasTaken) {
 			//Create a new canvas and add retake button
 			this.$mainCanvasContainer = $("<div>");
 			this.$mainCanvasContainer.addClass("mainCanvasContainer");
 			this.$retakeButton = $("<button>");
-			this.$retakeButton.addClass("retakeButton");
+			this.$retakeButton.addClass("whiteButton");
 			this.$retakeButton.text("RETAKE");
 			this.$retakeButton.appendTo(this.$mainCanvasContainer);
+			this.$retakeButton.on("tap", this.showCamera.bind(this));
 		}
-		this.$filtersBar.detach();
-		this.$container.empty();
-		this.$retakeButton.on("tap", this.showCamera.bind(this));
-		this.$mainCanvasContainer.appendTo(this.$container);
-		if (this.photoWasTaken)
+
+		else 
 			this.$filtersBar.appendTo(this.$container);
+		this.$mainCanvasContainer.appendTo(this.$container);
 	}.bind(this);
 
 	navigator.camera.getPicture(onCameraSuccess, onError, cameraOptions);
 
 	this.timer = setTimeout(function() {
-		//Detach filters bar to avoid handlers deletion
+		this.removeBackground();
 		this.$filtersBar.detach();
-
-		//Remove background, main canvas
-		this.$container.empty();
-
-		//Reattach handler
-		if (this.$retakeButton)
-			this.$retakeButton.on("tap", this.showCamera.bind(this));
+		if (this.$mainCanvasContainer)
+			this.$mainCanvasContainer.detach();
 
 		//Show spinner
 		this.$spinnerContainer = $("<div>");
@@ -201,8 +211,10 @@ CameraController.prototype.showCamera = function() {
 		this.spinner = new Spinner();
 		this.spinner.$container.appendTo(this.$spinnerContainer);
 		this.$spinnerContainer.appendTo(this.$container);
+	}.bind(this), 500);
+};
 
-	}.bind(this), 600);
+CameraController.prototype.showTextArea = function() {
 };
 
 CameraController.prototype.didSelectFilter = function(i) {
@@ -216,7 +228,17 @@ CameraController.prototype.didSelectFilter = function(i) {
 	this.$mainCanvas.remove();
 	this.$mainCanvas = this.$originalMainCanvas;
 	this.$mainCanvas.appendTo(this.$mainCanvasContainer);
-
+	
+	// var dataURL = this.$mainCanvas[0].toDataURL();
+	// var request = new ServerRequest();
+	// request.method = "POST";
+	// request.path = "images/";
+	// request.jsonHeader = false;
+	// request.body = dataURL;
+	// request.onSuccess = function(json) {
+	// 	console.log(json.image_url);
+	// };
+	// request.execute();
 	// var $spinnerContainer = $("<div>");
 	// $spinnerContainer.addClass("spinnerContainer");
 	// var spinner = new Spinner();
