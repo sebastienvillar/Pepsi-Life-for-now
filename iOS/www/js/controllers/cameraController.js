@@ -57,14 +57,13 @@ var CameraController = function() {
 CameraController.prototype = new Controller();
 
 CameraController.prototype.setBackground = function($background) {
-	if (!this.$image) {
-		this.$background = $background;
-	}
+	this.$background = $background;
 };
 
 CameraController.prototype.removeBackground = function() {
 	if (this.$background)
 		this.$background.detach();
+	this.$background = null
 };
 
 CameraController.prototype.didAppear = function() {
