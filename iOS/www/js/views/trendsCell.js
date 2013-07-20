@@ -82,18 +82,6 @@ function TrendsCell(post) {
 	this.$footer.addClass("trendsCell-footer");
 	this.$footer.appendTo(this.$container);
 
-	this.$leftFooterPart = $("<div>");
-	this.$leftFooterPart.addClass("trendsCell-leftFooterPart");
-	this.$leftFooterPart.appendTo(this.$footer);
-
-	this.$rightFooterPart = $("<div>");
-	this.$rightFooterPart.addClass("trendsCell-rightFooterPart");
-	this.$rightFooterPart.appendTo(this.$footer);
-
-	this.$centerFooterPart = $("<div>");
-	this.$centerFooterPart.addClass("trendsCell-centerFooterPart");
-	this.$centerFooterPart.appendTo(this.$footer);
-
 	if (post) {
 		this.setLikesCount(post.likesCount);
 		//this.setCommentsCount(post.commentsCount);
