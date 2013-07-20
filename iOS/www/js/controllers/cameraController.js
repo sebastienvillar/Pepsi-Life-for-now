@@ -58,16 +58,13 @@ CameraController.prototype = new Controller();
 
 CameraController.prototype.setBackground = function($background) {
 	if (!this.$image) {
-		if (this.$background)
-		this.$background.remove();
 		this.$background = $background;
-		this.$background.appendTo(this.$container);
 	}
 };
 
 CameraController.prototype.removeBackground = function() {
 	if (this.$background)
-		this.$background.remove();
+		this.$background.detach();
 };
 
 CameraController.prototype.didAppear = function() {
@@ -175,6 +172,7 @@ CameraController.prototype.showCamera = function() {
 		clearTimeout(this.timer);
 
 		this.removeBackground();
+		this.$container.addClass("grayBackground");
 		this.$filtersBar.detach();
 		if (this.$mainCanvasContainer)
 			this.$mainCanvasContainer.detach();
@@ -204,6 +202,8 @@ CameraController.prototype.showCamera = function() {
 		this.$filtersBar.detach();
 		if (this.$mainCanvasContainer)
 			this.$mainCanvasContainer.detach();
+
+		this.$container.addClass("grayBackground");
 
 		//Show spinner
 		this.$spinnerContainer = $("<div>");
