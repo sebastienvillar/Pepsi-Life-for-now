@@ -9,6 +9,8 @@ var CameraController = function() {
 	Controller.call(this);
 
 	this.$container.attr("id", "cameraController");
+	this.$mainContainer = $("<div>", {"id": "mainContainer"});
+	this.$mainContainer.appendTo(this.$container);
 	this.$background = null;
 	this.firstLaunch = true;
 	this.photoWasTaken = false;
@@ -100,11 +102,12 @@ CameraController.prototype.showCamera = function() {
 	}
 	var onCameraSuccess = function(fileURI) {
 		clearTimeout(this.timer);
+		this.clearMainContainer();
 		var image = new Image();
 
 		this.$mainCanvasContainer = $("<div>");
 		this.$mainCanvasContainer.addClass("mainCanvasContainer");
-		this.$mainCanvasContainer.appendTo(this.$container);
+		this.$mainCanvasContainer.appendTo(this.$mainContainer);
 		this.$mainCanvas = $("<canvas>");
 		this.$mainCanvas.attr("width", this.$mainCanvasContainer.width());
 		this.$mainCanvas.attr("height", this.$mainCanvasContainer.height());
@@ -115,7 +118,7 @@ CameraController.prototype.showCamera = function() {
 			this.fillCanvas(this.$mainCanvas, image, false);
 			this.$originalMainCanvas = null;
 			this.$filtersBar.css("opacity", "0");
-			this.$filtersBar.appendTo(this.$container);
+			this.$filtersBar.appendTo(this.$mainContainer);
 
 			//Show when everything's loaded
 			var pixasticCallback = function() {
@@ -128,13 +131,13 @@ CameraController.prototype.showCamera = function() {
 					this.$retakeButton.addClass("whiteButton");
 					this.$retakeButton.text("RETAKE");
 					this.$retakeButton.on("tap", this.showCamera.bind(this));
-					this.$retakeButton.appendTo(this.$mainCanvasContainer);
+					this.$retakeButton.appendTo(this.$mainContainer);
 
 					this.$nextButton = $("<button>");
 					this.$nextButton.addClass("redButton");
 					this.$nextButton.text("NEXT");
 					this.$nextButton.on("tap", this.showTextArea.bind(this));
-					this.$nextButton.appendTo(this.$mainCanvasContainer);
+					this.$nextButton.appendTo(this.$mainContainer);
 
 					if (this.$spinnerContainer)
 						this.$spinnerContainer.remove();
@@ -169,15 +172,7 @@ CameraController.prototype.showCamera = function() {
 
 	var onError = function() {
 		clearTimeout(this.timer);
-
-		this.removeBackground();
-		this.$container.addClass("grayBackground");
-		this.$filtersBar.detach();
-		if (this.$mainCanvasContainer)
-			this.$mainCanvasContainer.detach();
-		if (this.$spinnerContainer)
-			this.$spinnerContainer.detach();
-
+		this.clearMainContainer();
 		if (!this.photoWasTaken) {
 			//Create a new canvas and add retake button
 			this.$mainCanvasContainer = $("<div>");
@@ -185,32 +180,38 @@ CameraController.prototype.showCamera = function() {
 			this.$retakeButton = $("<button>");
 			this.$retakeButton.addClass("whiteButton");
 			this.$retakeButton.text("RETAKE");
-			this.$retakeButton.appendTo(this.$mainCanvasContainer);
+			this.$retakeButton.appendTo(this.$mainContainer);
 			this.$retakeButton.on("tap", this.showCamera.bind(this));
 		}
 
 		else 
-			this.$filtersBar.appendTo(this.$container);
-		this.$mainCanvasContainer.appendTo(this.$container);
+			this.$filtersBar.appendTo(this.$mainContainer);
+		this.$mainCanvasContainer.insertBefore(this.$retakeButton);
+		if (this.$spinnerContainer)
+			this.$spinnerContainer.detach();
 	}.bind(this);
 
 	navigator.camera.getPicture(onCameraSuccess, onError, cameraOptions);
 
 	this.timer = setTimeout(function() {
-		this.removeBackground();
-		this.$filtersBar.detach();
-		if (this.$mainCanvasContainer)
-			this.$mainCanvasContainer.detach();
-
-		this.$container.addClass("grayBackground");
+		this.clearMainContainer();
 
 		//Show spinner
 		this.$spinnerContainer = $("<div>");
 		this.$spinnerContainer.addClass("spinnerContainer");
 		this.spinner = new Spinner();
 		this.spinner.$container.appendTo(this.$spinnerContainer);
-		this.$spinnerContainer.appendTo(this.$container);
-	}.bind(this), 500);
+		this.$spinnerContainer.appendTo(this.$mainContainer);
+	}.bind(this), 700);
+};
+
+CameraController.prototype.clearMainContainer = function() {
+	this.removeBackground();
+	this.$filtersBar.detach();
+	if (this.$mainCanvasContainer)
+		this.$mainCanvasContainer.detach();
+	
+	this.$mainContainer.addClass("grayBackground");
 };
 
 CameraController.prototype.showTextArea = function() {
