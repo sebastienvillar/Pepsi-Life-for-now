@@ -84,8 +84,11 @@ function TrendsCell(post) {
 
 TrendsCell.prototype = new EventEmitter();
 
-TrendsCell.prototype.setAvatarBorderColor = function(color) {
-	this.$avatarWrapper.css("background-color", color);
+TrendsCell.prototype.setFriend = function(friend) {
+	if (friend)
+		this.$avatarWrapper.addClass("friend");
+	else
+		this.$avatarWrapper.removeClass("friend");
 };
 
 TrendsCell.prototype.setLikesCount = function(count) {
