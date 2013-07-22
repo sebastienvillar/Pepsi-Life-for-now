@@ -49,6 +49,13 @@
 	font-size: 10px;
 }
 
+#cameraController .backArrow {
+	background-image: url("../img/common/back-arrow.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 50px;
+}
+
 #cameraController .redButton {
 	position: absolute;
 	right: 0;
@@ -71,25 +78,107 @@
 	border-width: 3px 0 0 0;
 	border-style: solid;
 	border-color: #181818;
+	background-color: #181818;
 }
 
 #cameraController .filterCanvasContainer {
 	display: inline-block;
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
+	/*box-sizing: border-box;
+	-webkit-box-sizing: border-box;*/
 	width: 20%;
 	height: 69px;
-	border-width: 0 1px 0 1px;
+	padding: 0 1px 0 1px;
+	/*border-width: 0 1px 0 1px;
 	border-style: solid;
-	border-color: #181818;
+	border-color: #181818;*/
 	overflow: hidden;
 	position: relative;
 }
 
 #cameraController .filterCanvasContainer.extremeLeft {
-	border-width: 0 1px 0 0;
+	/*border-width: 0 1px 0 0;*/
+	padding: 0 0 0 1px;
 }
 
 #cameraController .filterCanvasContainer.extremeRight {
-	border-width: 0 0 0 1px;
+	/*border-width: 0 0 0 1px;*/
+	padding: 0 0 0 1px;
+}
+
+#cameraController .textArea.slideUp {
+	/*name duration timing delay iteration-count direction*/
+	-webkit-animation: slideUp 0.3s ease-in-out 0 1;
+	animation: slideUp 0.3s ease-in-out 0 1;
+}
+
+@-webkit-keyframes slideUp {
+	0% {
+		top: 100%;
+	}
+
+	100% {
+		top: 25%;
+	}
+}
+
+@keyframes slideUp {
+	0% {
+		top: 100%;
+	}
+
+	100% {
+		top: 25%;
+	}
+}
+
+#cameraController .textArea.slideDown {
+	/*name duration timing delay iteration-count direction*/
+	-webkit-animation: slideDown 0.3s ease-in-out 0 1;
+	animation: slideDown 0.3s ease-in-out 0 1;
+}
+
+@-webkit-keyframes slideDown {
+	0% {
+		top: 25%;
+	}
+
+	100% {
+		top: 100%;
+	}
+}
+
+@keyframes slideDown {
+	0% {
+		top: 25%;
+	}
+
+	100% {
+		top: 100%;
+	}
+}
+
+#cameraController .textArea {
+	position: absolute;
+	top: 25%;
+	left: 0;
+	right: 0;
+	height: 150px;
+	background-color: #ffffff;
+	border-radius: 0;
+	border-style: solid;
+	border-width: 1px 0 1px 0;
+	border-color: #e00127;
+	color: black;
+	resize: none;
+	padding: 8px;
+	font-size: 16px;
+	overflow: hidden;
+}
+
+#cameraController .textAreaContainer {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
 }

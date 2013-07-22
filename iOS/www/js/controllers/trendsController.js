@@ -119,6 +119,7 @@ TrendsController.prototype._didClickTag = function(tag) {
 }
 
 TrendsController.prototype._didSearch = function() {
+	this.$searchField.blur();
 	var tag = this.$searchField.val();
 	if (tag.length == 0)
 		tag = null;

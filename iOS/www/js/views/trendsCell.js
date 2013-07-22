@@ -59,11 +59,6 @@ function TrendsCell(post) {
 	this.$commentsCount.addClass("trendsCell-commentsCount");
 	this.$commentsCount.appendTo(this.$header);
 
-	//Separation
-	this.$separationLine = $("<div>");
-	this.$separationLine.addClass("trendsCell-separationLine");
-	this.$separationLine.appendTo(this.$container);
-
 	//Body
 	this.$body = $("<div>");
 	this.$body.addClass("trendsCell-body");
@@ -76,11 +71,6 @@ function TrendsCell(post) {
 	this.$tags = $("<span>");
 	this.$tags.addClass("trendsCell-tags");
 	this.$tags.appendTo(this.$body);
-
-	//Footer
-	this.$footer = $("<footer>");
-	this.$footer.addClass("trendsCell-footer");
-	this.$footer.appendTo(this.$container);
 
 	if (post) {
 		this.setLikesCount(post.likesCount);

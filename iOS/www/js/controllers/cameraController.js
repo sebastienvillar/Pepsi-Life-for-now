@@ -214,7 +214,46 @@ CameraController.prototype.clearMainContainer = function() {
 	this.$mainContainer.addClass("grayBackground");
 };
 
-CameraController.prototype.showTextArea = function() {
+CameraController.prototype.showTextArea = function(event) {
+	this.$textAreaContainer = $("<div>");
+	this.$textAreaContainer.addClass("textAreaContainer");
+	this.$textAreaContainer.appendTo(this.$container);
+	this.$textArea = $("<textarea>");
+	this.$textArea.attr("maxlength", 300);
+
+	this.$retakeButton.detach();
+	this.$nextButton.detach();
+
+	var $saveButton = $("<button>");
+	$saveButton.addClass("redButton");
+	$saveButton.text("SAVE");
+	$saveButton.appendTo(this.$textAreaContainer);
+
+	var $backButton = $("<button>");
+	$backButton.addClass("whiteButton backArrow");
+	$backButton.appendTo(this.$textAreaContainer);
+
+	this.$textArea.on("webkitAnimationEnd animationEnd", function(){
+		this.$textArea.off("webkitAnimationEnd animationEnd")
+		document.body.addEventListener('touchmove', function(e) {
+    		e.preventDefault();
+		}, false);
+		setTimeout(function() {
+			// this.$textArea.on("change", function(event) {
+			// 	console.log("change");
+			// 	event.preventDefault(); 
+			// 	event.stopPropagation();
+   //  			window.scrollTo(0,0);
+			// });
+			this.$textArea.focus();
+			$("body").scrollTop(0); 
+			$saveButton.on("tap", this.didClickSave.bind(this));
+			$backButton.on("tap", this.didClickBack.bind(this));
+		}.bind(this), 200);
+	}.bind(this)); 
+
+	this.$textArea.addClass("textArea slideUp");
+	this.$textArea.appendTo(this.$textAreaContainer);
 };
 
 CameraController.prototype.didSelectFilter = function(i) {
@@ -255,6 +294,25 @@ CameraController.prototype.didSelectFilter = function(i) {
 			this.applyingFilter = false;
 		}.bind(this));
 	}
+};
+
+CameraController.prototype.didClickSave = function(event) {
+	event.preventDefault();
+	var text = this.$textArea.val();
+	var regex = /\b#\w\w+/;
+	var tags = text.match(regex);
+	text = text.replace(regex, "");
+};
+
+CameraController.prototype.didClickBack = function(event) {
+	event.preventDefault();
+	this.$textArea.on("webkitAnimationEnd animationEnd", function(){
+		this.$textArea.off("webkitAnimationEnd animationEnd");
+		this.$textAreaContainer.remove();
+		this.$retakeButton.appendTo(this.$mainContainer);
+		this.$nextButton.appendTo(this.$mainContainer);
+	}.bind(this));
+	this.$textArea.addClass("slideDown");
 };
 
 return CameraController;
