@@ -155,10 +155,10 @@
 
 #cameraController .textArea {
 	position: absolute;
-	top: 25%;
+	top: 15%;
 	left: 0;
 	right: 0;
-	height: 150px;
+	height: 185px;
 	background-color: #ffffff;
 	border-radius: 0;
 	border-style: solid;
@@ -177,4 +177,30 @@
 	right: 0;
 	bottom: 0;
 	top: 0;
+}
+
+#cameraController .disappear {
+/*name duration timing delay iteration-count direction*/
+	-webkit-animation: disappear 0.3s ease-in 0 1;
+	animation: disappear 0.3s ease-in 0 1;
+}
+
+@-webkit-keyframes disappear {
+	0% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}
+
+@keyframes disappear {
+	0% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+	}
 }

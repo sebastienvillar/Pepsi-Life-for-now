@@ -11,10 +11,12 @@ var CameraController = function() {
 	this.$container.attr("id", "cameraController");
 	this.$mainContainer = $("<div>", {"id": "mainContainer"});
 	this.$mainContainer.appendTo(this.$container);
+	this.$originalCanvas = $("<canvas>");
 	this.$background = null;
 	this.firstLaunch = true;
 	this.photoWasTaken = false;
 	this.applyingFilter = false;
+	this.appliedFilterIndex = null;
 
 	this.filters = [];
 	this.filterCanvasContainers = [];
@@ -118,6 +120,10 @@ CameraController.prototype.showCamera = function(event) {
 		this.$mainCanvas.css("opacity", "0");
 
 		image.onload = function() {
+			this.$originalCanvas.attr("width", image.width);
+			this.$originalCanvas.attr("height", image.height);
+			this.$originalCanvas.css({"width": image.width, "height": image.height});
+			this.fillCanvas(this.$originalCanvas, image, false);
 			this.fillCanvas(this.$mainCanvas, image, false);
 			this.$originalMainCanvas = null;
 			this.$filtersBar.css("opacity", "0");
@@ -220,46 +226,52 @@ CameraController.prototype.clearMainContainer = function() {
 	this.$filtersBar.detach();
 	if (this.$mainCanvasContainer)
 		this.$mainCanvasContainer.detach();
-	
-	this.$mainContainer.addClass("grayBackground");
+	if (this.$retakeButton)
+		this.$retakeButton.remove();
+	if (this.$nextButton)
+		this.$nextButton.remove();
 };
 
 CameraController.prototype.showTextArea = function(event) {
+	if (event)
+		event.preventDefault();
 	this.$textAreaContainer = $("<div>");
 	this.$textAreaContainer.addClass("textAreaContainer");
 	this.$textAreaContainer.appendTo(this.$container);
 	this.$textArea = $("<textarea>");
 	this.$textArea.attr("maxlength", 300);
+	this.$textArea.attr("placeholder", "Max 300 characters");
+	this.$textArea.on("focus", function() {
+		setTimeout(function() {
+			$("body").scrollTop(0); 
+		}, 20);
+	});
+
+	this.$textArea.on("keydown", function(event) {
+		if (event.which == 13)
+     		event.preventDefault();
+	});
 
 	this.$retakeButton.detach();
 	this.$nextButton.detach();
 
-	var $saveButton = $("<button>");
-	$saveButton.addClass("redButton");
-	$saveButton.text("SAVE");
-	$saveButton.appendTo(this.$textAreaContainer);
+	this.$saveButton = $("<button>");
+	this.$saveButton.addClass("redButton");
+	this.$saveButton.text("SAVE");
+	this.$saveButton.appendTo(this.$textAreaContainer);
 
-	var $backButton = $("<button>");
-	$backButton.addClass("whiteButton backArrow");
-	$backButton.appendTo(this.$textAreaContainer);
+	this.$backButton = $("<button>");
+	this.$backButton.addClass("whiteButton backArrow");
+	this.$backButton.appendTo(this.$textAreaContainer);
 
 	this.$textArea.on("webkitAnimationEnd animationEnd", function(){
 		this.$textArea.off("webkitAnimationEnd animationEnd")
+		this.$textArea.removeClass("slideUp");
 		document.body.addEventListener('touchmove', function(e) {
     		e.preventDefault();
 		}, false);
-		setTimeout(function() {
-			// this.$textArea.on("change", function(event) {
-			// 	console.log("change");
-			// 	event.preventDefault(); 
-			// 	event.stopPropagation();
-   //  			window.scrollTo(0,0);
-			// });
-			this.$textArea.focus();
-			$("body").scrollTop(0); 
-			$saveButton.on("tap", this.didClickSave.bind(this));
-			$backButton.on("tap", this.didClickBack.bind(this));
-		}.bind(this), 200);
+		this.$saveButton.on("tap", this.didClickSave.bind(this));
+		this.$backButton.on("tap", this.didClickBack.bind(this));
 	}.bind(this)); 
 
 	this.$textArea.addClass("textArea slideUp");
@@ -277,41 +289,135 @@ CameraController.prototype.didSelectFilter = function(i) {
 	this.$mainCanvas.remove();
 	this.$mainCanvas = this.$originalMainCanvas;
 	this.$mainCanvas.appendTo(this.$mainCanvasContainer);
-	
-	// var dataURL = this.$mainCanvas[0].toDataURL();
-	// var request = new ServerRequest();
-	// request.method = "POST";
-	// request.path = "images/";
-	// request.jsonHeader = false;
-	// request.body = dataURL;
-	// request.onSuccess = function(json) {
-	// 	console.log(json.image_url);
-	// };
-	// request.execute();
-	// var $spinnerContainer = $("<div>");
-	// $spinnerContainer.addClass("spinnerContainer");
-	// var spinner = new Spinner();
-	// spinner.$container.appendTo($spinnerContainer);
-	// $spinnerContainer.appendTo(this.$mainCanvasContainer);
+
+	var spinner = new Spinner();
+	spinner.$container.addClass("spinner");
+	spinner.$container.appendTo(this.$mainContainer);
 
 	if (i != 2) {
+		this.appliedFilterIndex = i;
 		var filter = this.filters[i];
 		var filterCopy = $.extend(true, {}, filter);
 		this.applyingFilter = true;
 		Pixastic.process(this.$mainCanvas[0], filterCopy.effect, filterCopy.value, function(newCanvas) {
 			this.$mainCanvas = $(newCanvas);
-			//$spinnerContainer.remove();
+			spinner.$container.remove();
 			this.applyingFilter = false;
 		}.bind(this));
+	}
+	else {
+		this.appliedFilterIndex = null;
 	}
 };
 
 CameraController.prototype.didClickSave = function(event) {
 	event.preventDefault();
+
+	var spinner = new Spinner();
+	spinner.$container.addClass("spinner");
 	var text = this.$textArea.val();
-	var regex = /\b#\w\w+/;
-	var tags = text.match(regex);
-	text = text.replace(regex, "");
+
+	////
+	this.$saveButton.off("tap");
+	this.$backButton.off("tap");
+
+	this.$mainContainer.addClass("disappear");
+	this.$mainContainer.on("webkitAnimationEnd animationEnd", function() {
+		this.$mainContainer.off("webkitAnimationEnd animationEnd")
+		this.$filtersBar.detach();
+		this.$mainContainer.empty();
+		this.$mainContainer.remove();
+		this.$mainContainer.removeClass("disappear");
+	}.bind(this));
+
+	this.$saveButton.addClass("disappear");
+	this.$saveButton.on("webkitAnimationEnd animationEnd", function() {
+		this.$saveButton.off("webkitAnimationEnd animationEnd")
+		this.$saveButton.remove();
+		this.$saveButton = null;
+	}.bind(this));
+
+	this.$backButton.addClass("disappear");
+	this.$backButton.on("webkitAnimationEnd animationEnd", function() {
+		this.$backButton.off("webkitAnimationEnd animationEnd")
+		this.$backButton.remove();
+		this.$backButton = null;
+	}.bind(this));
+
+	this.$textArea.blur();
+	this.$textArea.addClass("slideDown");
+	this.$textArea.on("webkitAnimationEnd animationEnd", function() {
+		this.$textArea.off("webkitAnimationEnd animationEnd")
+		this.$textArea.remove();
+		this.$textArea = null;
+		this.$textAreaContainer.remove();
+		this.$textAreaContainer = null;
+
+		spinner.$container.appendTo(this.$container);
+
+	}.bind(this));
+	///
+
+	var sendPost = function(image_url) {
+		var regex = /\B(#\w*)/g;
+		var tags = text.match(regex);
+		text = text.replace(regex, "");
+
+		var request = new ServerRequest();
+		request.method = "POST";
+		request.path = "posts/";
+		request.body = JSON.stringify({
+			text: text,
+			tags: tags,
+			image_url: image_url
+		});
+		request.onSuccess = function(json) {
+			alert("Post successfully saved");
+			spinner.$container.remove();
+			this.photoWasTaken = false;
+			this.$mainCanvasContainer = $("<div>");
+			this.$mainCanvasContainer.addClass("mainCanvasContainer");
+			this.$mainCanvasContainer.appendTo(this.$mainContainer)
+			this.$retakeButton = $("<button>");
+			this.$retakeButton.addClass("whiteButton");
+			this.$retakeButton.text("RETAKE");
+			this.$retakeButton.appendTo(this.$mainContainer);
+			this.$retakeButton.on("tap", this.showCamera.bind(this));
+			this.$mainContainer.appendTo(this.$container);
+		}.bind(this);
+		request.onError = function(status, message) {
+			alert(status + ":" + message);
+		};
+		request.execute();
+	}.bind(this);
+
+	var sendCanvas = function(newCanvas) {
+		var dataURL = newCanvas.toDataURL();
+		var request = new ServerRequest();
+		request.method = "POST";
+		request.path = "images/";
+		request.jsonHeader = false;
+		request.body = dataURL;
+		request.onSuccess = function(json) {
+			sendPost(json.image_url);
+		}.bind(this);
+		request.onError = function(status, message) {
+			alert(status + ":" + message);
+		};
+		request.execute();
+	}.bind(this);
+
+	if (this.appliedFilterIndex) {
+		var filter = this.filters[this.appliedFilterIndex];
+		var filterCopy = $.extend(true, {}, filter);
+		Pixastic.process(this.$originalCanvas[0], filterCopy.effect, filterCopy.value, function(newCanvas) {
+			console.log(sendCanvas);
+			sendCanvas(newCanvas);
+		}.bind(this));
+	}
+	else {
+		sendCanvas(this.$originalCanvas[0]);
+	}
 };
 
 CameraController.prototype.didClickBack = function(event) {
