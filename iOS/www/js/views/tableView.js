@@ -27,10 +27,6 @@ function TableView() {
 
 TableView.prototype = new EventEmitter();
 
-TableView.prototype.setBackgroundColor = function(color) {
-	this.$container.css("background-color", color);
-};
-
 TableView.prototype.setCellsSpacing = function(spacing) {
 	for (var i in this.cells) {
 		var cell = this.cells[i];
