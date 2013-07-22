@@ -47,6 +47,7 @@ TrendsController.prototype.init = function() {
 };
 
 TrendsController.prototype.pushNewCells = function() {
+	this.tableView.enterLoadingMode();
 	var request = new ServerRequest();
 	request.method = "GET";
 	request.path = "posts/";
@@ -85,7 +86,6 @@ TrendsController.prototype.pushNewCells = function() {
 
 TrendsController.prototype._didScrollToBottom = function() {
 	if (!this.tableView.loading && this.postsRemaining) {
-		this.tableView.enterLoadingMode();
 		this.pushNewCells();
 	}
 };
@@ -133,7 +133,6 @@ TrendsController.prototype._didSearch = function() {
 	this.currentSearchTag = tag;
 	this.posts = [];
 	this.tableView.removeAllRows();
-	this.tableView.enterLoadingMode();
 	this.pushNewCells();
 }
 
