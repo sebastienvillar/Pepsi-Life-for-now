@@ -19,7 +19,8 @@ NavigationController.prototype.pushController = function(controller, animated) {
 
 	if (this.controllers.length > 0) {
 		var $backButton = $("<button>", {class: "navigationController-back-button", type: "button"});
-		$backButton.on("tap", function() {
+		$backButton.on("tap", function(event) {
+			event.preventDefault();
 			this.popController(animated);
 		}.bind(this));
 		$controllerContainer.append($backButton);

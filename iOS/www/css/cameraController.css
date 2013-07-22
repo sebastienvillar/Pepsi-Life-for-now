@@ -15,10 +15,6 @@
 	bottom: 0;
 }
 
-#mainContainer.grayBackground {
-	background-color: #747474;
-}
-
 #cameraController .mainCanvasContainer {
 	position: absolute;
 	left: 0;
@@ -28,7 +24,7 @@
 	overflow: hidden;
 }
 
-#cameraController .spinnerContainer {
+#cameraController .spinner {
 	position: absolute;
 	width: 20px;
 	height: 24px;

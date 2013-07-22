@@ -29,7 +29,8 @@ function TabBarController(controllers) {
 		$div.appendTo(this.$footer);
 		$button.appendTo($div);
 		(function(j) {
-			$button.on("tap", function() {
+			$button.on("tap", function(event) {
+				event.preventDefault();
 				this.setCurrentChildController(this.childControllers[j]);
 			}.bind(this));
 		}).bind(this)(i);

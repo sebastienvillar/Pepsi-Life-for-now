@@ -93,7 +93,9 @@ CameraController.prototype.fillCanvas = function($canvas, image, cut) {
 	context.drawImage(image, xOffset, yOffset, image.width / ratio, image.height / ratio);
 };
 
-CameraController.prototype.showCamera = function() {
+CameraController.prototype.showCamera = function(event) {
+	if (event)
+		event.preventDefault();
 	var cameraOptions = { 
 		destinationType: Camera.DestinationType.FILE_URI,
 		sourcetype: Camera.PictureSourceType.CAMERA,
@@ -105,6 +107,7 @@ CameraController.prototype.showCamera = function() {
 		this.clearMainContainer();
 		var image = new Image();
 
+		this.$mainContainer.empty();
 		this.$mainCanvasContainer = $("<div>");
 		this.$mainCanvasContainer.addClass("mainCanvasContainer");
 		this.$mainCanvasContainer.appendTo(this.$mainContainer);
@@ -139,8 +142,8 @@ CameraController.prototype.showCamera = function() {
 					this.$nextButton.on("tap", this.showTextArea.bind(this));
 					this.$nextButton.appendTo(this.$mainContainer);
 
-					if (this.$spinnerContainer)
-						this.$spinnerContainer.remove();
+					if (this.spinner)
+						this.spinner.$container.remove();
 					this.photoWasTaken = true;
 				}
 					
@@ -173,22 +176,31 @@ CameraController.prototype.showCamera = function() {
 	var onError = function() {
 		clearTimeout(this.timer);
 		this.clearMainContainer();
+
+		this.$retakeButton = $("<button>");
+		this.$retakeButton.addClass("whiteButton");
+		this.$retakeButton.text("RETAKE");
+		this.$retakeButton.appendTo(this.$mainContainer);
+		this.$retakeButton.on("tap", this.showCamera.bind(this));
+
 		if (!this.photoWasTaken) {
 			//Create a new canvas and add retake button
 			this.$mainCanvasContainer = $("<div>");
 			this.$mainCanvasContainer.addClass("mainCanvasContainer");
-			this.$retakeButton = $("<button>");
-			this.$retakeButton.addClass("whiteButton");
-			this.$retakeButton.text("RETAKE");
-			this.$retakeButton.appendTo(this.$mainContainer);
-			this.$retakeButton.on("tap", this.showCamera.bind(this));
 		}
 
-		else 
+		else {
 			this.$filtersBar.appendTo(this.$mainContainer);
+			this.$nextButton = $("<button>");
+			this.$nextButton.addClass("redButton");
+			this.$nextButton.text("NEXT");
+			this.$nextButton.on("tap", this.showTextArea.bind(this));
+			this.$nextButton.appendTo(this.$mainContainer);
+		}
+
 		this.$mainCanvasContainer.insertBefore(this.$retakeButton);
-		if (this.$spinnerContainer)
-			this.$spinnerContainer.detach();
+		if (this.spinner)
+			this.spinner.$container.remove();
 	}.bind(this);
 
 	navigator.camera.getPicture(onCameraSuccess, onError, cameraOptions);
@@ -197,11 +209,9 @@ CameraController.prototype.showCamera = function() {
 		this.clearMainContainer();
 
 		//Show spinner
-		this.$spinnerContainer = $("<div>");
-		this.$spinnerContainer.addClass("spinnerContainer");
 		this.spinner = new Spinner();
-		this.spinner.$container.appendTo(this.$spinnerContainer);
-		this.$spinnerContainer.appendTo(this.$mainContainer);
+		this.spinner.$container.addClass("spinner");
+		this.spinner.$container.appendTo(this.$mainContainer);
 	}.bind(this), 700);
 };
 
