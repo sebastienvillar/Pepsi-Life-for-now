@@ -78,6 +78,7 @@ function TrendsCell(post) {
 		this.setText(post.text);
 		this.setTags(post.tags);
 		this.setAvatar(post.ownerImageUrl);
+		this.setFriend(post.ownerFriend);
 	}
 }
 

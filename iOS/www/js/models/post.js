@@ -39,6 +39,7 @@ define(function() {
 		post.commentsCount = jsonObject.comments_count;
 		post.ownerName = jsonObject.owner.name;
 		post.ownerImageUrl = jsonObject.owner.image_url;
+		post.ownerFriend = jsonObject.owner.friend;
 		return post;
 	};
 
