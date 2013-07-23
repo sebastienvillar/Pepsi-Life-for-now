@@ -31,6 +31,10 @@
 	top: 4px;
 	left: 4px;
 	border-radius: 11px;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-image: url("../img/common/photo-substitute.png");
 }
 
 .trendsCell-avatarWrapper {

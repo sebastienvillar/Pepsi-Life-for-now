@@ -20,8 +20,9 @@ define(function() {
 		this.imageUrl = null;
 		this.tags = [];
 		this.creationDate = null;
-		this.likesCount = null;
-		this.seensCount = null;
+		this.likesCount = 0;
+		this.seensCount = 0;
+		this.commentsCount = 0;
 		this.ownerName = null;
 		this.ownerImageUrl = null;
 	};
@@ -34,7 +35,8 @@ define(function() {
 		post.tags = jsonObject.tags;
 		post.creationDate = parseDate(jsonObject.creation_date);
 		post.likesCount = jsonObject.likes_count;
-		post.seensCount = jsonObject.seens_count
+		post.seensCount = jsonObject.seens_count;
+		post.commentsCount = jsonObject.comments_count;
 		post.ownerName = jsonObject.owner.name;
 		post.ownerImageUrl = jsonObject.owner.image_url;
 		return post;

@@ -25,13 +25,11 @@ function TrendsCell(post) {
 
 	this.$avatarWrapper = $("<div>");
 	this.$avatarWrapper.addClass("trendsCell-avatarWrapper");
-	this.$avatarWrapper.addClass("friend");
 	this.$avatarWrapper.appendTo(this.$header);
 
-	this.$avatar = $("<img>");
+	this.$avatar = $("<div>");
 	this.$avatar.appendTo(this.$avatarWrapper);
 	this.$avatar.addClass("trendsCell-avatar");
-	this.$avatar.attr("src", "img/common/photo-substitute.png");
 
 	this.$username = $("<p>");
 	this.$username.addClass("trendsCell-username");
@@ -74,11 +72,12 @@ function TrendsCell(post) {
 
 	if (post) {
 		this.setLikesCount(post.likesCount);
-		//this.setCommentsCount(post.commentsCount);
+		this.setCommentsCount(post.commentsCount);
 		this.setUsername(post.ownerName);
 		this.setDate(post.creationDate);
 		this.setText(post.text);
 		this.setTags(post.tags);
+		this.setAvatar(post.ownerImageUrl);
 	}
 }
 
@@ -155,6 +154,14 @@ TrendsCell.prototype.setTags = function(tags) {
 		$button.appendTo(this.$tags);
 		$button.on("tap", didClickTag.bind(this, tag))
 	}
+};
+
+TrendsCell.prototype.setAvatar = function(imageUrl) {
+	var image = new Image();
+	image.onload = function() {
+		this.$avatar.css("background-image", "url(" + imageUrl + ")");
+	}.bind(this);
+	image.src = imageUrl;
 };
 
 TrendsCell.prototype.setSelected = function(selected) {

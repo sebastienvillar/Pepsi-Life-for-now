@@ -14,10 +14,11 @@ function onDeviceReady() {
         "views/tableView",
         "views/trendsCell",
         "controllers/trendsController",
-        "controllers/cameraController"
+        "controllers/cameraController",
+        "controllers/friendsController"
         ];
 
-    require(requireArray, function(TabBarController, NavigationController, Controller, TableView, TrendsCell, TrendsController, CameraController) {
+    require(requireArray, function(TabBarController, NavigationController, Controller, TableView, TrendsCell, TrendsController, CameraController, FriendsController) {
         var controllers = [];
         var controller1 = new TrendsController();
         controllers.push(controller1);
@@ -30,10 +31,8 @@ function onDeviceReady() {
         var controller3 = new CameraController();
         controllers.push(controller3);
 
-        var controller4 = new Controller();
+        var controller4 = new FriendsController();
         controllers.push(controller4);
-        controller4.$container.css({"position": "absolute", "left": 0, "top": 0, "right": 0, "bottom": 0});
-        controller4.$container.css({"background-color": "gray"});
 
         var navigationControllerController1 = new Controller();
         navigationControllerController1.$container.css({"position": "absolute", "left": 0, "top": 0, "right": 0, "bottom": 0});
