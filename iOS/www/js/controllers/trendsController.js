@@ -63,8 +63,8 @@ TrendsController.prototype.pushNewCells = function() {
 			var post = Post.postFromJSONObject(posts[i]);
 			var cell = new TrendsCell(post);
 
-			cell.on("didClickLike", this._didClickLike.bind(this, this.posts.length, cell));
-			cell.on("didClickComment", this._didClickComment.bind(this, this.posts.length, cell));
+			cell.on("didClickLike", this._didClickLike.bind(this, this.posts.length));
+			cell.on("didClickComment", this._didClickComment.bind(this, this.posts.length));
 			cell.on("didClickTag", this._didClickTag.bind(this));
 
 			this.tableView.pushCell(cell);
@@ -93,8 +93,13 @@ TrendsController.prototype._didSelectRow = function(row) {
 
 };
 
-TrendsController.prototype._didClickLike = function(row, cell) {
+TrendsController.prototype._didClickLike = function(row) {
 	var post = this.posts[row];
+	var cell = this.tableView.cellForRow(row);
+	if (post.liked)
+		return;
+
+	post.liked = true;
 	var request = new ServerRequest();
 	request.path = "posts/" + post.id + "/likes";
 	request.method = "POST";
@@ -102,13 +107,15 @@ TrendsController.prototype._didClickLike = function(row, cell) {
 		cell.setLikesCount(cell.getLikesCount() + 1);
 	}.bind(this);
 	request.onError = function(status, message) {
-		if (statusCode != 403)
+		if (statusCode != 403) {
+			post.liked = false;
 			alert("Error in TrendsController post like request: " + statusCode + ": " + message);
+		}
 	}.bind(this);
 	request.execute();
 };
 
-TrendsController.prototype._didClickComment = function(row, cell) {
+TrendsController.prototype._didClickComment = function(row) {
 
 };
 

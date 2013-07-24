@@ -19,10 +19,12 @@ var FriendsController = function() {
 	this.tableView.$container.appendTo(this.$container);
 	this.postsRemaining = true;
 	this.posts = [];
+	this.seenPosts = {};
 
 	//Event Handlers
 	this.tableView.on("didScrollToBottom", this._didScrollToBottom.bind(this));
 	this.tableView.on("didSelectRow", this._didSelectRow.bind(this));
+	this.tableView.on("rowIsVisible", this._rowIsVisible.bind(this));
 
 	this.init();
 };
@@ -38,6 +40,7 @@ FriendsController.prototype.pushNewCells = function() {
 	var request = new ServerRequest();
 	request.method = "GET";
 	request.path = "posts/";
+	request.queryParameters["only_friends"] = true;
 	if (this.posts.length != 0)
 		request.queryParameters["last_id"] = this.posts[this.posts.length - 1].id;
 
@@ -50,8 +53,8 @@ FriendsController.prototype.pushNewCells = function() {
 			var cell = new ImageCell(post);
 			cell.setFriend(true);
 
-			cell.on("didClickLike", this._didClickLike.bind(this, this.posts.length, cell));
-			cell.on("didClickComment", this._didClickComment.bind(this, this.posts.length, cell));
+			cell.on("didClickLike", this._didClickLike.bind(this, this.posts.length));
+			cell.on("didClickComment", this._didClickComment.bind(this, this.posts.length));
 
 			this.tableView.pushCell(cell);
 			this.posts.push(post);
@@ -70,32 +73,61 @@ FriendsController.prototype.pushNewCells = function() {
 //////////////////////////////
 
 FriendsController.prototype._didScrollToBottom = function() {
-	// if (!this.tableView.loading && this.postsRemaining) {
-	// 	this.pushNewCells();
-	// }
+	if (!this.tableView.loading && this.postsRemaining) {
+		this.pushNewCells();
+	}
 };
 
 FriendsController.prototype._didSelectRow = function(row) {
 
 };
 
-FriendsController.prototype._didClickLike = function(row, cell) {
-	// var post = this.posts[row];
-	// var request = new ServerRequest();
-	// request.path = "posts/" + post.id + "/likes";
-	// request.method = "POST";
-	// request.onSuccess = function(json) {
-	// 	cell.setLikesCount(cell.getLikesCount() + 1);
-	// }.bind(this);
-	// request.onError = function(status, message) {
-	// 	if (statusCode != 403)
-	// 		alert("Error in FriendsController post like request: " + statusCode + ": " + message);
-	// }.bind(this);
-	// request.execute();
+FriendsController.prototype._didClickLike = function(row) {
+	var post = this.posts[row];
+	var cell = this.tableView.cellForRow(row);
+	if (post.liked)
+		return;
+
+	post.liked = true;
+	var request = new ServerRequest();
+	request.path = "posts/" + post.id + "/likes";
+	request.method = "POST";
+	request.onSuccess = function(json) {
+		cell.setLikesCount(cell.getLikesCount() + 1);
+	}.bind(this);
+	request.onError = function(status, message) {
+		if (statusCode != 403) {
+			post.like = false;
+			alert("Error in Friends post like request: " + statusCode + ": " + message);
+		}
+	}.bind(this);
+	request.execute();
 };
 
-FriendsController.prototype._didClickComment = function(row, cell) {
+FriendsController.prototype._didClickComment = function(row) {
 
+};
+
+FriendsController.prototype._rowIsVisible = function(row) {
+	var post = this.posts[row];
+	var cell = this.tableView.cellForRow(row);
+	if (post.seen)
+		return
+
+	post.seen = true;
+	var request = new ServerRequest();
+	request.path = "posts/" + post.id + "/seens";
+	request.method = "POST";
+	request.onSuccess = function(json) {
+		cell.setSeensCount(cell.getSeensCount() + 1);
+	}.bind(this);
+	request.onError = function(status, message) {
+		if (statusCode != 403) {
+			alert("Error in Friends post seen request: " + statusCode + ": " + message);
+			post.seen = false;
+		}
+	}.bind(this);
+	request.execute();
 };
 
 return FriendsController;

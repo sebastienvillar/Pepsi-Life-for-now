@@ -15,12 +15,33 @@ function TableView() {
 	this.spacing = 0;
 	this.selectedCell = null;
 	this.cells = [];
+	this.firstVisibleRow = 0;
 
 	//Events
+
 	this.$container.scroll(function(e) {
-		var $element = this.$container;
-		if ($element.outerHeight() + $element.scrollTop() == $element[0].scrollHeight) {
+		if (this.$container.outerHeight() + this.$container.scrollTop() == this.$container[0].scrollHeight) {
 			this.trigger("didScrollToBottom");
+		}
+
+		var top = $(window).scrollTop();
+    	var bottom = top + $(window).height();
+
+    	var firstVisibleCellSeen = false;
+    	var firstIndex = this.firstVisibleRow > 0 ? this.firstVisibleRow - 1 : 0
+		for (var i = firstIndex; i < this.cells.length; i++) {
+			var cell = this.cells[i];
+			var cellTop = cell.$container.offset().top;
+    		var cellBottom = cellTop + cell.$container.outerHeight();
+    		if ((cellBottom <= bottom) && (cellTop >= top)) {
+    			if (firstVisibleCellSeen = false)
+    				this.firstVisibleRow = i;
+    			firstVisibleCellSeen = true;
+    			this.trigger("rowIsVisible", i)
+    		}
+    		else if (firstVisibleCellSeen)
+    			return;
+
 		}
 	}.bind(this));
 }
@@ -78,9 +99,29 @@ TableView.prototype.setPadding = function(padding) {
 	this.$container.css({"padding": padding})
 };
 
+TableView.prototype.cellForRow = function(row) {
+	if (row >= 0 && row < this.cells.length)
+		return this.cells[row];
+};
+
 ///////////////////////////////
 // Private
 //////////////////////////////
+
+TableView.prototype._isCellOnScreen = function(cell) {
+	var top = this.$container.scrollTop();
+    var bottom = top + this.$container.outerHeight();
+
+    var cellTop = cell.$container.position().top;
+    var cellBottom = cellTop + cell.$container.outerHeight();
+
+    console.log("top:", top);
+    console.log("bottom:", bottom);
+    console.log("cellTop:", cellTop);
+    console.log("cellBottom:", cellBottom);
+
+    return ((cellBottom <= bottom) && (cellTop >= top));
+};
 
 function didSelectCell(cell, event) {
 	var row = this.cells.indexOf(cell);

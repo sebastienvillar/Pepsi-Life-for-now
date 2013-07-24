@@ -40,6 +40,8 @@ define(function() {
 		post.ownerName = jsonObject.owner.name;
 		post.ownerImageUrl = jsonObject.owner.image_url;
 		post.ownerFriend = jsonObject.owner.friend;
+		post.seen = jsonObject.seen;
+		post.liked = jsonObject.liked;
 		return post;
 	};
 
