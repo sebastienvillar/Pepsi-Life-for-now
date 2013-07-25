@@ -48,6 +48,10 @@ function TableView() {
 
 TableView.prototype = new EventEmitter();
 
+TableView.prototype.setHeader = function($header) {
+	this.$container.prepend($header);
+};
+
 TableView.prototype.setCellsSpacing = function(spacing) {
 	for (var i in this.cells) {
 		var cell = this.cells[i];
@@ -94,10 +98,6 @@ TableView.prototype.exitLoadingMode = function() {
 	this.spinner.$container.remove();
 	this.loading = false;
 };	
-
-TableView.prototype.setPadding = function(padding) {
-	this.$container.css({"padding": padding})
-};
 
 TableView.prototype.cellForRow = function(row) {
 	if (row >= 0 && row < this.cells.length)
