@@ -11,8 +11,7 @@ define(["helpers/constants"], function(Constants) {
 	};
 
 	ServerRequest.prototype.execute = function() {
-		var username = "testuser";
-		var password = "testuser";
+
 
 		var request = new XMLHttpRequest();
 		request.onload = function() {
@@ -32,7 +31,11 @@ define(["helpers/constants"], function(Constants) {
 			url += "&" + key + "=" + queryParameter;
 		}
 		request.open(this.method, url, true);
-		request.setRequestHeader("Authorization", "Basic dGVzdHVzZXI6dGVzdHVzZXI=")
+
+		if (Constants.credentials) {
+			var encodedCredentials = btoa(Constants.credentials.username + ":" + Constants.credentials.password);
+			request.setRequestHeader("Authorization", "Basic " + encodedCredentials + "=");
+		}
 		request.setRequestHeader("Cache-Control", "no-cache")
 		if (this.jsonHeader)
 			request.setRequestHeader("Content-Type", "application/json")
