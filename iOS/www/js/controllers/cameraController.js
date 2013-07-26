@@ -365,6 +365,7 @@ CameraController.prototype.didClickSave = function(event) {
 		var regex = /\B(#\w*)/g;
 		var tags = text.match(regex);
 		text = text.replace(regex, "");
+		tags = tags ? tags : [];
 
 		var request = new ServerRequest();
 		request.method = "POST";
