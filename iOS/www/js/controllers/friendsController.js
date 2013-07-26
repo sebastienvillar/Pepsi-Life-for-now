@@ -19,7 +19,6 @@ var FriendsController = function() {
 	this.tableView.$container.appendTo(this.$container);
 	this.postsRemaining = true;
 	this.posts = [];
-	this.seenPosts = {};
 
 	//Event Handlers
 	this.tableView.on("didScrollToBottom", this._didScrollToBottom.bind(this));
