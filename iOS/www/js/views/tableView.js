@@ -21,11 +21,10 @@ function TableView() {
 
 	//Events
 
-	this.$cellsContainer.scroll(function(e) {
+	this.$container.scroll(function(e) {
 		if (this.$cellsContainer.outerHeight() + this.$cellsContainer.scrollTop() == this.$cellsContainer[0].scrollHeight) {
 			this.trigger("didScrollToBottom");
 		}
-
 		var top = $(window).scrollTop();
     	var bottom = top + $(window).height();
 
@@ -70,6 +69,13 @@ TableView.prototype.pushCell = function(cell) {
 		cell.$container.css("margin-top", this.spacing);
 	}
 	this.cells.push(cell);
+	var top = $(window).scrollTop();
+    var bottom = top + $(window).height();
+	var cellTop = cell.$container.offset().top;
+    var cellBottom = cellTop + cell.$container.outerHeight();
+    if ((cellBottom <= bottom) && (cellTop >= top)) {
+    	this.trigger("rowIsVisible", this.cells.length - 1);
+    }
 };
 
 TableView.prototype.removeRowAtIndex = function(i) {
