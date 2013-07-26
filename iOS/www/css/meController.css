@@ -24,6 +24,17 @@
 	padding-top: 19px;
 }
 
+#meController #tableView > #header > button {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 65px;
+	height: 36px;
+	background-color: #e00127;
+	color: #ffffff;
+	font-size: 10px;
+}
+
 
 #meController #tableView > #header > #avatarWrapper {
 	margin: auto;

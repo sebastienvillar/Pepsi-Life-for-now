@@ -3,10 +3,11 @@ var requireArray = [
 	"views/tableView",
 	"helpers/serverRequest",
 	"views/imageCell",
-	"models/post"
+	"models/post",
+	"controllers/editMeController"
 ]
 
-define(requireArray, function(Controller, TableView, ServerRequest, ImageCell, Post) {
+define(requireArray, function(Controller, TableView, ServerRequest, ImageCell, Post, EditMeController) {
 var MeController = function() {
 	Controller.call(this);
 
@@ -16,6 +17,7 @@ var MeController = function() {
 	this.tableView.$container.attr("id", "tableView");
 	this.tableView.$cellsContainer.attr("id", "cellsContainer");
 	this.tableView.$container.appendTo(this.$container);
+	this.tableView.setCellsSpacing("12px");
 
 	this.$header = $("<div>", {"id": "header"});
 	this.tableView.setHeader(this.$header);
@@ -60,6 +62,11 @@ var MeController = function() {
 	this.$likesText.addClass("rectText");
 	this.$likesText.text("LIKES");
 
+	this.$editButton = $("<button>");
+	this.$editButton.text("EDIT");
+	this.$editButton.on("tap", this._didClickEditButton.bind(this));
+	this.$editButton.appendTo(this.$header);
+
 	this.postsRemaining = true;
 	this.posts = [];
 
@@ -94,6 +101,7 @@ MeController.prototype.pushNewCells = function() {
 			var post = Post.postFromJSONObject(posts[i]);
 			this.posts.push(post);
 			var cell = new ImageCell(post);
+			cell.setFriend(true);
 
 			cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
 			cell.on("didClickComment", this._didClickComment.bind(this, cell, post));
@@ -168,6 +176,27 @@ MeController.prototype._rowIsVisible = function(row) {
 	}.bind(this);
 	request.execute();
 };
+
+MeController.prototype._didClickEditButton = function(event) {
+	event.preventDefault();
+	this.$editButton.off("tap");
+	this.editMeController = new EditMeController();
+	this.editMeController.$container.on("webkitAnimationEnd animationEnd", function() {
+		this.editMeController.$container.off("webkitAnimationEnd animationEnd")
+		this.editMeController.$container.removeClass("slideUp");
+		this.$editButton.on("tap", this._didClickEditButton.bind(this));
+	}.bind(this));
+	this.editMeController.$container.addClass("slideUp");
+	this.editMeController.$container.appendTo(this.$container);
+};
+
+MeController.prototype._didClickDoneButton = function(event) {
+	// event.preventDefault();
+	// this.$button.off("tap");
+	// this.$button.on("tap", this._didClickEditButton.bind(this));
+	// this.$button.text("Edit");
+};
+
 
 return MeController;
 });

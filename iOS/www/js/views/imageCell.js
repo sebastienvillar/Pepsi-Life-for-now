@@ -32,7 +32,6 @@ function ImageCell(post) {
 	this.$header.appendTo(this.$rightContainer);
 
 	this.$avatarWrapper = $("<div>", {"id": "avatarWrapper"});
-	this.$avatarWrapper.addClass("friend");
 	this.$avatarWrapper.appendTo(this.$header);
 
 	this.$avatar = $("<div>", {"id": "avatar"});

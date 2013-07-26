@@ -156,7 +156,6 @@ TrendsController.prototype._rowIsVisible = function(row) {
 	request.path = "posts/" + post.id + "/seens";
 	request.method = "POST";
 	request.onSuccess = function(json) {
-		console.log("success");
 		if (cell.setSeensCount)
 			cell.setSeensCount(cell.getSeensCount() + 1);
 	}.bind(this);
