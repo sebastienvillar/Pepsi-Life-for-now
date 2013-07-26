@@ -2,12 +2,13 @@ var requireArray = [
 	"controllers/controller",
 	"views/tableView",
 	"views/trendsCell",
+	"views/imageCell",
 	"helpers/serverRequest",
-	"models/post"
+	"models/post",
 ];
 
 
-define(requireArray, function(Controller, TableView, TrendsCell, ServerRequest, Post) {
+define(requireArray, function(Controller, TableView, TrendsCell, ImageCell, ServerRequest, Post) {
 var TrendsController = function() {
 	Controller.call(this);
 
@@ -32,6 +33,7 @@ var TrendsController = function() {
 	//Event Handlers
 	this.tableView.on("didScrollToBottom", this._didScrollToBottom.bind(this));
 	this.tableView.on("didSelectRow", this._didSelectRow.bind(this));
+	this.tableView.on("rowIsVisible", this._rowIsVisible.bind(this));
 	this.$searchForm.on("submit", this._didSearch.bind(this));
 
 
@@ -60,7 +62,10 @@ TrendsController.prototype.pushNewCells = function() {
 		this.postsRemaining = posts.length == 10;
 		for (var i in posts) {
 			var post = Post.postFromJSONObject(posts[i]);
-			var cell = new TrendsCell(post);
+			if (this.currentSearchTag)
+				var cell = new ImageCell(post);
+			else
+				var cell = new TrendsCell(post);
 
 			cell.on("didClickLike", this._didClickLike.bind(this, this.posts.length));
 			cell.on("didClickComment", this._didClickComment.bind(this, this.posts.length));
@@ -140,6 +145,30 @@ TrendsController.prototype._didSearch = function() {
 	this.tableView.removeAllRows();
 	this.pushNewCells();
 }
+
+TrendsController.prototype._rowIsVisible = function(row) {
+	var post = this.posts[row];
+	var cell = this.tableView.cellForRow(row);
+	if (post.seen)
+		return
+
+	post.seen = true;
+	var request = new ServerRequest();
+	request.path = "posts/" + post.id + "/seens";
+	request.method = "POST";
+	request.onSuccess = function(json) {
+		console.log("success");
+		if (cell.setSeensCount)
+			cell.setSeensCount(cell.getSeensCount() + 1);
+	}.bind(this);
+	request.onError = function(status, message) {
+		if (statusCode != 403) {
+			alert("Error in Friends post seen request: " + statusCode + ": " + message);
+			post.seen = false;
+		}
+	}.bind(this);
+	request.execute();
+};
 
 return TrendsController;
 });
