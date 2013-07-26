@@ -49,14 +49,14 @@ FriendsController.prototype.pushNewCells = function() {
 		this.postsRemaining = posts.length == 10;
 		for (var i in posts) {
 			var post = Post.postFromJSONObject(posts[i]);
+			this.posts.push(post);
 			var cell = new ImageCell(post);
 			cell.setFriend(true);
 
-			cell.on("didClickLike", this._didClickLike.bind(this, this.posts.length));
-			cell.on("didClickComment", this._didClickComment.bind(this, this.posts.length));
+			cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
+			cell.on("didClickComment", this._didClickComment.bind(this, cell, post));
 
 			this.tableView.pushCell(cell);
-			this.posts.push(post);
 		}
 	}.bind(this);
 	request.onError = function(statusCode, message) {
@@ -81,9 +81,7 @@ FriendsController.prototype._didSelectRow = function(row) {
 
 };
 
-FriendsController.prototype._didClickLike = function(row) {
-	var post = this.posts[row];
-	var cell = this.tableView.cellForRow(row);
+FriendsController.prototype._didClickLike = function(cell, post) {
 	if (post.liked)
 		return;
 
@@ -103,7 +101,7 @@ FriendsController.prototype._didClickLike = function(row) {
 	request.execute();
 };
 
-FriendsController.prototype._didClickComment = function(row) {
+FriendsController.prototype._didClickComment = function(cell, post) {
 
 };
 

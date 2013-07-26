@@ -29,19 +29,31 @@ define(function() {
 
 	Post.postFromJSONObject = function(jsonObject) {
 		var post = new Post();
-		post.id = jsonObject.id;
-		post.text = jsonObject.text;
-		post.imageUrl = jsonObject.image_url;
-		post.tags = jsonObject.tags;
-		post.creationDate = parseDate(jsonObject.creation_date);
-		post.likesCount = jsonObject.likes_count;
-		post.seensCount = jsonObject.seens_count;
-		post.commentsCount = jsonObject.comments_count;
-		post.ownerName = jsonObject.owner.name;
-		post.ownerImageUrl = jsonObject.owner.image_url;
-		post.ownerFriend = jsonObject.owner.friend;
-		post.seen = jsonObject.seen;
-		post.liked = jsonObject.liked;
+		if (jsonObject.id)
+			post.id = jsonObject.id;
+		if (jsonObject.text)
+			post.text = jsonObject.text;
+		if (jsonObject.image_url)
+			post.imageUrl = jsonObject.image_url;
+		if (jsonObject.tags)
+			post.tags = jsonObject.tags;
+		if (jsonObject.creation_date)
+			post.creationDate = parseDate(jsonObject.creation_date);
+		if (jsonObject.likes_count)
+			post.likesCount = jsonObject.likes_count;
+		if (jsonObject.seens_count)
+			post.seensCount = jsonObject.seens_count;
+		if (jsonObject.comments_count)
+			post.commentsCount = jsonObject.comments_count;
+		if (jsonObject.owner) {
+			post.ownerName = jsonObject.owner.name;
+			post.ownerImageUrl = jsonObject.owner.image_url;
+			post.ownerFriend = jsonObject.owner.friend;
+		}
+		if (jsonObject.seen)
+			post.seen = jsonObject.seen;
+		if (jsonObject.liked)
+			post.liked = jsonObject.liked;
 		return post;
 	};
 

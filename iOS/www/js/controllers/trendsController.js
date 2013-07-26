@@ -63,17 +63,17 @@ TrendsController.prototype.pushNewCells = function() {
 		this.postsRemaining = posts.length == 10;
 		for (var i in posts) {
 			var post = Post.postFromJSONObject(posts[i]);
+			this.posts.push(post);
 			if (this.currentSearchTag)
 				var cell = new ImageCell(post);
 			else
 				var cell = new TrendsCell(post);
 
-			cell.on("didClickLike", this._didClickLike.bind(this, this.posts.length));
-			cell.on("didClickComment", this._didClickComment.bind(this, this.posts.length));
+			cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
+			cell.on("didClickComment", this._didClickComment.bind(this, cell, post));
 			cell.on("didClickTag", this._didClickTag.bind(this));
 
 			this.tableView.pushCell(cell);
-			this.posts.push(post);
 		}
 	}.bind(this);
 	request.onError = function(statusCode, message) {
@@ -98,9 +98,7 @@ TrendsController.prototype._didSelectRow = function(row) {
 
 };
 
-TrendsController.prototype._didClickLike = function(row) {
-	var post = this.posts[row];
-	var cell = this.tableView.cellForRow(row);
+TrendsController.prototype._didClickLike = function(cell, post) {
 	if (post.liked)
 		return;
 
@@ -120,7 +118,7 @@ TrendsController.prototype._didClickLike = function(row) {
 	request.execute();
 };
 
-TrendsController.prototype._didClickComment = function(row) {
+TrendsController.prototype._didClickComment = function(cell, post) {
 
 };
 

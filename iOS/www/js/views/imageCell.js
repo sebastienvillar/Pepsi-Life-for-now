@@ -83,15 +83,26 @@ function ImageCell(post) {
 	this.$separationLine.appendTo(this.$footer);
 
 	if (post) {
-		this.setLikesCount(post.likesCount);
-		this.setCommentsCount(post.commentsCount);
-		this.setUsername(post.ownerName);
-		this.setDate(post.creationDate);
-		this.setText(post.text);
-		this.setTags(post.tags);
-		this.setImage(post.imageUrl);
-		this.setSeensCount(post.seensCount);
-		this.setAvatar(post.ownerImageUrl);
+		if (post.likesCount != null)
+			this.setLikesCount(post.likesCount);
+		if (post.commentsCount != null)
+			this.setCommentsCount(post.commentsCount);
+		if (post.ownerName != null)
+			this.setUsername(post.ownerName);
+		if (post.creationDate != null)
+			this.setDate(post.creationDate);
+		if (post.text != null)
+			this.setText(post.text);
+		if (post.tags != null)
+			this.setTags(post.tags);
+		if (post.imageUrl != null)
+			this.setImage(post.imageUrl);
+		if (post.seensCount != null)
+			this.setSeensCount(post.seensCount);
+		if (post.ownerImageUrl != null)
+			this.setAvatar(post.ownerImageUrl);
+		if (post.ownerFriend != null)
+			this.setFriend(post.ownerFriend);
 	}
 }
 
