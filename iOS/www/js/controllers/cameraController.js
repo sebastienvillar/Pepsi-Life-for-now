@@ -37,10 +37,6 @@ var CameraController = function() {
 
 	this.filters.push([
 		{
-			effect: "pointillize",
-			value: {radius:4, density:1, noise:1.0, transparent:false}
-		},
-		{
 			effect: "desaturate",
 			value: {average: false}
 		}
