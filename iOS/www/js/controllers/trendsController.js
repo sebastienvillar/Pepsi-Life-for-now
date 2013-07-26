@@ -22,7 +22,6 @@ var TrendsController = function() {
 	this.$searchField.appendTo(this.$searchForm);
 	this.tableView = new TableView();
 	this.tableView.setCellsSpacing("12px");
-	this.tableView.setPadding("8px");
 	this.tableView.$container.attr("id", "trendsController-tableView")
 	this.tableView.$container.appendTo(this.$container);
 	this.postsRemaining = true;

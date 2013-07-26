@@ -15,10 +15,11 @@ function onDeviceReady() {
         "views/trendsCell",
         "controllers/trendsController",
         "controllers/cameraController",
-        "controllers/friendsController"
+        "controllers/friendsController",
+        "controllers/meController"
         ];
 
-    require(requireArray, function(TabBarController, NavigationController, Controller, TableView, TrendsCell, TrendsController, CameraController, FriendsController) {
+    require(requireArray, function(TabBarController, NavigationController, Controller, TableView, TrendsCell, TrendsController, CameraController, FriendsController, MeController) {
         var controllers = [];
         var controller1 = new TrendsController();
         controllers.push(controller1);
@@ -34,20 +35,8 @@ function onDeviceReady() {
         var controller4 = new FriendsController();
         controllers.push(controller4);
 
-        var navigationControllerController1 = new Controller();
-        navigationControllerController1.$container.css({"position": "absolute", "left": 0, "top": 0, "right": 0, "bottom": 0});
-        navigationControllerController1.$container.css({"background-color": "green"});
-        var controller5 = new NavigationController(navigationControllerController1);
-
+        var controller5 = new MeController();
         controllers.push(controller5);
-
-        // setTimeout(function() {
-    	var newController = new Controller();
-    	newController.$container.css({"position": "absolute", "left": 0, "top": 0, "right": 0, "bottom": 0});
-    	newController.$container.css({"background-color": "gray"});
-    	controller5.pushController(newController, true);
-        // }, 3000)
-        // controller5.pushController(controller3, true);
 
         var tabBarController = new TabBarController(controllers);
         $("body").append(tabBarController.$container);

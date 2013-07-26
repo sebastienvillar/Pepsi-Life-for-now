@@ -14,7 +14,6 @@ var FriendsController = function() {
 	this.$container.attr("id", "friendsController");
 	this.tableView = new TableView();
 	this.tableView.setCellsSpacing("12px");
-	this.tableView.setPadding("8px");
 	this.tableView.$container.attr("id", "tableView")
 	this.tableView.$container.appendTo(this.$container);
 	this.postsRemaining = true;
