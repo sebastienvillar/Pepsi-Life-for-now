@@ -25,18 +25,15 @@ function TableView() {
 		if (this.$cellsContainer.outerHeight() + this.$cellsContainer.scrollTop() == this.$cellsContainer[0].scrollHeight) {
 			this.trigger("didScrollToBottom");
 		}
-		var top = $(window).scrollTop();
-    	var bottom = top + $(window).height();
 
     	var firstVisibleCellSeen = false;
     	var firstIndex = this.firstVisibleRow > 0 ? this.firstVisibleRow - 1 : 0
 		for (var i = firstIndex; i < this.cells.length; i++) {
 			var cell = this.cells[i];
-			var cellTop = cell.$container.offset().top;
-    		var cellBottom = cellTop + cell.$container.outerHeight();
-    		if ((cellBottom <= bottom) && (cellTop >= top)) {
-    			if (firstVisibleCellSeen = false)
+			if (this._isCellVisible(cell)) {
+    			if (!firstVisibleCellSeen) {
     				this.firstVisibleRow = i;
+    			}
     			firstVisibleCellSeen = true;
     			this.trigger("rowIsVisible", i)
     		}
@@ -64,18 +61,13 @@ TableView.prototype.setCellsSpacing = function(spacing) {
 
 TableView.prototype.pushCell = function(cell) {
 	cell.$container.appendTo(this.$cellsContainer);
-	//cell.$container.on("tap", didSelectCell.bind(this, cell));
+	//cell.$container.on("tap", this._didSelectCell.bind(this, cell));
 	if (this.cells.length != 0) {
 		cell.$container.css("margin-top", this.spacing);
 	}
 	this.cells.push(cell);
-	var top = $(window).scrollTop();
-    var bottom = top + $(window).height();
-	var cellTop = cell.$container.offset().top;
-    var cellBottom = cellTop + cell.$container.outerHeight();
-    if ((cellBottom <= bottom) && (cellTop >= top)) {
+	if (this._isCellVisible(cell))
     	this.trigger("rowIsVisible", this.cells.length - 1);
-    }
 };
 
 TableView.prototype.removeRowAtIndex = function(i) {
@@ -116,7 +108,15 @@ TableView.prototype.cellForRow = function(row) {
 // Private
 //////////////////////////////
 
-function didSelectCell(cell, event) {
+TableView.prototype._isCellVisible = function(cell) {
+	var top = 0;
+	var bottom = this.$container.outerHeight();
+	var cellTop = cell.$container.position().top;
+    var cellBottom = cellTop + cell.$container.outerHeight();
+    return ((cellBottom <= bottom) && (cellTop >= top));
+}
+
+TableView.prototype._didSelectCell = function(cell, event) {
 	var row = this.cells.indexOf(cell);
 	if (row == -1 || cell == this.selectedCell)
 		return;
