@@ -16,6 +16,10 @@
 	background-color: #124c8f;
 }
 
+#meController #tableView > #cellsContainer {
+	padding: 8px;
+}
+
 #meController #header {
 	padding-top: 19px;
 }

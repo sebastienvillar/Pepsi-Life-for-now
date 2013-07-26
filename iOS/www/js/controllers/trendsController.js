@@ -24,6 +24,7 @@ var TrendsController = function() {
 	this.tableView = new TableView();
 	this.tableView.setCellsSpacing("12px");
 	this.tableView.$container.attr("id", "trendsController-tableView")
+	this.tableView.$cellsContainer.attr("id", "cellsContainer");
 	this.tableView.$container.appendTo(this.$container);
 	this.postsRemaining = true;
 	this.posts = [];

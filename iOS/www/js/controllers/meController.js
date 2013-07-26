@@ -11,6 +11,7 @@ define(requireArray, function(Controller, TableView) {
 
 		this.tableView = new TableView();
 		this.tableView.$container.attr("id", "tableView");
+		this.tableView.$cellsContainer.attr("id", "cellsContainer");
 		this.tableView.$container.appendTo(this.$container);
 
 		this.$header = $("<div>", {"id": "header"});

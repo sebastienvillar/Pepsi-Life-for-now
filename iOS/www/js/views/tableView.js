@@ -9,6 +9,8 @@ function TableView() {
 
 	this.$container = $("<div>");
 	this.$container.css({"overflow": "scroll", "-webkit-overflow-scrolling": "touch"});
+	this.$cellsContainer = $("<div>");
+	this.$cellsContainer.appendTo(this.$container);
 	this.loading = false;
 	this.spinner = new Spinner();
 	this.spinner.$container.css({"margin": "0 auto 20px auto"});
@@ -19,8 +21,8 @@ function TableView() {
 
 	//Events
 
-	this.$container.scroll(function(e) {
-		if (this.$container.outerHeight() + this.$container.scrollTop() == this.$container[0].scrollHeight) {
+	this.$cellsContainer.scroll(function(e) {
+		if (this.$cellsContainer.outerHeight() + this.$cellsContainer.scrollTop() == this.$cellsContainer[0].scrollHeight) {
 			this.trigger("didScrollToBottom");
 		}
 
@@ -62,7 +64,7 @@ TableView.prototype.setCellsSpacing = function(spacing) {
 };
 
 TableView.prototype.pushCell = function(cell) {
-	cell.$container.appendTo(this.$container);
+	cell.$container.appendTo(this.$cellsContainer);
 	//cell.$container.on("tap", didSelectCell.bind(this, cell));
 	if (this.cells.length != 0) {
 		cell.$container.css("margin-top", this.spacing);
@@ -91,7 +93,7 @@ TableView.prototype.removeAllRows = function() {
 TableView.prototype.enterLoadingMode = function() {
 	this.loading = true;
 	this.spinner.$container.css("margin-top", this.spacing);
-	this.spinner.$container.appendTo(this.$container);
+	this.spinner.$container.appendTo(this.$cellsContainer);
 };
 
 TableView.prototype.exitLoadingMode = function() {
@@ -107,21 +109,6 @@ TableView.prototype.cellForRow = function(row) {
 ///////////////////////////////
 // Private
 //////////////////////////////
-
-TableView.prototype._isCellOnScreen = function(cell) {
-	var top = this.$container.scrollTop();
-    var bottom = top + this.$container.outerHeight();
-
-    var cellTop = cell.$container.position().top;
-    var cellBottom = cellTop + cell.$container.outerHeight();
-
-    console.log("top:", top);
-    console.log("bottom:", bottom);
-    console.log("cellTop:", cellTop);
-    console.log("cellBottom:", cellBottom);
-
-    return ((cellBottom <= bottom) && (cellTop >= top));
-};
 
 function didSelectCell(cell, event) {
 	var row = this.cells.indexOf(cell);
