@@ -189,9 +189,8 @@ CameraController.prototype.showCamera = function(event) {
 				this.fillCanvas($canvas, image, true);
 
 				var filters = this.filters[i];
-				this.applyFilters($canvas, filters, function($newCanvas) {
-					pixasticCallback();
-				});
+				this.applyFilters($canvas, filters);
+				pixasticCallback();
 			}
 		}.bind(this);
 		image.src = fileURI;
@@ -315,10 +314,8 @@ CameraController.prototype.didSelectFilter = function(i) {
 
 	this.appliedFilterIndex = i;
 	var filters = this.filters[i];
-	this.applyFilters(this.$mainCanvas, filters, function($newCanvas) {
-		this.$mainCanvas = $newCanvas;
-		spinner.$container.remove();
-	}.bind(this));
+	this.$mainCanvas = this.applyFilters(this.$mainCanvas, filters);
+	spinner.$container.remove();
 };
 
 CameraController.prototype.didClickSave = function(event) {
@@ -326,47 +323,42 @@ CameraController.prototype.didClickSave = function(event) {
 
 	var spinner = new Spinner();
 	spinner.$container.addClass("spinner");
+	spinner.$container.appendTo(this.$container);
 	var text = this.$textArea.val();
 
 	////
 	this.$saveButton.off("tap");
 	this.$backButton.off("tap");
 
-	this.$mainContainer.addClass("disappear");
-	this.$mainContainer.on("webkitAnimationEnd animationEnd", function() {
-		this.$mainContainer.off("webkitAnimationEnd animationEnd")
-		this.$filtersBar.detach();
-		this.$mainContainer.empty();
-		this.$mainContainer.remove();
-		this.$mainContainer.removeClass("disappear");
-	}.bind(this));
+	this.$filtersBar.detach();
+	this.$mainContainer.empty();
+	this.$mainContainer.remove();
 
-	this.$saveButton.addClass("disappear");
-	this.$saveButton.on("webkitAnimationEnd animationEnd", function() {
-		this.$saveButton.off("webkitAnimationEnd animationEnd")
-		this.$saveButton.remove();
-		this.$saveButton = null;
-	}.bind(this));
+	this.$textAreaContainer.remove();
+	this.$textAreaContainer = null;
+	this.$saveButton = null;
+	this.$backButton = null;
+	this.$textArea = null;
 
-	this.$backButton.addClass("disappear");
-	this.$backButton.on("webkitAnimationEnd animationEnd", function() {
-		this.$backButton.off("webkitAnimationEnd animationEnd")
-		this.$backButton.remove();
-		this.$backButton = null;
-	}.bind(this));
+	// this.$mainContainer.addClass("disappear");
+	// this.$mainContainer.on("webkitAnimationEnd animationEnd", function() {
+	// 	this.$mainContainer.off("webkitAnimationEnd animationEnd")
+	// 	this.$filtersBar.detach();
+	// 	this.$mainContainer.empty();
+	// 	this.$mainContainer.remove();
+	// 	this.$mainContainer.removeClass("disappear");
+	// }.bind(this));
 
-	this.$textArea.blur();
-	this.$textArea.addClass("slideDown");
-	this.$textArea.on("webkitAnimationEnd animationEnd", function() {
-		this.$textArea.off("webkitAnimationEnd animationEnd")
-		this.$textArea.remove();
-		this.$textArea = null;
-		this.$textAreaContainer.remove();
-		this.$textAreaContainer = null;
+	// this.$textAreaContainer.addClass("disappear");
+	// this.$textAreaContainer.on("webkitAnimationEnd animationEnd", function() {
+	// 	this.$textAreaContainer.off("webkitAnimationEnd animationEnd")
+	// 	this.$textAreaContainer.remove();
+	// 	this.$textAreaContainer = null;
+	// 	this.$saveButton = null;
+	// 	this.$backButton = null;
+	// 	this.$textArea = null;
+	// }.bind(this));
 
-		spinner.$container.appendTo(this.$container);
-
-	}.bind(this));
 	///
 
 	var sendPost = function(image_url) {
@@ -419,9 +411,8 @@ CameraController.prototype.didClickSave = function(event) {
 	}.bind(this);
 
 	var filters = this.filters[this.appliedFilterIndex];
-	this.applyFilters(this.$originalCanvas, filters, function($newCanvas) {
-		sendCanvas($newCanvas[0]);
-	});
+	var $newCanvas = this.applyFilters(this.$originalCanvas, filters);
+	sendCanvas($newCanvas[0]);
 };
 
 CameraController.prototype.didClickBack = function(event) {
@@ -435,21 +426,15 @@ CameraController.prototype.didClickBack = function(event) {
 	this.$textArea.addClass("slideDown");
 };
 
-CameraController.prototype.applyFilters = function($canvas, filters, callback) {
+CameraController.prototype.applyFilters = function($canvas, filters) {
 	this.applyingFilter = true;
-	var recursiveProcess = function(canvas, i) {
-		if (i >= filters.length) {
-			this.applyingFilter = false;
-			callback($(canvas));
-		}
-		else {
-			var filterCopy = $.extend(true, {}, filters[i]);
-			Pixastic.process(canvas, filterCopy.effect, filterCopy.value, function(newCanvas) {
-				recursiveProcess(newCanvas, i + 1)
-			});
-		}
-	}.bind(this);
-	recursiveProcess($canvas[0], 0);
+	var newCanvas = $canvas[0];
+	for (var i in filters) {
+		var filterCopy = $.extend(true, {}, filters[i]);
+		newCanvas = Pixastic.process(newCanvas, filterCopy.effect, filterCopy.value);
+	}
+	this.applyingFilter = false;
+	return $(newCanvas);
 };
 
 return CameraController;
