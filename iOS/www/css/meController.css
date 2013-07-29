@@ -24,7 +24,7 @@
 	padding-top: 19px;
 }
 
-#meController #tableView > #header > button {
+#meController > button {
 	position: absolute;
 	right: 0;
 	top: 0;

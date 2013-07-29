@@ -35,6 +35,7 @@ var MeController = function() {
 	this.$description = $("<p>", {"id": "description"});
 	this.$description.appendTo(this.$header);
 	this.$description.text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse imperdiet libero id neque fringilla, in.");
+	this.$description.attr("maxlength", "100");
 
 	this.$postsRect = $("<div>", {"id": "postsRect"});
 	this.$postsRect.appendTo(this.$header);
@@ -65,7 +66,7 @@ var MeController = function() {
 	this.$editButton = $("<button>");
 	this.$editButton.text("EDIT");
 	this.$editButton.on("tap", this._didClickEditButton.bind(this));
-	this.$editButton.appendTo(this.$header);
+	this.$editButton.appendTo(this.$container);
 
 	this.postsRemaining = true;
 	this.posts = [];
@@ -89,6 +90,8 @@ MeController.prototype.init = function() {
 		console.log("json:", json);
 		this.$username.text(json.name);
 		this.$description.text(json.description);
+		this.$likesCount.text(json.likes_count);
+		this.$postsCount.text(json.posts_count);
 		if (json.image_url)
 			this.$avatar.css("background-image", "url(" + json.image_url + ")");
 	}.bind(this);
@@ -206,8 +209,15 @@ MeController.prototype._didClickEditButton = function(event) {
 		if (newData) {
 			this.$username.text(newData.name);
 			this.$description.text(newData.description);
-			if (newData.image_url)
+			if (newData.image_url) {
 				this.$avatar.css("background-image", "url(" + newData.image_url + ")");
+				for (var i in this.posts) {
+					var post = this.posts[i];
+					post.imageUrl = image_url
+					var cell = this.tableView.cellForRow(i);
+					cell.setImage(post.imageUrl);
+				}
+			}
 		}
 
 		editMeController.$container.on("webkitAnimationEnd animationEnd", function() {
