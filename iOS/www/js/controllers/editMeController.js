@@ -7,7 +7,7 @@ var requireArray = [
 
 define(requireArray, function(Controller, ServerRequest, Spinner, EventEmitter) {
 
-var EditMeController = function() {
+var EditMeController = function(name, description) {
 	Controller.call(this);
 
 	this.$container.attr("id", "editMeController");
@@ -18,10 +18,12 @@ var EditMeController = function() {
 	this.$nameInput = $("<input>", {"id": "nameInput", "type": "text"});
 	this.$nameInput.appendTo(this.$form);
 	this.$nameInput.attr("placeholder", "Name");
+	this.$nameInput.val(name);
 
 	this.$descriptionInput = $("<input>", {"id": "descriptionInput", "type": "text"});
 	this.$descriptionInput.appendTo(this.$form);
 	this.$descriptionInput.attr("placeholder", "Description. Max 100 characters")
+	this.$descriptionInput.val(description);
 
 	this.$imageButton = $("<button>", {"id": "imageButton"});
 	this.$imageButton.appendTo(this.$form);

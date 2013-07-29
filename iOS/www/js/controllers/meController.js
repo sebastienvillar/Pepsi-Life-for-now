@@ -195,7 +195,7 @@ MeController.prototype._rowIsVisible = function(row) {
 MeController.prototype._didClickEditButton = function(event) {
 	event.preventDefault();
 	this.$editButton.off("tap");
-	editMeController = new EditMeController();
+	editMeController = new EditMeController(this.$username.text(), this.$description.text());
 	editMeController.$container.on("webkitAnimationEnd animationEnd", function() {
 		editMeController.$container.off("webkitAnimationEnd animationEnd")
 		editMeController.$container.removeClass("slideUp");
