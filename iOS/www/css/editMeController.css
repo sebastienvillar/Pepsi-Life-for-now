@@ -1,0 +1,127 @@
+#editMeController {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background-color: white;
+}
+
+#editMeController > button {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 65px;
+	height: 36px;
+	background-color: #e00127;
+	color: #ffffff;
+	font-size: 10px;
+}
+
+#editMeController > .spinner {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -10px;
+	margin-top: -11px;
+}
+
+#editMeController.slideUp {
+	/*name duration timing delay iteration-count direction*/
+	-webkit-animation: slideUp 0.3s ease-in-out 0 1;
+	animation: slideUp 0.3s ease-in-out 0 1;
+}
+
+@-webkit-keyframes slideUp {
+	0% {
+		top: 100%;
+	}
+
+	100% {
+		top: 0%;
+	}
+}
+
+@keyframes slideUp {
+	0% {
+		top: 100%;
+	}
+
+	100% {
+		top: 0%;
+	}
+}
+
+#editMeController.slideDown {
+	/*name duration timing delay iteration-count direction*/
+	-webkit-animation: slideDown 0.3s ease-in-out 0 1;
+	animation: slideDown 0.3s ease-in-out 0 1;
+}
+
+@-webkit-keyframes slideDown {
+	0% {
+		top: 0%;
+	}
+
+	100% {
+		top: 100%;
+	}
+}
+
+@keyframes slideDown {
+	0% {
+		top: 0%;
+	}
+
+	100% {
+		top: 100%;
+	}
+}
+
+#editMeController > form {
+}
+
+#editMeController > form input {
+	display: block;
+	position: relative;
+	background-color: #cac9cb;
+	width: 282px;
+	height: 24px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #bcbbbd;
+	border-radius: 0;
+	left: 50%;
+	margin-left: -150px;
+	padding: 8px;
+	font-size: 15px;
+}
+
+#editMeController > form > #nameInput {
+	margin-top: 50px;
+}
+
+#editMeController > form > #descriptionInput {
+	margin-top: 15px;
+}
+
+#editMeController > form > #imageButton {
+	display: block;
+	position: relative;
+	margin: auto;
+	left: 50%;
+	margin-left: -150px;
+	margin-top: 15px;
+	width: 300px;
+	height: 42px;
+	background-color: #124c8f;
+	font-size: 15px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #0d3a6d;
+	color: white;
+}
+
+#editMeController > form > #doneButton {
+	width: 100px;
+}
