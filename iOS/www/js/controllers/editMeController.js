@@ -9,6 +9,7 @@ define(requireArray, function(Controller, ServerRequest, Spinner, EventEmitter) 
 
 var EditMeController = function(name, description) {
 	Controller.call(this);
+	EventEmitter.call(this);
 
 	this.$container.attr("id", "editMeController");
 
