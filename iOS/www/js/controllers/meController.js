@@ -82,8 +82,23 @@ var MeController = function() {
 MeController.prototype = new Controller();
 
 MeController.prototype.init = function() {
+	var request = new ServerRequest();
+	request.method = "GET";
+	request.path = "me/";
+	request.onSuccess = function(json) {
+		console.log("json:", json);
+		this.$username.text(json.name);
+		this.$description.text(json.description);
+		if (json.image_url)
+			this.$avatar.css("background-image", "url(" + json.image_url + ")");
+	}.bind(this);
+	request.onError = function(status, message) {
+		alert(status + ":" + message);
+	};
+	request.execute();
+
 	this.pushNewCells();
-}
+};
 
 MeController.prototype.pushNewCells = function() {
 	this.tableView.enterLoadingMode();
@@ -202,14 +217,6 @@ MeController.prototype._didClickEditButton = function(event) {
 		editMeController.$container.addClass("slideDown");
 	}.bind(this));
 };
-
-MeController.prototype._didClickDoneButton = function(event) {
-	// event.preventDefault();
-	// this.$button.off("tap");
-	// this.$button.on("tap", this._didClickEditButton.bind(this));
-	// this.$button.text("Edit");
-};
-
 
 return MeController;
 });
