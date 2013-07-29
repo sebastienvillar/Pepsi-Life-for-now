@@ -40,6 +40,14 @@ animation-iteration-count:infinite;
 animation-direction:linear;
 }
 
+.blockG.blue {
+-moz-animation-name:fadeGFromBlue;
+-webkit-animation-name:fadeGFromBlue;
+-ms-animation-name:fadeGFromBlue;
+-o-animation-name:fadeGFromBlue;
+animation-name:fadeGFromBlue;
+}
+
 #rotateG_01{
 left:0;
 top:8px;
@@ -199,6 +207,53 @@ background-color:rgba(0,0,0,0)}
 @keyframes fadeG{
 0%{
 background-color:#ffffff}
+
+100%{
+background-color:rgba(0,0,0,0)}
+
+}
+
+/**/
+
+@-moz-keyframes fadeGFromBlue{
+0%{
+background-color:#124c8f}
+
+100%{
+background-color:rgba(0,0,0,0)}
+
+}
+
+@-webkit-keyframes fadeGFromBlue{
+0%{
+background-color:#124c8f}
+
+100%{
+background-color:rgba(0,0,0,0)}
+
+}
+
+@-ms-keyframes fadeGFromBlue{
+0%{
+background-color:#124c8f}
+
+100%{
+background-color:rgba(0,0,0,0)}
+
+}
+
+@-o-keyframes fadeGFromBlue{
+0%{
+background-color:#124c8f}
+
+100%{
+background-color:rgba(0,0,0,0)}
+
+}
+
+@keyframes fadeGFromBlue{
+0%{
+background-color:#124c8f}
 
 100%{
 background-color:rgba(0,0,0,0)}

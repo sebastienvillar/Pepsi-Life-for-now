@@ -7,6 +7,7 @@ domReady(function() {
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
+    console.log("device ready");
     var requireArray = [
         "controllers/tabBarController",
         "controllers/navigationController",

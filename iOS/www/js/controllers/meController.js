@@ -180,14 +180,27 @@ MeController.prototype._rowIsVisible = function(row) {
 MeController.prototype._didClickEditButton = function(event) {
 	event.preventDefault();
 	this.$editButton.off("tap");
-	this.editMeController = new EditMeController();
-	this.editMeController.$container.on("webkitAnimationEnd animationEnd", function() {
-		this.editMeController.$container.off("webkitAnimationEnd animationEnd")
-		this.editMeController.$container.removeClass("slideUp");
-		this.$editButton.on("tap", this._didClickEditButton.bind(this));
+	editMeController = new EditMeController();
+	editMeController.$container.on("webkitAnimationEnd animationEnd", function() {
+		editMeController.$container.off("webkitAnimationEnd animationEnd")
+		editMeController.$container.removeClass("slideUp");
 	}.bind(this));
-	this.editMeController.$container.addClass("slideUp");
-	this.editMeController.$container.appendTo(this.$container);
+	editMeController.$container.addClass("slideUp");
+	editMeController.$container.appendTo(this.$container);
+	editMeController.on("meWasUpdated", function(newData) {
+		if (newData) {
+			this.$username.text(newData.name);
+			this.$description.text(newData.description);
+			if (newData.image_url)
+				this.$avatar.css("background-image", "url(" + newData.image_url + ")");
+		}
+
+		editMeController.$container.on("webkitAnimationEnd animationEnd", function() {
+			editMeController.$container.remove();
+			this.$editButton.on("tap", this._didClickEditButton.bind(this));
+		}.bind(this));
+		editMeController.$container.addClass("slideDown");
+	}.bind(this));
 };
 
 MeController.prototype._didClickDoneButton = function(event) {
