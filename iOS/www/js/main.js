@@ -16,11 +16,12 @@ function onDeviceReady() {
         "controllers/cameraController",
         "controllers/friendsController",
         "controllers/meController",
+        "controllers/locateController",
         "helpers/constants",
         "helpers/serverRequest"
-        ];
+    ];
 
-    require(requireArray, function(TabBarController, NavigationController, Controller, TableView, TrendsCell, TrendsController, CameraController, FriendsController, MeController, Constants, ServerRequest) {
+    require(requireArray, function(TabBarController, NavigationController, Controller, TableView, TrendsCell, TrendsController, CameraController, FriendsController, MeController, LocateController, Constants, ServerRequest) {
 
         //Get username and password
         var username = localStorage.getItem("username");
@@ -56,10 +57,8 @@ function onDeviceReady() {
             var controller1 = new TrendsController();
             controllers.push(controller1);
 
-            var controller2 = new Controller();
+            var controller2 = new LocateController();
             controllers.push(controller2);
-            controller2.$container.css({"position": "absolute", "left": 0, "top": 0, "right": 0, "bottom": 0});
-            controller2.$container.css({"background-color": "red"});
 
             var controller3 = new CameraController();
             controllers.push(controller3);
