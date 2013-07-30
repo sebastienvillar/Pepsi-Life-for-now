@@ -29,7 +29,7 @@ function TabBarController(controllers) {
 		$div.appendTo(this.$footer);
 		$button.appendTo($div);
 		(function(j) {
-			$button.on("tap", function(event) {
+			$button.on("tapone", function(event) {
 				event.preventDefault();
 				this.setCurrentChildController(this.childControllers[j]);
 			}.bind(this));
@@ -60,6 +60,7 @@ TabBarController.prototype.setCurrentChildController = function(childController)
 			this.currentChildController.didDisappear();
 		}
 		this.currentChildController = childController;
+		childController.init();
 		childController.didAppear();
 	}
 };

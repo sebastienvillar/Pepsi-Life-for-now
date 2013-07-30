@@ -42,7 +42,7 @@ function TrendsCell(post) {
 	this.$likesButton = $("<div>");
 	this.$likesButton.addClass("trendsCell-likesButton");
 	this.$likesButton.appendTo(this.$header);
-	this.$likesButton.on("tap", didClickLike.bind(this));
+	this.$likesButton.on("tapone", didClickLike.bind(this));
 
 	this.$likesCount = $("<p>");
 	this.$likesCount.addClass("trendsCell-likesCount");
@@ -51,7 +51,7 @@ function TrendsCell(post) {
 	this.$commentsButton = $("<div>");
 	this.$commentsButton.addClass("trendsCell-commentsButton");
 	this.$commentsButton.appendTo(this.$header);
-	this.$commentsButton.on("tap", didClickComment.bind(this));
+	this.$commentsButton.on("tapone", didClickComment.bind(this));
 
 	this.$commentsCount = $("<p>");
 	this.$commentsCount.addClass("trendsCell-commentsCount");
@@ -161,7 +161,7 @@ TrendsCell.prototype.setTags = function(tags) {
 		var $button = $("<button>");
 		$button.text(tag);
 		$button.appendTo(this.$tags);
-		$button.on("tap", didClickTag.bind(this, tag))
+		$button.on("tapone", didClickTag.bind(this, tag))
 	}
 };
 

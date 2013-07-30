@@ -29,12 +29,12 @@ var EditMeController = function(name, description) {
 	this.$imageButton = $("<button>", {"id": "imageButton"});
 	this.$imageButton.appendTo(this.$form);
 	this.$imageButton.text("Choose your image");
-	this.$imageButton.on("tap", this._didClickImageButton.bind(this));
+	this.$imageButton.on("tapone", this._didClickImageButton.bind(this));
 
 	this.$doneButton = $("<button>");
 	this.$doneButton.text("DONE");
 	this.$doneButton.appendTo(this.$container);
-	this.$doneButton.on("tap", this._didClickDoneButton.bind(this));
+	this.$doneButton.on("tapone", this._didClickDoneButton.bind(this));
 };
 
 EditMeController.prototype = $.extend({}, Controller.prototype, EventEmitter.prototype, EditMeController.prototype);

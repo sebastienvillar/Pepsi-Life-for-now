@@ -31,7 +31,7 @@ var CameraController = function() {
 			$filterCanvasContainer.addClass("extremeLeft");
 		else if (i == 4)
 			$filterCanvasContainer.addClass("extremeRight");
-		$filterCanvasContainer.on("tap", this.didSelectFilter.bind(this, i));
+		$filterCanvasContainer.on("tapone", this.didSelectFilter.bind(this, i));
 		this.filterCanvasContainers.push($filterCanvasContainer);
 	}
 
@@ -159,13 +159,13 @@ CameraController.prototype.showCamera = function(event) {
 					this.$retakeButton = $("<button>");
 					this.$retakeButton.addClass("whiteButton");
 					this.$retakeButton.text("RETAKE");
-					this.$retakeButton.on("tap", this.showCamera.bind(this));
+					this.$retakeButton.on("tapone", this.showCamera.bind(this));
 					this.$retakeButton.appendTo(this.$mainContainer);
 
 					this.$nextButton = $("<button>");
 					this.$nextButton.addClass("redButton");
 					this.$nextButton.text("NEXT");
-					this.$nextButton.on("tap", this.showTextArea.bind(this));
+					this.$nextButton.on("tapone", this.showTextArea.bind(this));
 					this.$nextButton.appendTo(this.$mainContainer);
 
 					if (this.spinner)
@@ -205,7 +205,7 @@ CameraController.prototype.showCamera = function(event) {
 		this.$retakeButton.addClass("whiteButton");
 		this.$retakeButton.text("RETAKE");
 		this.$retakeButton.appendTo(this.$mainContainer);
-		this.$retakeButton.on("tap", this.showCamera.bind(this));
+		this.$retakeButton.on("tapone", this.showCamera.bind(this));
 
 		if (!this.photoWasTaken) {
 			//Create a new canvas and add retake button
@@ -218,7 +218,7 @@ CameraController.prototype.showCamera = function(event) {
 			this.$nextButton = $("<button>");
 			this.$nextButton.addClass("redButton");
 			this.$nextButton.text("NEXT");
-			this.$nextButton.on("tap", this.showTextArea.bind(this));
+			this.$nextButton.on("tapone", this.showTextArea.bind(this));
 			this.$nextButton.appendTo(this.$mainContainer);
 		}
 
@@ -288,8 +288,8 @@ CameraController.prototype.showTextArea = function(event) {
 		document.body.addEventListener('touchmove', function(e) {
     		e.preventDefault();
 		}, false);
-		this.$saveButton.on("tap", this.didClickSave.bind(this));
-		this.$backButton.on("tap", this.didClickBack.bind(this));
+		this.$saveButton.on("tapone", this.didClickSave.bind(this));
+		this.$backButton.on("tapone", this.didClickBack.bind(this));
 	}.bind(this)); 
 
 	this.$textArea.addClass("textArea slideUp");
@@ -327,8 +327,8 @@ CameraController.prototype.didClickSave = function(event) {
 	var text = this.$textArea.val();
 
 	////
-	this.$saveButton.off("tap");
-	this.$backButton.off("tap");
+	this.$saveButton.off("tapone");
+	this.$backButton.off("tapone");
 
 	this.$filtersBar.detach();
 	this.$mainContainer.empty();
@@ -386,7 +386,7 @@ CameraController.prototype.didClickSave = function(event) {
 			this.$retakeButton.addClass("whiteButton");
 			this.$retakeButton.text("RETAKE");
 			this.$retakeButton.appendTo(this.$mainContainer);
-			this.$retakeButton.on("tap", this.showCamera.bind(this));
+			this.$retakeButton.on("tapone", this.showCamera.bind(this));
 			this.$mainContainer.appendTo(this.$container);
 		}.bind(this);
 		request.onError = function(status, message) {

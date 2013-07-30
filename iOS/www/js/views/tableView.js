@@ -61,7 +61,7 @@ TableView.prototype.setCellsSpacing = function(spacing) {
 
 TableView.prototype.pushCell = function(cell) {
 	cell.$container.appendTo(this.$cellsContainer);
-	//cell.$container.on("tap", this._didSelectCell.bind(this, cell));
+	//cell.$container.on("tapone", this._didSelectCell.bind(this, cell));
 	if (this.cells.length != 0) {
 		cell.$container.css("margin-top", this.spacing);
 	}

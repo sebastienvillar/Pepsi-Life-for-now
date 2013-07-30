@@ -65,29 +65,21 @@ var MeController = function() {
 
 	this.$editButton = $("<button>");
 	this.$editButton.text("EDIT");
-	this.$editButton.on("tap", this._didClickEditButton.bind(this));
+	this.$editButton.on("tapone", this._didClickEditButton.bind(this));
 	this.$editButton.appendTo(this.$container);
 
 	this.postsRemaining = true;
 	this.posts = [];
-
-	this.init();
-
+	
 	//Event Handlers
 	this.tableView.on("didScrollToBottom", this._didScrollToBottom.bind(this));
 	this.tableView.on("didSelectRow", this._didSelectRow.bind(this));
 	this.tableView.on("rowIsVisible", this._rowIsVisible.bind(this));
 	
-}
-
-MeController.prototype = new Controller();
-
-MeController.prototype.init = function() {
 	var request = new ServerRequest();
 	request.method = "GET";
 	request.path = "me/";
 	request.onSuccess = function(json) {
-		console.log("json:", json);
 		this.$username.text(json.name);
 		this.$description.text(json.description);
 		this.$likesCount.text(json.likes_count);
@@ -101,7 +93,10 @@ MeController.prototype.init = function() {
 	request.execute();
 
 	this.pushNewCells();
-};
+}
+
+MeController.prototype = new Controller();
+
 
 MeController.prototype.pushNewCells = function() {
 	this.tableView.enterLoadingMode();
@@ -197,7 +192,7 @@ MeController.prototype._rowIsVisible = function(row) {
 
 MeController.prototype._didClickEditButton = function(event) {
 	event.preventDefault();
-	this.$editButton.off("tap");
+	this.$editButton.off("tapone");
 	editMeController = new EditMeController(this.$username.text(), this.$description.text());
 	editMeController.$container.on("webkitAnimationEnd animationEnd", function() {
 		editMeController.$container.off("webkitAnimationEnd animationEnd")
@@ -222,7 +217,7 @@ MeController.prototype._didClickEditButton = function(event) {
 
 		editMeController.$container.on("webkitAnimationEnd animationEnd", function() {
 			editMeController.$container.remove();
-			this.$editButton.on("tap", this._didClickEditButton.bind(this));
+			this.$editButton.on("tapone", this._didClickEditButton.bind(this));
 		}.bind(this));
 		editMeController.$container.addClass("slideDown");
 	}.bind(this));

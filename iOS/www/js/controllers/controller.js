@@ -7,5 +7,7 @@ define(function() {
 
 	Controller.prototype.didDisappear = function(){};
 
+	Controller.prototype.init = function(){};
+
 	return Controller;
 });

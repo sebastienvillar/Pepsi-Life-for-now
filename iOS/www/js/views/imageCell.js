@@ -66,14 +66,14 @@ function ImageCell(post) {
 
 	this.$likesButton = $("<div>", {"id": "likesButton"});
 	this.$likesButton.appendTo(this.$footer);
-	this.$likesButton.on("tap", didClickLike.bind(this));
+	this.$likesButton.on("tapone", didClickLike.bind(this));
 
 	this.$likesCount = $("<p>", {"id": "likesCount"});
 	this.$likesCount.appendTo(this.$footer);
 
 	this.$commentsButton = $("<div>", {"id": "commentsButton"});
 	this.$commentsButton.appendTo(this.$footer);
-	this.$commentsButton.on("tap", didClickComment.bind(this));
+	this.$commentsButton.on("tapone", didClickComment.bind(this));
 
 	this.$commentsCount = $("<p>", {"id": "commentsCount"});
 	this.$commentsCount.appendTo(this.$footer);
@@ -185,7 +185,7 @@ ImageCell.prototype.setTags = function(tags) {
 		var $button = $("<button>");
 		$button.text(tag);
 		$button.appendTo(this.$tags);
-		$button.on("tap", didClickTag.bind(this, tag))
+		$button.on("tapone", didClickTag.bind(this, tag))
 	}
 };
 

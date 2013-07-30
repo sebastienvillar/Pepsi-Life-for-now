@@ -37,15 +37,10 @@ var TrendsController = function() {
 	this.tableView.on("rowIsVisible", this._rowIsVisible.bind(this));
 	this.$searchForm.on("submit", this._didSearch.bind(this));
 
-
-	this.init();
+	this.pushNewCells();
 };
 
 TrendsController.prototype = new Controller();
-
-TrendsController.prototype.init = function() {
-	this.pushNewCells();
-};
 
 TrendsController.prototype.pushNewCells = function() {
 	this.tableView.enterLoadingMode();

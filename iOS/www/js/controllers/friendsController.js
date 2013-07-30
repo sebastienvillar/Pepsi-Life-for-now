@@ -25,14 +25,10 @@ var FriendsController = function() {
 	this.tableView.on("didSelectRow", this._didSelectRow.bind(this));
 	this.tableView.on("rowIsVisible", this._rowIsVisible.bind(this));
 
-	this.init();
+	this.pushNewCells();
 };
 
 FriendsController.prototype = new Controller();
-
-FriendsController.prototype.init = function() {
-	this.pushNewCells();
-};
 
 FriendsController.prototype.pushNewCells = function() {
 	this.tableView.enterLoadingMode();
