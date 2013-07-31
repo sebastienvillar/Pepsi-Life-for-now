@@ -1,0 +1,27 @@
+#marker {
+	position: absolute;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	width: 65px;
+	height: 67px;
+}
+
+#marker.red {
+	background-image: url("../img/map/pin-red.png");
+}
+
+#marker.yellow {
+	background-image: url("../img/map/pin-yellow.png");
+}
+
+#marker > #image {
+	margin-left: 9px;
+	margin-top: 8px;
+	width: 27px;
+	height: 27px;
+	border-radius: 50%;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	background-image: url("../img/common/large-photo-substitute.png");
+}
