@@ -34,86 +34,90 @@
 
 #marker > .bubble {
 	position: absolute;
-	top: -60px;
-	left: -30px;
+	display: table;
+	top: -50px;
+	left: -42px;
 	height: 51px;
-	width: 200px;
+	z-index: 2;
 }
 
-/*#marker > .bubble {
-    position: relative;
-    z-index: 2;
-    background: url("../img/map/bubble-left.png") top left no-repeat, 
-                url("../img/map/bubble-right.png") top right no-repeat;
+#marker > .bubble > .row {
+	display: table-row;
+	height: 100%;
 }
-
-#marker > .bubble:before {
-    content: '';
-    position: absolute;
-    z-index: -1;
-    left: 82px; 
-    top: 0;
-    right: 6px;
-    bottom: 0;
-    background: url("../img/map/bubble-center.png") top left repeat-x;
-}*/
 
 #marker > .bubble > .bubbleLeft {
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 82px;
+	width: 80px;
 	height: 51px;
+	z-index: -1;
 	background-image: url("../img/map/bubble-left.png")
 }
 
 #marker > .bubble > .bubbleCenter {
 	position: absolute;
-	left: 82px;
+	left: 80px;
 	top: 0;
 	right: 0;
 	height: 41px;
+	z-index: -1;
 	background-repeat: repeat-x;
 	background-image: url("../img/map/bubble-center.png")
 }
 
 #marker > .bubble > .bubbleRight {
 	position: absolute;
-	right: -6px;
+	right: -8px;
 	top: 0;
-	width: 6px;
+	width: 8px;
 	height: 41px;
+	z-index: -1;
 	background-repeat: no-repeat;
 	background-image: url("../img/map/bubble-right.png")
 }
 
-#marker .bubble > .postsCount {
-	display: inline-block;
-	vertical-align: middle;
-	margin-left: 6px;
+#marker .row > .postsCount {
+	display: table-cell;
+	vertical-align: top;
+	padding-left: 10px;
+	padding-top: 2px;
 	font-size: 23px;
 	font-weight: bold;
 	color: #e00028;
-}
-
-#marker .bubble > .name {
-	display: inline-block;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	margin-left: 6px;
-	vertical-align: middle;
+	max-width: 80px
+}
+
+#marker .row > .cameraIcon {
+	display: table-cell;
+	padding-left: 13px;
+	background-repeat: no-repeat;
+	background-image: url("../img/map/camera-icon.png");
+	background-position: 2px 9px;
+}
+
+#marker .row > .name {
+	display: table-cell;
+	vertical-align: top;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding-top: 6px;
+	padding-left: 5px;
 	font-weight: bold;
 	font-size: 18px;
-	max-width: 170px;
+	max-width: 150px;
 	color: white;
 }
 
-#marker .bubble > .disclosureArrow {
-	display: inline-block;
-	vertical-align: middle;
-	margin-left: 6px;
-	width: 5px;
-	height: 10px;
+#marker .row > .disclosureArrow {
+	display: table-cell;
+	padding-left: 16px;
+	background-repeat: no-repeat;
 	background-image: url("../img/map/disclosure-arrow.png");
+	background-position: 8px 13px;
 }

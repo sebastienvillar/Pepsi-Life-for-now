@@ -41,38 +41,55 @@ Marker.prototype.draw = function() {
 	this.$container.css({left: pixelPosition.x + "px", top: pixelPosition.y + "px"});
 };
 
+Marker.prototype.addBubble = function(postsCount, name) {
+	if (this.bubble)
+		return;
+	this.$bubble = $("<div>");
+	this.$bubble.addClass("bubble");
+	this.$bubbleLeft = $("<div>");
+	this.$bubbleLeft.addClass("bubbleLeft");
+	this.$bubbleLeft.appendTo(this.$bubble);
+	this.$bubbleCenter = $("<div>");
+	this.$bubbleCenter.addClass("bubbleCenter");
+	this.$bubbleCenter.appendTo(this.$bubble);
+	this.$bubbleRight = $("<div>");
+	this.$bubbleRight.addClass("bubbleRight");
+	this.$bubbleRight.appendTo(this.$bubble);
+
+	this.$row = $("<div>");
+	this.$row.addClass("row");
+	this.$postsCount = $("<div>");
+	this.$postsCount.addClass("postsCount");
+	this.$postsCount.text(postsCount);
+	this.$postsCount.appendTo(this.$row);
+	this.$cameraIcon = $("<div>");
+	this.$cameraIcon.appendTo(this.$row);
+	this.$cameraIcon.addClass("cameraIcon");
+	this.$name = $("<div>");
+	this.$name.text(name);
+	this.$name.addClass("name");
+	this.$name.appendTo(this.$row);
+	this.$disclosureArrow = $("<div>");
+	this.$disclosureArrow.appendTo(this.$row);
+	this.$disclosureArrow.addClass("disclosureArrow");
+
+	this.$row.appendTo(this.$bubble);
+	this.$bubble.appendTo(this.$container);
+}
+
+Marker.prototype.removeBubble = function() {
+	if (this.$bubble)
+		this.$bubble.remove();
+	this.$bubble = null;
+}
+
 /////////////////
 
 Marker.prototype._didClick = function() {
 	if (this.$bubble)
 		return;
 
-	// this.$bubble = $("<div>");
-	// this.$bubble.addClass("bubble");
-	// this.$bubbleLeft = $("<div>");
-	// this.$bubbleLeft.addClass("bubbleLeft");
-	// this.$bubbleLeft.appendTo(this.$bubble);
-	// this.$bubbleCenter = $("<div>");
-	// this.$bubbleCenter.addClass("bubbleCenter");
-	// this.$bubbleCenter.appendTo(this.$bubble);
-	// this.$bubbleRight = $("<div>");
-	// this.$bubbleRight.addClass("bubbleRight");
-	// this.$bubbleRight.appendTo(this.$bubble);
-
-	// this.$postsCount = $("<span>");
-	// this.$postsCount.addClass("postsCount");
-	// this.$postsCount.text("2999");
-	// this.$postsCount.appendTo(this.$bubble);
-	// this.$name = $("<span>");
-	// this.$name.text("Jean-Claude djfosjdfojsoidjfojsdoijfoisjofjosjdofjsojodfij");
-	// this.$name.addClass("name");
-	// this.$name.appendTo(this.$bubble);
-	// this.$disclosureArrow = $("<span>");
-	// this.$disclosureArrow.appendTo(this.$bubble);
-	// this.$disclosureArrow.addClass("disclosureArrow");
-
-	// this.$bubble.appendTo(this.$container);
-
+	this.trigger("click");
 }
 
 return Marker;

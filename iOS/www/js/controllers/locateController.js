@@ -14,6 +14,7 @@ var LocateController = function() {
     this.currentPositionMVC = new google.maps.MVCObject();
     this.currentPositionMVC.set("position", new google.maps.LatLng(-21.115141, 55.536384));
     this.markers = {};
+    this.selectedMarker = null;
     navigator.geolocation.getCurrentPosition(this._didUpdatePosition.bind(this), this._didFailToUpdatePosition.bind(this), null);
 };
 
@@ -80,13 +81,19 @@ LocateController.prototype._didChangeBounds = function() {
             if (!this.markers[user.id]) {
                 var marker = new Marker(new google.maps.LatLng(coordinate.latitude, coordinate.longitude), color, user.image_url, this.$container.width());
                 marker.setMap(this.map);
+                marker.on("click", this._didClickMarker.bind(this, marker, user));
             }
             newMarkers[user.id] = marker ? marker : this.markers[user.id];
         }
 
         for (var key in this.markers) {
             if (!newMarkers[key]) {
-                this.markers[key].setMap(null);
+                var marker = this.markers[key];
+                if (marker == this.selectedMarker) {
+                    this.selectedMarker.removeBubble();
+                    this.selectedMarker = null;
+                }
+                marker.setMap(null);
             }
         }
         this.markers = newMarkers;
@@ -97,6 +104,15 @@ LocateController.prototype._didChangeBounds = function() {
     }.bind(this);
     request.execute();
 };
+
+/////////
+
+LocateController.prototype._didClickMarker = function(marker, user) {
+    if (this.selectedMarker)
+        this.selectedMarker.removeBubble();
+    marker.addBubble(35, user.name);
+    this.selectedMarker = marker;
+}
 
 return LocateController;
 });

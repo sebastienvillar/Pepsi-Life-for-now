@@ -24,8 +24,10 @@ function onDeviceReady() {
     require(requireArray, function(TabBarController, NavigationController, Controller, TableView, TrendsCell, TrendsController, CameraController, FriendsController, MeController, LocateController, Constants, ServerRequest) {
 
         //Get username and password
-        var username = localStorage.getItem("username");
-        var password = localStorage.getItem("password");
+        // var username = localStorage.getItem("username");
+        // var password = localStorage.getItem("password");
+        var username = "testuser";
+        var password = "testuser";
         if (!username || !password) {
             var request = new ServerRequest();
             request.method = "POST";
