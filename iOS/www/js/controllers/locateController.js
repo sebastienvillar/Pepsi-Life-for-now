@@ -110,7 +110,7 @@ LocateController.prototype._didChangeBounds = function() {
 LocateController.prototype._didClickMarker = function(marker, user) {
     if (this.selectedMarker)
         this.selectedMarker.removeBubble();
-    marker.addBubble(35, user.name);
+    marker.addBubble(user.posts_count, user.name);
     this.selectedMarker = marker;
 }
 
