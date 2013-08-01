@@ -1,22 +1,28 @@
 #marker {
 	position: absolute;
+	width: 65px;
+	height: 67px;
+}
+
+#marker > #pin {
 	background-color: transparent;
 	background-repeat: no-repeat;
 	width: 65px;
 	height: 67px;
 }
 
-#marker.red {
+#marker > #pin.red {
 	background-image: url("../img/map/pin-red.png");
 }
 
-#marker.yellow {
+#marker > #pin.yellow {
 	background-image: url("../img/map/pin-yellow.png");
 }
 
 #marker > #image {
-	margin-left: 9px;
-	margin-top: 8px;
+	position: absolute;
+	left: 9px;
+	top: 8px;
 	width: 27px;
 	height: 27px;
 	border-radius: 50%;
@@ -24,4 +30,90 @@
 	background-size: cover;
 	background-position: center;
 	background-image: url("../img/common/large-photo-substitute.png");
+}
+
+#marker > .bubble {
+	position: absolute;
+	top: -60px;
+	left: -30px;
+	height: 51px;
+	width: 200px;
+}
+
+/*#marker > .bubble {
+    position: relative;
+    z-index: 2;
+    background: url("../img/map/bubble-left.png") top left no-repeat, 
+                url("../img/map/bubble-right.png") top right no-repeat;
+}
+
+#marker > .bubble:before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: 82px; 
+    top: 0;
+    right: 6px;
+    bottom: 0;
+    background: url("../img/map/bubble-center.png") top left repeat-x;
+}*/
+
+#marker > .bubble > .bubbleLeft {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 82px;
+	height: 51px;
+	background-image: url("../img/map/bubble-left.png")
+}
+
+#marker > .bubble > .bubbleCenter {
+	position: absolute;
+	left: 82px;
+	top: 0;
+	right: 0;
+	height: 41px;
+	background-repeat: repeat-x;
+	background-image: url("../img/map/bubble-center.png")
+}
+
+#marker > .bubble > .bubbleRight {
+	position: absolute;
+	right: -6px;
+	top: 0;
+	width: 6px;
+	height: 41px;
+	background-repeat: no-repeat;
+	background-image: url("../img/map/bubble-right.png")
+}
+
+#marker .bubble > .postsCount {
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 6px;
+	font-size: 23px;
+	font-weight: bold;
+	color: #e00028;
+}
+
+#marker .bubble > .name {
+	display: inline-block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-left: 6px;
+	vertical-align: middle;
+	font-weight: bold;
+	font-size: 18px;
+	max-width: 170px;
+	color: white;
+}
+
+#marker .bubble > .disclosureArrow {
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 6px;
+	width: 5px;
+	height: 10px;
+	background-image: url("../img/map/disclosure-arrow.png");
 }

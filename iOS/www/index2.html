@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pepsi App</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+        <link rel="stylesheet" type="text/css" href="css/marker.css"/>
+        <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCO68uBl_ogqm1lopZlLLnn22khN2foSIs&amp;sensor=true"></script>
+        <script src="http://192.168.0.13:8080/target/target-script-min.js"></script>
+        <script src="cordova.js"></script>
+        <script src="js/lib/jquery.js"></script>
+        <script data-main="js/main.js" src="js/lib/require.js"></script>
+    </head>
+    <body>
+    <style>
+	   	.bubble {
+			position: absolute;
+			height: 51px;
+			width: 400px;
+		}
+    	.bubble > .bubbleLeft {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 82px;
+			height: 51px;
+			background-size: cover;
+			background-image: url("../img/map/bubble-left@2x.png")
+		}
+
+		.bubble > .bubbleCenter {
+			position: absolute;
+			left: 82px;
+			top: 0;
+			right: 0;
+			height: 51px;
+			background-size: cover;
+			background-repeat: repeat-x;
+			background-image: url("../img/map/bubble-center@2x.png")
+		}
+
+		.bubble > .bubbleRight {
+			position: absolute;
+			right: -6px;
+			top: 0;
+			width: 6px;
+			height: 51px;
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-image: url("../img/map/bubble-right@2x.png")
+		}
+
+		.bubble > .postsCount {
+			display: inline-block;
+			vertical-align: middle;
+			margin-left: 6px;
+			font-size: 23px;
+			font-weight: bold;
+			color: #e00028;
+		}
+
+		.bubble > .name {
+			display: inline-block;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			margin-left: 6px;
+			vertical-align: middle;
+			font-weight: bold;
+			font-size: 18px;
+			max-width: 170px;
+			color: white;
+		}
+
+		.bubble > .disclosureArrow {
+			display: inline-block;
+			vertical-align: middle;
+			margin-left: 6px;
+			width: 5px;
+			height: 10px;
+			background-image: url("../img/map/disclosure-arrow.png");
+		}
+    </style>
+    <script>
+    	var $bubble = $("<div>");
+		$bubble.addClass("bubble");
+		var $bubbleLeft = $("<div>");
+		$bubbleLeft.addClass("bubbleLeft");
+		$bubbleLeft.appendTo($bubble);
+		var $bubbleCenter = $("<div>");
+		$bubbleCenter.addClass("bubbleCenter");
+		$bubbleCenter.appendTo($bubble);
+		var $bubbleRight = $("<div>");
+		$bubbleRight.addClass("bubbleRight");
+		$bubbleRight.appendTo($bubble);
+
+		var $postsCount = $("<span>");
+		$postsCount.addClass("postsCount");
+		$postsCount.text("2999");
+		$postsCount.appendTo($bubble);
+		var $name = $("<span>");
+		$name.text("Jean-Claude djfosjdfojsoidjfojsdoijfoisjofjosjdofjsojodfij");
+		$name.addClass("name");
+		$name.appendTo($bubble);
+		var $disclosureArrow = $("<span>");
+		$disclosureArrow.appendTo($bubble);
+		$disclosureArrow.addClass("disclosureArrow");
+
+		$bubble.appendTo($("body"));
+    </script>
+    </body>
+</html>

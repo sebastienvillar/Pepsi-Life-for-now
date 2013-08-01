@@ -13,7 +13,7 @@ var LocateController = function() {
 	this.$map.appendTo(this.$container);
     this.currentPositionMVC = new google.maps.MVCObject();
     this.currentPositionMVC.set("position", new google.maps.LatLng(-21.115141, 55.536384));
-    this.markers = [];
+    this.markers = {};
     navigator.geolocation.getCurrentPosition(this._didUpdatePosition.bind(this), this._didFailToUpdatePosition.bind(this), null);
 };
 
@@ -69,17 +69,28 @@ LocateController.prototype._didChangeBounds = function() {
     request.queryParameters["to_long"] = ne.lng();
 
     request.onSuccess = function(json) {
-        for (var i in this.markers)
-            this.markers[i].setMap(null);
-
-        var users = json.users;
-        for (var i in users) {
-            var user = users[i];
+        this.users = json.users;
+        var newMarkers = {};
+        for (var i in this.users) {
+            var user = this.users[i];
             var coordinate = user.coordinate;
-            var marker = new Marker(new google.maps.LatLng(coordinate.latitude, coordinate.longitude), "yellow");
-            marker.setMap(this.map);
-            this.markers.push(marker);
+            var color = "yellow";
+            if (user.friend)
+                color = "red";
+            if (!this.markers[user.id]) {
+                var marker = new Marker(new google.maps.LatLng(coordinate.latitude, coordinate.longitude), color, user.image_url, this.$container.width());
+                marker.setMap(this.map);
+            }
+            newMarkers[user.id] = marker ? marker : this.markers[user.id];
         }
+
+        for (var key in this.markers) {
+            if (!newMarkers[key]) {
+                this.markers[key].setMap(null);
+            }
+        }
+        this.markers = newMarkers;
+
     }.bind(this);
     request.onError = function(statusCode, message) {
         alert("Error in LocateController get users request: " + statusCode + ": " + message);
