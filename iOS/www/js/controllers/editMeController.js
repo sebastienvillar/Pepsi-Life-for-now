@@ -15,6 +15,10 @@ var EditMeController = function(name, description) {
 
 	this.$form = $("<form>");
 	this.$form.appendTo(this.$container);
+	this.$form.on("submit", function() {
+		this.$doneButton.trigger('tapone');
+		return false;
+	}.bind(this));
 
 	this.$nameInput = $("<input>", {"id": "nameInput", "type": "text"});
 	this.$nameInput.appendTo(this.$form);
@@ -63,6 +67,7 @@ EditMeController.prototype._didClickDoneButton = function() {
 	spinner.setBlue();
 	spinner.$container.addClass("spinner");
 	spinner.$container.appendTo(this.$container);
+	this.$doneButton.off("tapone");
 
 	var finish = function(newData) {
 		spinner.$container.remove();
@@ -72,15 +77,20 @@ EditMeController.prototype._didClickDoneButton = function() {
 	var updateMe = function(imageURL) {
 		var newData = {
 			name: this.$nameInput.val(),
-			description: this.$descriptionInput.val(),
-			image_url: imageURL
+			description: this.$descriptionInput.val()
 		};
+		if (imageURL)
+			newData["image_url"] = imageURL
+		console.log("name:",newData.name);
+		console.log("description:",newData.description);
+		console.log("url:",newData.image_url);
 
 		var request = new ServerRequest();
 		request.method = "PATCH";
 		request.path = "me/";
 		request.body = JSON.stringify(newData);
 		request.onSuccess = function(json) {
+			console.log("success");
 			newData.image_url = this.imageURI;
 			finish(newData)
 		}.bind(this);
