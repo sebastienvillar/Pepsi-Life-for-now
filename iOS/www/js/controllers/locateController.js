@@ -134,21 +134,21 @@ LocateController.prototype._didClickMarkerBubble = function(marker, user) {
 
     var isUserFriend = user.friend;
     userController.on("clickBack", function() {
+        if (isUserFriend != user.friend) {
+            this.selectedMarker.removeBubble();
+            this.selectedMarker.setMap(null);
+            var marker = new Marker(user);
+            marker.setMap(this.map);
+            marker.on("click", this._didClickMarker.bind(this, marker, user));
+            marker.on("clickBubble", this._didClickMarkerBubble.bind(this, marker, user));
+            marker.addBubble();
+            this.selectedMarker = marker;
+        }
         userController.$container.on("webkitAnimationEnd animationEnd", function() {
             userController.$container.off("webkitAnimationEnd animationEnd")
             userController.$container.removeClass("slideRight");
             userController.$container.remove();
-            if (isUserFriend != user.friend) {
-                this.selectedMarker.removeBubble();
-                this.selectedMarker.setMap(null);
-                var marker = new Marker(user);
-                marker.setMap(this.map);
-                marker.on("click", this._didClickMarker.bind(this, marker, user));
-                marker.on("clickBubble", this._didClickMarkerBubble.bind(this, marker, user));
-                marker.addBubble();
-                this.selectedMarker = marker;
-            }
-        }.bind(this));
+        });
         userController.$container.addClass("slideRight");
     }.bind(this));
 };
