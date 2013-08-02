@@ -74,6 +74,7 @@ Marker.prototype.addBubble = function(postsCount, name) {
 	this.$disclosureArrow.addClass("disclosureArrow");
 
 	this.$row.appendTo(this.$bubble);
+	this.$bubble.on("tapone", this._didClickBubble.bind(this));
 	this.$bubble.appendTo(this.$container);
 }
 
@@ -90,6 +91,10 @@ Marker.prototype._didClick = function() {
 		return;
 
 	this.trigger("click");
+}
+
+Marker.prototype._didClickBubble = function() {
+	this.trigger("clickBubble");
 }
 
 return Marker;

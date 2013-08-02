@@ -1,10 +1,11 @@
 var requireArray = [
 	"controllers/controller",
     "helpers/serverRequest",
-    "views/marker"
+    "views/marker",
+    "controllers/userController"
 ];
 
-define(requireArray, function(Controller, ServerRequest, Marker) {
+define(requireArray, function(Controller, ServerRequest, Marker, UserController) {
 var LocateController = function() {
 	Controller.call(this);
 
@@ -82,6 +83,7 @@ LocateController.prototype._didChangeBounds = function() {
                 var marker = new Marker(new google.maps.LatLng(coordinate.latitude, coordinate.longitude), color, user.image_url, this.$container.width());
                 marker.setMap(this.map);
                 marker.on("click", this._didClickMarker.bind(this, marker, user));
+                marker.on("clickBubble", this._didClickMarkerBubble.bind(this, marker, user));
             }
             newMarkers[user.id] = marker ? marker : this.markers[user.id];
         }
@@ -112,7 +114,12 @@ LocateController.prototype._didClickMarker = function(marker, user) {
         this.selectedMarker.removeBubble();
     marker.addBubble(user.posts_count, user.name);
     this.selectedMarker = marker;
-}
+};
+
+LocateController.prototype._didClickMarkerBubble = function(marker, user) {
+    var userController = new UserController(user);
+    this.$container.append(userController.$container);
+};
 
 return LocateController;
 });

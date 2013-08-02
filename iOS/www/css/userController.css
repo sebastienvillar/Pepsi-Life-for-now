@@ -1,0 +1,120 @@
+#userController {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background-color: #124c8f;
+}
+
+#userController > #tableView {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background-color: #124c8f;
+}
+
+#userController #tableView > #cellsContainer {
+	padding: 8px;
+}
+
+#userController #tableView > #header {
+	padding-top: 19px;
+}
+
+/*#userController > button {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 65px;
+	height: 36px;
+	background-color: #e00127;
+	color: #ffffff;
+	font-size: 10px;
+}*/
+
+
+#userController #tableView > #header > #avatarWrapper {
+	margin: auto;
+	width: 128px;
+	height: 128px;
+	background-color: white;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+#userController #tableView > #header > #avatarWrapper > #avatar {
+	width: 108px;
+	height: 108px;
+	margin-top: 10px;
+	margin-left: 10px;
+	border-radius: 50%;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-image: url("../img/me/large-photo-substitute.png");
+}
+
+#userController #tableView > #header > #username {
+	display: block;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 14px;
+	color: white;
+	margin-top: 8px;
+	text-align: center;
+}
+
+#userController #tableView > #header > #description {
+	display: block;
+	font-size: 12px;
+	color: white;
+	text-align: center;
+}
+
+#userController #tableView > #header > #postsRect {
+	display: inline-block;
+	width: 50%;
+	height: 29px;
+	margin-top: 28px;
+	padding-top: 7px;
+	background-color: white;
+}
+
+#userController #tableView > #header > #likesRect {
+	display: inline-block;
+	width: 50%;
+	height: 29px;
+	margin-top: 28px;
+	padding-top: 7px;
+	background-color: #104786;
+}
+
+#userController .rectText {
+	font-size: 18px;
+	font-weight: bold;
+	text-align: left;
+	vertical-align: middle;
+}
+
+#userController #postsRect > #postsCount {
+	margin-left: 23px;
+	color: #161616;
+}
+
+#userController #postsRect > #postsText {
+	margin-left: 6px;
+	color: #124c8f;
+}
+
+#userController #likesRect > #likesCount {
+	margin-left: 23px;
+	color: #161616;
+}
+
+#userController #likesRect > #likesText {
+	margin-left: 6px;
+	color: white;
+}
