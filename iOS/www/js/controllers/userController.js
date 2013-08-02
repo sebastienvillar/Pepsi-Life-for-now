@@ -25,6 +25,11 @@ var UserController = function(user) {
 	this.$avatarWrapper = $("<div>", {"id": "avatarWrapper"});
 	this.$avatarWrapper.appendTo(this.$header);
 
+	if (this.user.friend)
+		this.$avatarWrapper.css("background-color", "#d32433")
+	else
+		this.$avatarWrapper.css("background-color", "#c7d20c")
+
 	this.$avatar = $("<div>", {"id": "avatar"});
 	this.$avatar.appendTo(this.$avatarWrapper);
 
