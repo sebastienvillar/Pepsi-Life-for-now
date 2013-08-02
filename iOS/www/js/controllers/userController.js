@@ -70,11 +70,11 @@ var UserController = function(user) {
 	this.$likesText.text("LIKES");
 
 	this.$backButton = $("<button>", {"id": "backButton"});
-	this.$backButton.appendTo(this.$header);
+	this.$backButton.appendTo(this.$container);
 	this.$backButton.on("tapone", this._didClickBack.bind(this));
 
 	this.$friendButton = $("<button>", {"id": "friendButton"});
-	this.$friendButton.appendTo(this.$header);
+	this.$friendButton.appendTo(this.$container);
 	if (this.user.friend) {
 		this.$friendButton.text("REMOVE");
 		this.$friendButton.on("tapone", this._didClickRemove.bind(this));

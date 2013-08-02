@@ -84,7 +84,7 @@
 	padding-top: 19px;
 }
 
-#userController #header > #backButton {
+#userController > #backButton {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -96,7 +96,7 @@
 	background-color: white;
 }
 
-#userController #header > #friendButton {
+#userController > #friendButton {
 	position: absolute;
 	right: 0;
 	top: 0;
