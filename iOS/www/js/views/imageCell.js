@@ -100,18 +100,19 @@ function ImageCell(post) {
 			this.setSeensCount(post.seensCount);
 		if (post.ownerImageUrl != null)
 			this.setAvatar(post.ownerImageUrl);
-		if (post.ownerFriend != null)
-			this.setFriend(post.ownerFriend);
+		if (post.ownerFriend != null) {
+			if (post.ownerFriend)
+				this.setAvatarColor("#d32433");
+			else
+				this.setAvatarColor("#c7d20c");
+		}
 	}
 }
 
 ImageCell.prototype = new EventEmitter();
 
-ImageCell.prototype.setFriend = function(friend) {
-	if (friend)
-		this.$avatarWrapper.addClass("friend");
-	else
-		this.$avatarWrapper.removeClass("friend");
+ImageCell.prototype.setAvatarColor = function(color) {
+	this.$avatarWrapper.css("background-color", color);
 };
 
 ImageCell.prototype.setLikesCount = function(count) {

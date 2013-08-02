@@ -114,7 +114,6 @@ MeController.prototype.pushNewCells = function() {
 			var post = Post.postFromJSONObject(posts[i]);
 			this.posts.push(post);
 			var cell = new ImageCell(post);
-			cell.setFriend(true);
 
 			cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
 			cell.on("didClickComment", this._didClickComment.bind(this, cell, post));

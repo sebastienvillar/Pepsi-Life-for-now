@@ -85,18 +85,19 @@ function TrendsCell(post) {
 			this.setTags(post.tags);
 		if (post.ownerImageUrl != null)
 			this.setAvatar(post.ownerImageUrl);
-		if (post.ownerFriend != null)
-			this.setFriend(post.ownerFriend);
+		if (post.ownerFriend != null) {
+			if (post.ownerFriend)
+				this.setAvatarColor("#d32433");
+			else
+				this.setAvatarColor("#c7d20c");
+		}
 	}
 }
 
 TrendsCell.prototype = new EventEmitter();
 
-TrendsCell.prototype.setFriend = function(friend) {
-	if (friend)
-		this.$avatarWrapper.addClass("friend");
-	else
-		this.$avatarWrapper.removeClass("friend");
+TrendsCell.prototype.setAvatarColor = function(color) {
+	this.$avatarWrapper.css("background-color", color);
 };
 
 TrendsCell.prototype.setLikesCount = function(count) {
