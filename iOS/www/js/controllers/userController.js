@@ -199,6 +199,7 @@ UserController.prototype._rowIsVisible = function(row) {
 
 UserController.prototype._didClickAdd = function() {
 	this.$friendButton.off("tapone");
+	this.$backButton.off("tapone");
 	var request = new ServerRequest();
 	request.path = "me/friends/";
 	request.method = "POST";
@@ -215,8 +216,11 @@ UserController.prototype._didClickAdd = function() {
 		this.user.friend = true;
 		this.$friendButton.text("REMOVE");
 		this.$friendButton.on("tapone", this._didClickRemove.bind(this));
+		this.$backButton.on("tapone", this._didClickBack.bind(this));
 	}.bind(this);
 	request.onError = function(status, message) {
+		this.$friendButton.on("tapone", this._didClickRemove.bind(this));
+		this.$backButton.on("tapone", this._didClickBack.bind(this));
 		alert("Error in Friends request: " + statusCode + ": " + message);
 	}.bind(this);
 	request.execute();
@@ -224,6 +228,7 @@ UserController.prototype._didClickAdd = function() {
 
 UserController.prototype._didClickRemove = function() {
 	this.$friendButton.off("tapone");
+	this.$backButton.off("tapone");
 	var request = new ServerRequest();
 	request.path = "me/friends/" + this.user.id;
 	request.method = "delete";
@@ -237,8 +242,11 @@ UserController.prototype._didClickRemove = function() {
 		this.user.friend = false;
 		this.$friendButton.text("ADD");
 		this.$friendButton.on("tapone", this._didClickAdd.bind(this));
+		this.$backButton.on("tapone", this._didClickBack.bind(this));
 	}.bind(this);
 	request.onError = function(status, message) {
+		this.$friendButton.on("tapone", this._didClickAdd.bind(this));
+		this.$backButton.on("tapone", this._didClickBack.bind(this));
 		alert("Error in Friends request: " + statusCode + ": " + message);
 	}.bind(this);
 	request.execute();

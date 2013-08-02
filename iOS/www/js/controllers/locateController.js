@@ -137,12 +137,17 @@ LocateController.prototype._didClickMarkerBubble = function(marker, user) {
         if (isUserFriend != user.friend) {
             this.selectedMarker.removeBubble();
             this.selectedMarker.setMap(null);
-            var marker = new Marker(user);
-            marker.setMap(this.map);
-            marker.on("click", this._didClickMarker.bind(this, marker, user));
-            marker.on("clickBubble", this._didClickMarkerBubble.bind(this, marker, user));
-            marker.addBubble();
-            this.selectedMarker = marker;
+            this.selectedMarker = null;
+            this.markers[user.id] = null;
+            if (!this.onlyFriends || user.friend) {
+                var marker = new Marker(user);
+                marker.setMap(this.map);
+                marker.on("click", this._didClickMarker.bind(this, marker, user));
+                marker.on("clickBubble", this._didClickMarkerBubble.bind(this, marker, user));
+                marker.addBubble();
+                this.selectedMarker = marker;
+                this.markers[user.id] = marker;
+            }
         }
         userController.$container.on("webkitAnimationEnd animationEnd", function() {
             userController.$container.off("webkitAnimationEnd animationEnd")
