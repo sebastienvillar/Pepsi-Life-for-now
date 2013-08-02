@@ -14,7 +14,6 @@ var LocateController = function() {
 	this.$map.appendTo(this.$container);
     this.currentPositionMVC = new google.maps.MVCObject();
     this.currentPositionMVC.set("position", new google.maps.LatLng(-21.115141, 55.536384));
-    this.markers = {};
     this.selectedMarker = null;
     navigator.geolocation.getCurrentPosition(this._didUpdatePosition.bind(this), this._didFailToUpdatePosition.bind(this), null);
 };
@@ -23,6 +22,7 @@ var LocateController = function() {
 LocateController.prototype = new Controller();
 
 LocateController.prototype.init = function() {
+    this.markers = {};
     var mapOptions = {
         zoom: 8,
         center: this.currentPositionMVC.get("position"),
