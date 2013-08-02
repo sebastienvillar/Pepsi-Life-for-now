@@ -75,12 +75,8 @@ LocateController.prototype._didChangeBounds = function() {
         var newMarkers = {};
         for (var i in this.users) {
             var user = this.users[i];
-            var coordinate = user.coordinate;
-            var color = "yellow";
-            if (user.friend)
-                color = "red";
             if (!this.markers[user.id]) {
-                var marker = new Marker(new google.maps.LatLng(coordinate.latitude, coordinate.longitude), color, user.image_url, this.$container.width());
+                var marker = new Marker(user);
                 marker.setMap(this.map);
                 marker.on("click", this._didClickMarker.bind(this, marker, user));
                 marker.on("clickBubble", this._didClickMarkerBubble.bind(this, marker, user));
@@ -112,7 +108,7 @@ LocateController.prototype._didChangeBounds = function() {
 LocateController.prototype._didClickMarker = function(marker, user) {
     if (this.selectedMarker)
         this.selectedMarker.removeBubble();
-    marker.addBubble(user.posts_count, user.name);
+    marker.addBubble(user);
     this.selectedMarker = marker;
 };
 
@@ -126,14 +122,25 @@ LocateController.prototype._didClickMarkerBubble = function(marker, user) {
     userController.$container.addClass("slideLeft");
     userController.$container.appendTo(this.$container);
 
+    var isUserFriend = user.friend;
     userController.on("clickBack", function() {
         userController.$container.on("webkitAnimationEnd animationEnd", function() {
             userController.$container.off("webkitAnimationEnd animationEnd")
             userController.$container.removeClass("slideRight");
             userController.$container.remove();
-        });
+            if (isUserFriend != user.friend) {
+                this.selectedMarker.removeBubble();
+                this.selectedMarker.setMap(null);
+                var marker = new Marker(user);
+                marker.setMap(this.map);
+                marker.on("click", this._didClickMarker.bind(this, marker, user));
+                marker.on("clickBubble", this._didClickMarkerBubble.bind(this, marker, user));
+                marker.addBubble();
+                this.selectedMarker = marker;
+            }
+        }.bind(this));
         userController.$container.addClass("slideRight");
-    });
+    }.bind(this));
 };
 
 return LocateController;

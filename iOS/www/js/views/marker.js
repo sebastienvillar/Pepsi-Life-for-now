@@ -4,23 +4,25 @@ var requireArray = [
 
 define(requireArray, function(EventEmitter) {
 
-var Marker = function(position, color, imageUrl) {
+var Marker = function(user) {
 	google.maps.OverlayView.call(this);
 	EventEmitter.call(this);
 
-	this.position = position;
+	this.user = user;
+	this.position = new google.maps.LatLng(this.user.coordinate.latitude, this.user.coordinate.longitude);
 	this.$container = $("<div>", {"id": "marker"});
 
 	this.$pin = $("<div>", {"id": "pin"});
-    this.$pin.addClass(color);
+	var pinClass = this.user.friend ? "red": "yellow";
+    this.$pin.addClass(pinClass);
     this.$pin.on("tapone", this._didClick.bind(this));
     this.$pin.appendTo(this.$container);
 
     this.$image = $("<div>", {"id": "image"});
     this.$image.appendTo(this.$container);
     this.$image.on("tapone", this._didClick.bind(this));
-    if (imageUrl)
-    	this.$image.css("background-image", "url(" + imageUrl + ")");
+    if (this.user.image_url)
+    	this.$image.css("background-image", "url(" + this.user.image_url + ")");
 }
 
 Marker.prototype = $.extend({}, google.maps.OverlayView.prototype, EventEmitter.prototype, Marker.prototype);
@@ -41,7 +43,7 @@ Marker.prototype.draw = function() {
 	this.$container.css({left: pixelPosition.x + "px", top: pixelPosition.y + "px"});
 };
 
-Marker.prototype.addBubble = function(postsCount, name) {
+Marker.prototype.addBubble = function() {
 	if (this.bubble)
 		return;
 	this.$bubble = $("<div>");
@@ -60,13 +62,13 @@ Marker.prototype.addBubble = function(postsCount, name) {
 	this.$row.addClass("row");
 	this.$postsCount = $("<div>");
 	this.$postsCount.addClass("postsCount");
-	this.$postsCount.text(postsCount);
+	this.$postsCount.text(this.user.posts_count);
 	this.$postsCount.appendTo(this.$row);
 	this.$cameraIcon = $("<div>");
 	this.$cameraIcon.appendTo(this.$row);
 	this.$cameraIcon.addClass("cameraIcon");
 	this.$name = $("<div>");
-	this.$name.text(name);
+	this.$name.text(this.user.name);
 	this.$name.addClass("name");
 	this.$name.appendTo(this.$row);
 	this.$disclosureArrow = $("<div>");
