@@ -44,6 +44,10 @@ function TrendsCell(post) {
 	this.$likesButton.appendTo(this.$header);
 	this.$likesButton.on("tapone", didClickLike.bind(this));
 
+	this.$likesIcon = $("<div>");
+	this.$likesIcon.addClass("trendsCell-likesIcon");
+	this.$likesIcon.appendTo(this.$header);
+
 	this.$likesCount = $("<p>");
 	this.$likesCount.addClass("trendsCell-likesCount");
 	this.$likesCount.appendTo(this.$header);
@@ -52,6 +56,10 @@ function TrendsCell(post) {
 	this.$commentsButton.addClass("trendsCell-commentsButton");
 	this.$commentsButton.appendTo(this.$header);
 	this.$commentsButton.on("tapone", didClickComment.bind(this));
+
+	this.$commentsIcon = $("<div>");
+	this.$commentsIcon.addClass("trendsCell-commentsIcon");
+	this.$commentsIcon.appendTo(this.$header);
 
 	this.$commentsCount = $("<p>");
 	this.$commentsCount.addClass("trendsCell-commentsCount");

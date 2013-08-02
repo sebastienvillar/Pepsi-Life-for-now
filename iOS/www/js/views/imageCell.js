@@ -68,12 +68,18 @@ function ImageCell(post) {
 	this.$likesButton.appendTo(this.$footer);
 	this.$likesButton.on("tapone", didClickLike.bind(this));
 
+	this.$likesIcon = $("<div>", {"id": "likesIcon"});
+	this.$likesIcon.appendTo(this.$footer);
+
 	this.$likesCount = $("<p>", {"id": "likesCount"});
 	this.$likesCount.appendTo(this.$footer);
 
 	this.$commentsButton = $("<div>", {"id": "commentsButton"});
 	this.$commentsButton.appendTo(this.$footer);
 	this.$commentsButton.on("tapone", didClickComment.bind(this));
+
+	this.$commentsIcon = $("<div>", {"id": "commentsIcon"});
+	this.$commentsIcon.appendTo(this.$footer);
 
 	this.$commentsCount = $("<p>", {"id": "commentsCount"});
 	this.$commentsCount.appendTo(this.$footer);
@@ -224,6 +230,7 @@ ImageCell.prototype.setSelected = function(selected) {
 //////////////////////////////
 
 function didClickLike(event) {
+	console.log("click like");
 	event.stopPropagation();
 	this.trigger("didClickLike");
 }
