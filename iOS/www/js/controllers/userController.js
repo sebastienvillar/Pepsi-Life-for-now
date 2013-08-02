@@ -198,11 +198,50 @@ UserController.prototype._rowIsVisible = function(row) {
 };
 
 UserController.prototype._didClickAdd = function() {
-
+	this.$friendButton.off("tapone");
+	var request = new ServerRequest();
+	request.path = "me/friends/";
+	request.method = "POST";
+	request.body = JSON.stringify({
+		friend: this.user.id
+	});
+	request.onSuccess = function(json) {
+		for (var i in this.posts) {
+			this.posts[i].friend = true;
+			var cell = this.tableView.cellForRow(i);
+			cell.setAvatarColor("#d32433");
+		}
+		this.$avatarWrapper.css("background-color", "#d32433");
+		this.user.friend = true;
+		this.$friendButton.text("REMOVE");
+		this.$friendButton.on("tapone", this._didClickRemove.bind(this));
+	}.bind(this);
+	request.onError = function(status, message) {
+		alert("Error in Friends request: " + statusCode + ": " + message);
+	}.bind(this);
+	request.execute();
 };
 
 UserController.prototype._didClickRemove = function() {
-
+	this.$friendButton.off("tapone");
+	var request = new ServerRequest();
+	request.path = "me/friends/" + this.user.id;
+	request.method = "delete";
+	request.onSuccess = function(json) {
+		for (var i in this.posts) {
+			this.posts[i].friend = false;
+			var cell = this.tableView.cellForRow(i);
+			cell.setAvatarColor("#c7d20c");
+		}
+		this.$avatarWrapper.css("background-color", "#c7d20c");
+		this.user.friend = false;
+		this.$friendButton.text("ADD");
+		this.$friendButton.on("tapone", this._didClickAdd.bind(this));
+	}.bind(this);
+	request.onError = function(status, message) {
+		alert("Error in Friends request: " + statusCode + ": " + message);
+	}.bind(this);
+	request.execute();
 };
 
 UserController.prototype._didClickBack = function() {
