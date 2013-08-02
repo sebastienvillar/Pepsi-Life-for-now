@@ -118,7 +118,12 @@ LocateController.prototype._didClickMarker = function(marker, user) {
 
 LocateController.prototype._didClickMarkerBubble = function(marker, user) {
     var userController = new UserController(user);
-    this.$container.append(userController.$container);
+    userController.$container.on("webkitAnimationEnd animationEnd", function() {
+        userController.$container.off("webkitAnimationEnd animationEnd")
+        userController.$container.removeClass("slideLeft");
+    }.bind(this));
+    userController.$container.addClass("slideLeft");
+    userController.$container.appendTo(this.$container);
 };
 
 return LocateController;

@@ -68,6 +68,13 @@ var UserController = function(user) {
 	this.$likesText.addClass("rectText");
 	this.$likesText.text("LIKES");
 
+	this.$backButton = $("<button>", {"id": "backButton"});
+	this.$backButton.appendTo(this.$header);
+
+	this.$friendButton = $("<button>", {"id": "friendButton"});
+	this.$friendButton.appendTo(this.$header);
+	this.$friendButton.text("ADD");
+
 	this.postsRemaining = true;
 	this.posts = [];
 	
