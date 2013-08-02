@@ -12,6 +12,11 @@ var LocateController = function() {
 	this.$container.attr("id", "locateController");
 	this.$map = $("<div>", {"id": "map"});
 	this.$map.appendTo(this.$container);
+    this.$filterButton = $("<button>", {"id": "filterButton"});
+    this.$filterButton.appendTo(this.$container);
+    this.$filterButton.text("ALL");
+    this.$filterButton.on("tapone", this._didClickAll.bind(this));
+    this.onlyFriends = false;
     this.currentPositionMVC = new google.maps.MVCObject();
     this.currentPositionMVC.set("position", new google.maps.LatLng(-21.115141, 55.536384));
     this.selectedMarker = null;
@@ -64,17 +69,22 @@ LocateController.prototype._didChangeBounds = function() {
 
     var request = new ServerRequest();
     request.method = "GET";
-    request.path = "users/";
+    if (this.onlyFriends)
+        request.path = "me/friends/";
+    else
+        request.path = "users/";
     request.queryParameters["from_lat"] = sw.lat();
     request.queryParameters["to_lat"] = ne.lat();
     request.queryParameters["from_long"] = sw.lng();
     request.queryParameters["to_long"] = ne.lng();
 
     request.onSuccess = function(json) {
-        this.users = json.users;
+        this.users = json.users || json.friends;
         var newMarkers = {};
         for (var i in this.users) {
             var user = this.users[i];
+            if (this.onlyFriends)
+                user.friend = true;
             if (!this.markers[user.id]) {
                 var marker = new Marker(user);
                 marker.setMap(this.map);
@@ -141,6 +151,22 @@ LocateController.prototype._didClickMarkerBubble = function(marker, user) {
         }.bind(this));
         userController.$container.addClass("slideRight");
     }.bind(this));
+};
+
+LocateController.prototype._didClickAll = function() {
+    this.$filterButton.off("tapone");
+    this.$filterButton.on("tapone", this._didClickFriends.bind(this));
+    this.$filterButton.text("FRIENDS");
+    this.onlyFriends = true;
+    this._didChangeBounds();
+};
+
+LocateController.prototype._didClickFriends = function() {
+    this.$filterButton.off("tapone");
+    this.$filterButton.on("tapone", this._didClickAll.bind(this));
+    this.$filterButton.text("ALL");
+    this.onlyFriends = false;
+    this._didChangeBounds();
 };
 
 return LocateController;

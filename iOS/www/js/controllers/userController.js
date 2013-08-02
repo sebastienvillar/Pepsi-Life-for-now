@@ -120,9 +120,9 @@ UserController.prototype.pushNewCells = function() {
 		this.postsRemaining = posts.length == 10;
 		for (var i in posts) {
 			var post = Post.postFromJSONObject(posts[i]);
+			post.friend = this.user.friend;
 			this.posts.push(post);
 			var cell = new ImageCell(post);
-
 			cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
 			cell.on("didClickComment", this._didClickComment.bind(this, cell, post));
 
