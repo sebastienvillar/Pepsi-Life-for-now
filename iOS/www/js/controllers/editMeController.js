@@ -81,9 +81,6 @@ EditMeController.prototype._didClickDoneButton = function() {
 		};
 		if (imageURL)
 			newData["image_url"] = imageURL
-		console.log("name:",newData.name);
-		console.log("description:",newData.description);
-		console.log("url:",newData.image_url);
 
 		var request = new ServerRequest();
 		request.method = "PATCH";

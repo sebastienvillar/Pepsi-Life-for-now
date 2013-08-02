@@ -35,20 +35,24 @@
 @-webkit-keyframes slideUp {
 	0% {
 		top: 100%;
+		bottom: -100%;
 	}
 
 	100% {
 		top: 0%;
+		bottom: 0%;
 	}
 }
 
 @keyframes slideUp {
 	0% {
 		top: 100%;
+		bottom: -100%;
 	}
 
 	100% {
 		top: 0%;
+		bottom: 0%;
 	}
 }
 
@@ -61,20 +65,24 @@
 @-webkit-keyframes slideDown {
 	0% {
 		top: 0%;
+		bottom: 0%;
 	}
 
 	100% {
 		top: 100%;
+		bottom: -100%;
 	}
 }
 
 @keyframes slideDown {
 	0% {
 		top: 0%;
+		bottom: 0%;
 	}
 
 	100% {
 		top: 100%;
+		bottom: -100%;
 	}
 }
 
