@@ -4,9 +4,10 @@ var requireArray = [
 	"helpers/serverRequest",
 	"views/imageCell",
 	"models/post",
+	"helpers/eventEmitter"
 ]
 
-define(requireArray, function(Controller, TableView, ServerRequest, ImageCell, Post) {
+define(requireArray, function(Controller, TableView, ServerRequest, ImageCell, Post, EventEmitter) {
 var UserController = function(user) {
 	Controller.call(this);
 
@@ -70,10 +71,18 @@ var UserController = function(user) {
 
 	this.$backButton = $("<button>", {"id": "backButton"});
 	this.$backButton.appendTo(this.$header);
+	this.$backButton.on("tapone", this._didClickBack.bind(this));
 
 	this.$friendButton = $("<button>", {"id": "friendButton"});
 	this.$friendButton.appendTo(this.$header);
-	this.$friendButton.text("ADD");
+	if (this.user.friend) {
+		this.$friendButton.text("REMOVE");
+		this.$friendButton.on("tapone", this._didClickRemove.bind(this));
+	}
+	else {
+		this.$friendButton.text("ADD");
+		this.$friendButton.on("tapone", this._didClickAdd.bind(this));
+	}
 
 	this.postsRemaining = true;
 	this.posts = [];
@@ -92,7 +101,7 @@ var UserController = function(user) {
 	this.pushNewCells();
 }
 
-UserController.prototype = new Controller();
+UserController.prototype = $.extend({}, EventEmitter.prototype, UserController.prototype);
 
 
 UserController.prototype.pushNewCells = function() {
@@ -184,6 +193,19 @@ UserController.prototype._rowIsVisible = function(row) {
 		}
 	}.bind(this);
 	request.execute();
+};
+
+UserController.prototype._didClickAdd = function() {
+
+};
+
+UserController.prototype._didClickRemove = function() {
+
+};
+
+UserController.prototype._didClickBack = function() {
+	this.$backButton.off("tapone");
+	this.trigger("clickBack");
 };
 
 return UserController;
