@@ -121,6 +121,7 @@ LocateController.prototype._didClickMarkerBubble = function(marker, user) {
     userController.$container.on("webkitAnimationEnd animationEnd", function() {
         userController.$container.off("webkitAnimationEnd animationEnd")
         userController.$container.removeClass("slideLeft");
+        userController.init();
     });
     userController.$container.addClass("slideLeft");
     userController.$container.appendTo(this.$container);

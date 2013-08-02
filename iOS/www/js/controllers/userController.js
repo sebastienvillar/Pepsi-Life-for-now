@@ -98,11 +98,13 @@ var UserController = function(user) {
 	this.$postsCount.text(this.user.posts_count);
 	if (this.user.image_url)
 		this.$avatar.css("background-image", "url(" + this.user.image_url + ")");
-	this.pushNewCells();
 }
 
 UserController.prototype = $.extend({}, EventEmitter.prototype, UserController.prototype);
 
+UserController.prototype.init = function() {
+	this.pushNewCells();
+}
 
 UserController.prototype.pushNewCells = function() {
 	this.tableView.enterLoadingMode();
