@@ -16,7 +16,7 @@ define(["helpers/constants"], function(Constants) {
 		var request = new XMLHttpRequest();
 		request.onload = function() {
 			var response = JSON.parse(request.responseText);
-			if (request.status == 200) {
+			if (response.status == 200) {
 				this.onSuccess(response.body);
 			}
 			else {
