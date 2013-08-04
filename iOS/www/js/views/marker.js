@@ -27,7 +27,7 @@ var Marker = function(user) {
 
 Marker.prototype = $.extend({}, google.maps.OverlayView.prototype, EventEmitter.prototype, Marker.prototype);
 Marker.prototype.onAdd = function() {
-	var $pane = $(this.getPanes().overlayImage);
+	var $pane = $(this.getPanes().overlayMouseTarget);
 	this.$container.appendTo($pane);
 };
 
