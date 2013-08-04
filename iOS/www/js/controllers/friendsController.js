@@ -19,11 +19,17 @@ var FriendsController = function() {
 	this.tableView.$container.appendTo(this.$container);
 	this.postsRemaining = true;
 	this.posts = [];
+	this.postsByIds = {};
 
 	//Event Handlers
 	this.tableView.on("didScrollToBottom", this._didScrollToBottom.bind(this));
 	this.tableView.on("didSelectRow", this._didSelectRow.bind(this));
 	this.tableView.on("rowIsVisible", this._rowIsVisible.bind(this));
+
+	notificationCenter.on("likeNotification", this._onLikeNotification.bind(this));
+	notificationCenter.on("seenNotification", this._onSeenNotification.bind(this));
+	notificationCenter.on("friendNotification", this._onFriendNotification.bind(this));
+	notificationCenter.on("unfriendNotification", this._onUnfriendNotification.bind(this));
 
 	this.pushNewCells();
 };
@@ -46,6 +52,7 @@ FriendsController.prototype.pushNewCells = function() {
 		for (var i in posts) {
 			var post = Post.postFromJSONObject(posts[i]);
 			this.posts.push(post);
+			this.postsByIds[post.id] = post;
 			var cell = new ImageCell(post);
 
 			cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
@@ -86,6 +93,7 @@ FriendsController.prototype._didClickLike = function(cell, post) {
 	request.method = "POST";
 	request.onSuccess = function(json) {
 		cell.setLikesCount(cell.getLikesCount() + 1);
+		notificationCenter.trigger("likeNotification", {postId: post.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
 		if (statusCode != 403) {
@@ -112,6 +120,7 @@ FriendsController.prototype._rowIsVisible = function(row) {
 	request.method = "POST";
 	request.onSuccess = function(json) {
 		cell.setSeensCount(cell.getSeensCount() + 1);
+		notificationCenter.trigger("seenNotification", {postId: post.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
 		if (statusCode != 403) {
@@ -120,6 +129,47 @@ FriendsController.prototype._rowIsVisible = function(row) {
 		}
 	}.bind(this);
 	request.execute();
+};
+
+FriendsController.prototype._onLikeNotification = function(notification) {
+	if (notification.notifier == this)
+		return;
+	var post = this.postsByIds[notification.postId];
+	if (post && !post.liked) {
+		post.liked = true;
+		post.likesCount++;
+		var cell = this.tableView.cellForRow(this.posts.indexOf(post));
+		cell.setLikesCount(cell.getLikesCount() + 1);
+	}
+};
+
+FriendsController.prototype._onSeenNotification = function(notification) {
+	if (notification.notifier == this)
+		return;
+	var post = this.postsByIds[notification.postId];
+	if (post && !post.seen) {
+		post.seen = true;
+		post.seensCount++;
+		var cell = this.tableView.cellForRow(this.posts.indexOf(post));
+		if (cell.setSeensCount)
+			cell.setSeensCount(cell.getSeensCount() + 1);
+	}
+};
+
+FriendsController.prototype._onFriendNotification = function(notification) {
+	this._reloadTableView();
+};
+
+FriendsController.prototype._onUnfriendNotification = function(notification) {
+	this._reloadTableView();
+};
+
+FriendsController.prototype._reloadTableView = function() {
+	this.tableView.removeAllRows();
+	this.posts = [];
+	this.postsByIds = {};
+	this.postsRemaining = true;
+	this.pushNewCells();
 };
 
 return FriendsController;

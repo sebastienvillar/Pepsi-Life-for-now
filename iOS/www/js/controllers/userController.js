@@ -86,11 +86,15 @@ var UserController = function(user) {
 
 	this.postsRemaining = true;
 	this.posts = [];
+	this.postsByIds = {};
 	
 	//Event Handlers
 	this.tableView.on("didScrollToBottom", this._didScrollToBottom.bind(this));
 	this.tableView.on("didSelectRow", this._didSelectRow.bind(this));
 	this.tableView.on("rowIsVisible", this._rowIsVisible.bind(this));
+
+	notificationCenter.on("likeNotification", this._onLikeNotification.bind(this));
+	notificationCenter.on("seenNotification", this._onSeenNotification.bind(this));
 	
 	this.$username.text(this.user.name);
 	this.$description.text(this.user.description);
@@ -123,6 +127,7 @@ UserController.prototype.pushNewCells = function() {
 			var post = Post.postFromJSONObject(posts[i]);
 			post.friend = this.user.friend;
 			this.posts.push(post);
+			this.postsByIds[post.id] = post;
 			var cell = new ImageCell(post);
 			cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
 			cell.on("didClickComment", this._didClickComment.bind(this, cell, post));
@@ -162,6 +167,7 @@ UserController.prototype._didClickLike = function(cell, post) {
 	request.method = "POST";
 	request.onSuccess = function(json) {
 		cell.setLikesCount(cell.getLikesCount() + 1);
+		notificationCenter.trigger("likeNotification", {postId: post.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
 		if (statusCode != 403) {
@@ -188,6 +194,7 @@ UserController.prototype._rowIsVisible = function(row) {
 	request.method = "POST";
 	request.onSuccess = function(json) {
 		cell.setSeensCount(cell.getSeensCount() + 1);
+		notificationCenter.trigger("seenNotification", {postId: post.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
 		if (statusCode != 403) {
@@ -218,6 +225,7 @@ UserController.prototype._didClickAdd = function() {
 		this.$friendButton.text("REMOVE");
 		this.$friendButton.on("tapone", this._didClickRemove.bind(this));
 		this.$backButton.on("tapone", this._didClickBack.bind(this));
+		notificationCenter.trigger("friendNotification", {userId: this.user.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
 		this.$friendButton.on("tapone", this._didClickRemove.bind(this));
@@ -244,6 +252,7 @@ UserController.prototype._didClickRemove = function() {
 		this.$friendButton.text("ADD");
 		this.$friendButton.on("tapone", this._didClickAdd.bind(this));
 		this.$backButton.on("tapone", this._didClickBack.bind(this));
+		notificationCenter.trigger("unfriendNotification", {userId: this.user.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
 		this.$friendButton.on("tapone", this._didClickAdd.bind(this));
@@ -256,6 +265,31 @@ UserController.prototype._didClickRemove = function() {
 UserController.prototype._didClickBack = function() {
 	this.$backButton.off("tapone");
 	this.trigger("clickBack");
+};
+
+UserController.prototype._onLikeNotification = function(notification) {
+	if (notification.notifier == this)
+		return;
+	var post = this.postsByIds[notification.postId];
+	if (post && !post.liked) {
+		post.liked = true;
+		post.likesCount++;
+		var cell = this.tableView.cellForRow(this.posts.indexOf(post));
+		cell.setLikesCount(cell.getLikesCount() + 1);
+	}
+};
+
+UserController.prototype._onSeenNotification = function(notification) {
+	if (notification.notifier == this)
+		return;
+	var post = this.postsByIds[notification.postId];
+	if (post && !post.seen) {
+		post.seen = true;
+		post.seensCount++;
+		var cell = this.tableView.cellForRow(this.posts.indexOf(post));
+		if (cell.setSeensCount)
+			cell.setSeensCount(cell.getSeensCount() + 1);
+	}
 };
 
 return UserController;

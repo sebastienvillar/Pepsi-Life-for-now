@@ -388,6 +388,7 @@ CameraController.prototype.didClickSave = function(event) {
 			this.$retakeButton.appendTo(this.$mainContainer);
 			this.$retakeButton.on("tapone", this.showCamera.bind(this));
 			this.$mainContainer.appendTo(this.$container);
+			notificationCenter.trigger("postNotification", {postId: json["id"], notifier: this});
 		}.bind(this);
 		request.onError = function(status, message) {
 			alert(status + ":" + message);

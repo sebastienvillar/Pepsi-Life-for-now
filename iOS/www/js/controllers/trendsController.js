@@ -28,6 +28,7 @@ var TrendsController = function() {
 	this.tableView.$container.appendTo(this.$container);
 	this.postsRemaining = true;
 	this.posts = [];
+	this.postsByIds = {};
 
 	this.currentSearchTag = null;
 
@@ -36,6 +37,9 @@ var TrendsController = function() {
 	this.tableView.on("didSelectRow", this._didSelectRow.bind(this));
 	this.tableView.on("rowIsVisible", this._rowIsVisible.bind(this));
 	this.$searchForm.on("submit", this._didSearch.bind(this));
+
+	notificationCenter.on("likeNotification", this._onLikeNotification.bind(this));
+	notificationCenter.on("seenNotification", this._onSeenNotification.bind(this));
 
 	this.pushNewCells();
 };
@@ -59,6 +63,7 @@ TrendsController.prototype.pushNewCells = function() {
 		for (var i in posts) {
 			var post = Post.postFromJSONObject(posts[i]);
 			this.posts.push(post);
+			this.postsByIds[post.id] = post;
 			if (this.currentSearchTag)
 				var cell = new ImageCell(post);
 			else
@@ -102,7 +107,9 @@ TrendsController.prototype._didClickLike = function(cell, post) {
 	request.path = "posts/" + post.id + "/likes";
 	request.method = "POST";
 	request.onSuccess = function(json) {
+		post.likesCount++;
 		cell.setLikesCount(cell.getLikesCount() + 1);
+		notificationCenter.trigger("likeNotification", {postId: post.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
 		if (statusCode != 403) {
@@ -151,8 +158,10 @@ TrendsController.prototype._rowIsVisible = function(row) {
 	request.path = "posts/" + post.id + "/seens";
 	request.method = "POST";
 	request.onSuccess = function(json) {
+		post.seensCount++;
 		if (cell.setSeensCount)
 			cell.setSeensCount(cell.getSeensCount() + 1);
+		notificationCenter.trigger("seenNotification", {postId: post.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
 		if (statusCode != 403) {
@@ -161,6 +170,31 @@ TrendsController.prototype._rowIsVisible = function(row) {
 		}
 	}.bind(this);
 	request.execute();
+};
+
+TrendsController.prototype._onLikeNotification = function(notification) {
+	if (notification.notifier == this)
+		return;
+	var post = this.postsByIds[notification.postId];
+	if (post && !post.liked) {
+		post.liked = true;
+		post.likesCount++;
+		var cell = this.tableView.cellForRow(this.posts.indexOf(post));
+		cell.setLikesCount(cell.getLikesCount() + 1);
+	}
+};
+
+TrendsController.prototype._onSeenNotification = function(notification) {
+	if (notification.notifier == this)
+		return;
+	var post = this.postsByIds[notification.postId];
+	if (post && !post.seen) {
+		post.seen = true;
+		post.seensCount++;
+		var cell = this.tableView.cellForRow(this.posts.indexOf(post));
+		if (cell.setSeensCount)
+			cell.setSeensCount(cell.getSeensCount() + 1);
+	}
 };
 
 return TrendsController;

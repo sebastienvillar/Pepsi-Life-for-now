@@ -70,11 +70,15 @@ var MeController = function() {
 
 	this.postsRemaining = true;
 	this.posts = [];
+	this.postsByIds = {};
 	
 	//Event Handlers
 	this.tableView.on("didScrollToBottom", this._didScrollToBottom.bind(this));
 	this.tableView.on("didSelectRow", this._didSelectRow.bind(this));
 	this.tableView.on("rowIsVisible", this._rowIsVisible.bind(this));
+
+	notificationCenter.on("postNotification", this._onPostNotification.bind(this));
+	notificationCenter.on("likeNotification", this._onLikeNotification.bind(this));
 	
 	var request = new ServerRequest();
 	request.method = "GET";
@@ -113,6 +117,7 @@ MeController.prototype.pushNewCells = function() {
 		for (var i in posts) {
 			var post = Post.postFromJSONObject(posts[i]);
 			this.posts.push(post);
+			this.postsByIds[post.id] = post;
 			var cell = new ImageCell(post);
 
 			cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
@@ -153,6 +158,7 @@ MeController.prototype._didClickLike = function(cell, post) {
 	request.method = "POST";
 	request.onSuccess = function(json) {
 		cell.setLikesCount(cell.getLikesCount() + 1);
+		notificationCenter.trigger("likeNotification", {postId: post.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
 		if (statusCode != 403) {
@@ -179,6 +185,7 @@ MeController.prototype._rowIsVisible = function(row) {
 	request.method = "POST";
 	request.onSuccess = function(json) {
 		cell.setSeensCount(cell.getSeensCount() + 1);
+		notificationCenter.trigger("seenNotification", {postId: post.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
 		if (statusCode != 403) {
@@ -220,6 +227,33 @@ MeController.prototype._didClickEditButton = function(event) {
 		}.bind(this));
 		editMeController.$container.addClass("slideDown");
 	}.bind(this));
+};
+
+MeController.prototype._onPostNotification = function(notification) {
+	var request = new ServerRequest();
+	request.method = "GET";
+	request.path = "posts/" + notification.postId;
+
+	request.onSuccess = function(json) {
+		var post = Post.postFromJSONObject(json);
+		this.posts.splice(0, 0, post);
+		this.postsByIds[post.id] = post;
+
+		var cell = new ImageCell(post);
+		cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
+		cell.on("didClickComment", this._didClickComment.bind(this, cell, post));
+
+		this.tableView.insertCellAtRow(cell, 0);
+	}.bind(this);
+	request.onError = function(statusCode, message) {
+		alert("Error in MeController get post request: " + statusCode + ": " + message);
+	}.bind(this);
+	request.execute();
+};
+
+MeController.prototype._onLikeNotification = function(notification) {
+	var likes = parseInt(this.$likesCount.text());
+	this.$likesCount.text(likes + 1);
 };
 
 return MeController;

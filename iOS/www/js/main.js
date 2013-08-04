@@ -18,10 +18,11 @@ function onDeviceReady() {
         "controllers/meController",
         "controllers/locateController",
         "helpers/constants",
-        "helpers/serverRequest"
+        "helpers/serverRequest",
+        "helpers/eventEmitter"
     ];
 
-    require(requireArray, function(TabBarController, NavigationController, Controller, TableView, TrendsCell, TrendsController, CameraController, FriendsController, MeController, LocateController, Constants, ServerRequest) {
+    require(requireArray, function(TabBarController, NavigationController, Controller, TableView, TrendsCell, TrendsController, CameraController, FriendsController, MeController, LocateController, Constants, ServerRequest, EventEmitter) {
 
         //Get username and password
         // var username = localStorage.getItem("username");
@@ -55,6 +56,7 @@ function onDeviceReady() {
         }
 
         function start() {
+            window.notificationCenter = new EventEmitter();
             var controllers = [];
             var controller1 = new TrendsController();
             controllers.push(controller1);

@@ -20,7 +20,11 @@ var LocateController = function() {
     this.currentPositionMVC = new google.maps.MVCObject();
     this.currentPositionMVC.set("position", new google.maps.LatLng(-21.115141, 55.536384));
     this.selectedMarker = null;
+    this.usersBydIds = {};
     navigator.geolocation.getCurrentPosition(this._didUpdatePosition.bind(this), this._didFailToUpdatePosition.bind(this), null);
+
+    notificationCenter.on("friendNotification", this._onFriendNotification.bind(this));
+    notificationCenter.on("unfriendNotification", this._onUnfriendNotification.bind(this));
 };
 
 
@@ -87,6 +91,7 @@ LocateController.prototype._didChangeBounds = function() {
             if (this.onlyFriends)
                 user.friend = true;
             if (!this.markers[user.id]) {
+                this.usersBydIds[user.id] = user;
                 var marker = new Marker(user);
                 marker.setMap(this.map);
                 marker.on("click", this._didClickMarker.bind(this, marker, user));
@@ -97,6 +102,7 @@ LocateController.prototype._didChangeBounds = function() {
 
         for (var key in this.markers) {
             if (!newMarkers[key]) {
+                this.usersBydIds[key] = null;
                 var marker = this.markers[key];
                 if (marker == this.selectedMarker) {
                     this.selectedMarker.removeBubble();
@@ -133,23 +139,7 @@ LocateController.prototype._didClickMarkerBubble = function(marker, user) {
     userController.$container.addClass("slideLeft");
     userController.$container.appendTo(this.$container);
 
-    var isUserFriend = user.friend;
     userController.on("clickBack", function() {
-        if (isUserFriend != user.friend) {
-            this.selectedMarker.removeBubble();
-            this.selectedMarker.setMap(null);
-            this.selectedMarker = null;
-            this.markers[user.id] = null;
-            if (!this.onlyFriends || user.friend) {
-                var marker = new Marker(user);
-                marker.setMap(this.map);
-                marker.on("click", this._didClickMarker.bind(this, marker, user));
-                marker.on("clickBubble", this._didClickMarkerBubble.bind(this, marker, user));
-                marker.addBubble();
-                this.selectedMarker = marker;
-                this.markers[user.id] = marker;
-            }
-        }
         userController.$container.on("webkitAnimationEnd animationEnd", function() {
             userController.$container.off("webkitAnimationEnd animationEnd")
             userController.$container.removeClass("slideRight");
@@ -173,6 +163,46 @@ LocateController.prototype._didClickFriends = function() {
     this.$filterButton.text("ALL");
     this.onlyFriends = false;
     this._didChangeBounds();
+};
+
+LocateController.prototype._onFriendNotification = function(notification) {
+    var user = this.usersBydIds[notification.userId];
+    if (user) {
+        var oldMarker = this.markers[user.id];
+        oldMarker.setMap(null);
+        oldMarker.removeBubble();
+        this.markers[user.id] = null;
+        var marker = new Marker(user);
+        marker.setMap(this.map);
+        marker.on("click", this._didClickMarker.bind(this, marker, user));
+        marker.on("clickBubble", this._didClickMarkerBubble.bind(this, marker, user));
+        if (oldMarker == this.selectedMarker) {
+            this.selectedMarker = marker;
+            marker.addBubble();
+        }
+        this.markers[user.id] = marker;
+    }
+};
+
+LocateController.prototype._onUnfriendNotification = function(notification) {
+    var user = this.usersBydIds[notification.userId];
+    if (user) {
+        var oldMarker = this.markers[user.id];
+        oldMarker.setMap(null);
+        oldMarker.removeBubble();
+        this.markers[user.id] = null;
+        if (!this.onlyFriends) {
+            var marker = new Marker(user);
+            marker.setMap(this.map);
+            marker.on("click", this._didClickMarker.bind(this, marker, user));
+            marker.on("clickBubble", this._didClickMarkerBubble.bind(this, marker, user));
+            if (oldMarker == this.selectedMarker) {
+                this.selectedMarker = marker;
+                marker.addBubble();
+            }
+            this.markers[user.id] = marker;
+        }
+    }
 };
 
 return LocateController;
