@@ -27,6 +27,7 @@ var LocateController = function() {
 LocateController.prototype = new Controller();
 
 LocateController.prototype.init = function() {
+    this.initalized = true;
     this.markers = {};
     var mapOptions = {
         zoom: 8,

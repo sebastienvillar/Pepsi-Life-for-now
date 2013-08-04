@@ -60,7 +60,8 @@ TabBarController.prototype.setCurrentChildController = function(childController)
 			this.currentChildController.didDisappear();
 		}
 		this.currentChildController = childController;
-		childController.init();
+		if (!childController.initialized)
+			childController.init();
 		childController.didAppear();
 	}
 };

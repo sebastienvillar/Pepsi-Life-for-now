@@ -103,6 +103,7 @@ var UserController = function(user) {
 UserController.prototype = $.extend({}, EventEmitter.prototype, UserController.prototype);
 
 UserController.prototype.init = function() {
+	this.initialized = true;
 	this.pushNewCells();
 }
 
