@@ -104,6 +104,25 @@ TableView.prototype.cellForRow = function(row) {
 		return this.cells[row];
 };
 
+TableView.prototype.insertCellAtRow = function(cell, row) {
+	if (row != 0)
+		cell.$container.css("margin-top", this.spacing);
+
+	if (row == this.cells.length || this.cells.length == 0) {
+		cell.$container.appendTo(this.$container)
+		this.cells.push(cell);
+	}
+	else {
+		var previousCell = this.cells[row];
+		if (!previousCell)
+			return;
+		if (row == 0)
+			previousCell.$container.css("margin-top", this.spacing);
+		cell.$container.insertBefore(previousCell.$container);
+		this.cells.splice(row, 0, cell);
+	}
+};
+
 ///////////////////////////////
 // Private
 //////////////////////////////
