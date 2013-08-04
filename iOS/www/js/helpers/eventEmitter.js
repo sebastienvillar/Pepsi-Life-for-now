@@ -7,10 +7,9 @@ EventEmitter.prototype.on = function (name, fn) {
   if (!this._events) {
     this._events = {};
   }
-
   if (!this._events[name]) {
     this._events[name] = fn;
-  } else if (io.util.isArray(this._events[name])) {
+  } else if (this._events[name] instanceof Array) {
     this._events[name].push(fn);
   } else {
     this._events[name] = [this._events[name], fn];
@@ -31,10 +30,9 @@ EventEmitter.prototype.trigger = function (name) {
   }
 
   var args = Array.prototype.slice.call(arguments, 1);
-
   if ('function' == typeof handler) {
     handler.apply(this, args);
-  } else if (io.util.isArray(handler)) {
+  } else if (handler instanceof Array) {
     var listeners = handler.slice();
 
     for (var i = 0, l = listeners.length; i < l; i++) {
