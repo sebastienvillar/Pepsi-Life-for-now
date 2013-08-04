@@ -238,6 +238,7 @@ MeController.prototype._onPostNotification = function(notification) {
 		var post = Post.postFromJSONObject(json);
 		this.posts.splice(0, 0, post);
 		this.postsByIds[post.id] = post;
+		this.$postsCount.text(this.posts.length);
 
 		var cell = new ImageCell(post);
 		cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
