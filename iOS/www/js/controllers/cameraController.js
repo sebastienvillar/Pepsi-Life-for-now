@@ -285,7 +285,7 @@ CameraController.prototype.showTextArea = function(event) {
 	this.$textArea.on("webkitAnimationEnd animationEnd", function(){
 		this.$textArea.off("webkitAnimationEnd animationEnd")
 		this.$textArea.removeClass("slideUp");
-		document.body.addEventListener('touchmove', function(e) {
+		$("body").on('touchmove', function(e) {
     		e.preventDefault();
 		}, false);
 		this.$saveButton.on("tapone", this.didClickSave.bind(this));
@@ -319,7 +319,7 @@ CameraController.prototype.didSelectFilter = function(i) {
 };
 
 CameraController.prototype.didClickSave = function(event) {
-	event.preventDefault();
+	$("body").off('touchmove');
 
 	var spinner = new Spinner();
 	spinner.$container.addClass("spinner");
@@ -417,7 +417,8 @@ CameraController.prototype.didClickSave = function(event) {
 };
 
 CameraController.prototype.didClickBack = function(event) {
-	event.preventDefault();
+	$("body").off('touchmove');
+	
 	this.$textArea.on("webkitAnimationEnd animationEnd", function(){
 		this.$textArea.off("webkitAnimationEnd animationEnd");
 		this.$textAreaContainer.remove();
