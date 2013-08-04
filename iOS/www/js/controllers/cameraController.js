@@ -321,10 +321,15 @@ CameraController.prototype.didSelectFilter = function(i) {
 CameraController.prototype.didClickSave = function(event) {
 	$("body").off('touchmove');
 
+	var text = this.$textArea.val();
+	if (text == "") {
+		alert("Please enter a description");
+		return;
+	}
+
 	var spinner = new Spinner();
 	spinner.$container.addClass("spinner");
 	spinner.$container.appendTo(this.$container);
-	var text = this.$textArea.val();
 
 	////
 	this.$saveButton.off("tapone");
