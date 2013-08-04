@@ -87,7 +87,6 @@ EditMeController.prototype._didClickDoneButton = function() {
 		request.path = "me/";
 		request.body = JSON.stringify(newData);
 		request.onSuccess = function(json) {
-			console.log("success");
 			newData.image_url = this.imageURI;
 			finish(newData)
 		}.bind(this);

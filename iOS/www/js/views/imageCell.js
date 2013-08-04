@@ -230,7 +230,6 @@ ImageCell.prototype.setSelected = function(selected) {
 //////////////////////////////
 
 function didClickLike(event) {
-	console.log("click like");
 	event.stopPropagation();
 	this.trigger("didClickLike");
 }
