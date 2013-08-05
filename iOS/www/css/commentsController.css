@@ -1,0 +1,21 @@
+#commentsController {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #124c8f;
+}
+
+#commentsController > #tableView {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	top: 0;
+	background-color: #124c8f;
+}
+
+#commentsController #tableView > #cellsContainer {
+	padding: 8px;
+}

@@ -5,10 +5,11 @@ var requireArray = [
 	"views/imageCell",
 	"helpers/serverRequest",
 	"models/post",
+	"controllers/commentsController"
 ];
 
 
-define(requireArray, function(Controller, TableView, TrendsCell, ImageCell, ServerRequest, Post) {
+define(requireArray, function(Controller, TableView, TrendsCell, ImageCell, ServerRequest, Post, CommentsController) {
 var TrendsController = function() {
 	Controller.call(this);
 
@@ -121,7 +122,8 @@ TrendsController.prototype._didClickLike = function(cell, post) {
 };
 
 TrendsController.prototype._didClickComment = function(cell, post) {
-
+	var commentsController = new CommentsController(post);
+	commentsController.$container.appendTo(this.$container);
 };
 
 TrendsController.prototype._didClickTag = function(tag) {
