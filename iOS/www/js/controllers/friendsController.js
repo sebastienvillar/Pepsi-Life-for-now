@@ -108,7 +108,7 @@ FriendsController.prototype._didClickLike = function(cell, post) {
 FriendsController.prototype._didClickComment = function(cell, post) {
 	if (this.commentsController)
 		return;
-	commentsController = new CommentsController(post);
+	var commentsController = new CommentsController(post);
 	commentsController.$container.on("webkitAnimationEnd animationEnd", function() {
         commentsController.$container.off("webkitAnimationEnd animationEnd")
         commentsController.$container.removeClass("slideLeft");

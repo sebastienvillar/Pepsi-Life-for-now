@@ -124,7 +124,7 @@ TrendsController.prototype._didClickLike = function(cell, post) {
 TrendsController.prototype._didClickComment = function(cell, post) {
 	if (this.commentsController)
 		return;
-	commentsController = new CommentsController(post);
+	var commentsController = new CommentsController(post);
 	commentsController.$container.on("webkitAnimationEnd animationEnd", function() {
         commentsController.$container.off("webkitAnimationEnd animationEnd")
         commentsController.$container.removeClass("slideLeft");
@@ -140,7 +140,7 @@ TrendsController.prototype._didClickComment = function(cell, post) {
             commentsController.$container.remove();
             this.commentsController = null;
         }.bind(this));
-        commentsController.$container.addClass("slideRight");
+       commentsController.$container.addClass("slideRight");
     }.bind(this));
     this.commentsController = commentsController;
 };
