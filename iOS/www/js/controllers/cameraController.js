@@ -270,29 +270,29 @@ CameraController.prototype.showTextArea = function(event) {
      		event.preventDefault();
 	});
 
-	this.$retakeButton.detach();
-	this.$nextButton.detach();
-
 	this.$saveButton = $("<button>");
 	this.$saveButton.addClass("redButton");
 	this.$saveButton.text("SAVE");
-	this.$saveButton.appendTo(this.$textAreaContainer);
 
 	this.$backButton = $("<button>");
 	this.$backButton.addClass("whiteButton backArrow");
-	this.$backButton.appendTo(this.$textAreaContainer);
 
-	this.$textArea.on("webkitAnimationEnd animationEnd", function(){
-		this.$textArea.off("webkitAnimationEnd animationEnd")
-		this.$textArea.removeClass("slideUp");
+	this.$textAreaContainer.on("webkitAnimationEnd animationEnd", function(){
+		this.$textAreaContainer.off("webkitAnimationEnd animationEnd")
+		this.$textAreaContainer.removeClass("slideUp");
 		$("body").on('touchmove', function(e) {
     		e.preventDefault();
 		}, false);
+		this.$saveButton.appendTo(this.$textAreaContainer);
+		this.$backButton.appendTo(this.$textAreaContainer);
+		this.$retakeButton.detach();
+		this.$nextButton.detach();
 		this.$saveButton.on("tapone", this.didClickSave.bind(this));
 		this.$backButton.on("tapone", this.didClickBack.bind(this));
 	}.bind(this)); 
 
-	this.$textArea.addClass("textArea slideUp");
+	this.$textArea.addClass("textArea");
+	this.$textAreaContainer.addClass("slideUp");
 	this.$textArea.appendTo(this.$textAreaContainer);
 };
 
@@ -425,13 +425,16 @@ CameraController.prototype.didClickSave = function(event) {
 CameraController.prototype.didClickBack = function(event) {
 	$("body").off('touchmove');
 	
-	this.$textArea.on("webkitAnimationEnd animationEnd", function(){
-		this.$textArea.off("webkitAnimationEnd animationEnd");
+	this.$retakeButton.appendTo(this.$mainContainer);
+	this.$nextButton.appendTo(this.$mainContainer);
+	this.$backButton.remove();
+	this.$saveButton.remove();
+	this.$textAreaContainer.on("webkitAnimationEnd animationEnd", function(){
+		this.$textAreaContainer.off("webkitAnimationEnd animationEnd");
 		this.$textAreaContainer.remove();
-		this.$retakeButton.appendTo(this.$mainContainer);
-		this.$nextButton.appendTo(this.$mainContainer);
+		
 	}.bind(this));
-	this.$textArea.addClass("slideDown");
+	this.$textAreaContainer.addClass("slideDown");
 };
 
 CameraController.prototype.applyFilters = function($canvas, filters) {

@@ -101,7 +101,7 @@
 	padding: 0 0 0 1px;
 }
 
-#cameraController .textArea.slideUp {
+#cameraController .textAreaContainer.slideUp {
 	/*name duration timing delay iteration-count direction*/
 	-webkit-animation: slideUp 0.3s ease-in-out 0 1;
 	animation: slideUp 0.3s ease-in-out 0 1;
@@ -113,7 +113,7 @@
 	}
 
 	100% {
-		top: 25%;
+		top: 0%;
 	}
 }
 
@@ -123,11 +123,11 @@
 	}
 
 	100% {
-		top: 25%;
+		top: 0%;
 	}
 }
 
-#cameraController .textArea.slideDown {
+#cameraController .textAreaContainer.slideDown {
 	/*name duration timing delay iteration-count direction*/
 	-webkit-animation: slideDown 0.3s ease-in-out 0 1;
 	animation: slideDown 0.3s ease-in-out 0 1;
@@ -135,7 +135,7 @@
 
 @-webkit-keyframes slideDown {
 	0% {
-		top: 25%;
+		top: 0%;
 	}
 
 	100% {
@@ -145,7 +145,7 @@
 
 @keyframes slideDown {
 	0% {
-		top: 25%;
+		top: 0%;
 	}
 
 	100% {
@@ -155,7 +155,7 @@
 
 #cameraController .textArea {
 	position: absolute;
-	top: 15%;
+	top: 40px;
 	left: 0;
 	right: 0;
 	height: 185px;
