@@ -31,11 +31,10 @@ var MeController = function() {
 
 	this.$username = $("<p>", {"id": "username"});
 	this.$username.appendTo(this.$header);
-	this.$username.text("PAUL WALKER");
+	this.$username.text("Unkown");
 
 	this.$description = $("<p>", {"id": "description"});
 	this.$description.appendTo(this.$header);
-	this.$description.text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse imperdiet libero id neque fringilla, in.");
 	this.$description.attr("maxlength", "100");
 
 	this.$postsRect = $("<div>", {"id": "postsRect"});
