@@ -34,7 +34,7 @@ var CommentsController = function(post) {
 		});
 	});
 	this.$textInput.on("blur", function() {
-		$("body").off("touchemove");
+		$("body").off("touchmove");
 	});
 	this.$textInput.on("keydown", function(event) {
 		if (event.which == 13) {
@@ -49,10 +49,11 @@ var CommentsController = function(post) {
 
 	this.commentsRemaining = true;
 	this.comments = [];
-	this.commentsByIds = {};
 
 	//Event Handlers
 	this.tableView.on("didScrollToBottom", this._didScrollToBottom.bind(this));
+
+	notificationCenter.on("commentNotification", this._onCommentNotification.bind(this));
 
 };
 
@@ -78,7 +79,6 @@ CommentsController.prototype.pushNewCells = function() {
 		for (var i in comments) {
 			var comment = Comment.commentFromJSONObject(comments[i]);
 			this.comments.push(comment);
-			this.commentsByIds[comment.id] = comment;
 			var cell = new CommentCell(comment);
 
 			this.tableView.pushCell(cell);
@@ -119,17 +119,21 @@ CommentsController.prototype._didClickSend = function() {
 
 	request.onSuccess = function(json) {
 		var comment = Comment.commentFromJSONObject(json);
-		this.comments.splice(0, 0, comment);
-		this.commentsByIds[comment.id] = comment;
-		var cell = new CommentCell(comment);
-
 		this.$textInput.val("");
-		this.tableView.insertCellAtRow(cell, 0);
+		notificationCenter.trigger("commentNotification", {postId: this.post.id, comment: comment, notifier: this});
 	}.bind(this);
 	request.onError = function(statusCode, message) {
 		alert("Error in CommentsController send comment request: " + statusCode + ": " + message);
 	}.bind(this);
 	request.execute();
+};
+
+CommentsController.prototype._onCommentNotification = function(notification) {
+	if (notification.postId == this.post.id) {
+		this.comments.splice(0, 0, notification.comment);
+		var cell = new CommentCell(notification.comment);
+		this.tableView.insertCellAtRow(cell, 0);
+	}
 };
 return CommentsController;
 });
