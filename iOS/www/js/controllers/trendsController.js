@@ -122,8 +122,27 @@ TrendsController.prototype._didClickLike = function(cell, post) {
 };
 
 TrendsController.prototype._didClickComment = function(cell, post) {
-	var commentsController = new CommentsController(post);
-	commentsController.$container.appendTo(this.$container);
+	if (this.commentsController)
+		return;
+	commentsController = new CommentsController(post);
+	commentsController.$container.on("webkitAnimationEnd animationEnd", function() {
+        commentsController.$container.off("webkitAnimationEnd animationEnd")
+        commentsController.$container.removeClass("slideLeft");
+        commentsController.init();
+    });
+    commentsController.$container.addClass("slideLeft");
+    commentsController.$container.appendTo(this.$container);
+
+    commentsController.on("clickBack", function() {
+        commentsController.$container.on("webkitAnimationEnd animationEnd", function() {
+            commentsController.$container.off("webkitAnimationEnd animationEnd")
+            commentsController.$container.removeClass("slideRight");
+            commentsController.$container.remove();
+            this.commentsController = null;
+        }.bind(this));
+        commentsController.$container.addClass("slideRight");
+    }.bind(this));
+    this.commentsController = commentsController;
 };
 
 TrendsController.prototype._didClickTag = function(tag) {

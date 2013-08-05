@@ -3,11 +3,12 @@ var requireArray = [
 	"views/tableView",
 	"views/imageCell",
 	"helpers/serverRequest",
-	"models/post"
+	"models/post",
+	"controllers/commentsController"
 ];
 
 
-define(requireArray, function(Controller, TableView, ImageCell, ServerRequest, Post) {
+define(requireArray, function(Controller, TableView, ImageCell, ServerRequest, Post, CommentsController) {
 var FriendsController = function() {
 	Controller.call(this);
 
@@ -105,7 +106,27 @@ FriendsController.prototype._didClickLike = function(cell, post) {
 };
 
 FriendsController.prototype._didClickComment = function(cell, post) {
+	if (this.commentsController)
+		return;
+	commentsController = new CommentsController(post);
+	commentsController.$container.on("webkitAnimationEnd animationEnd", function() {
+        commentsController.$container.off("webkitAnimationEnd animationEnd")
+        commentsController.$container.removeClass("slideLeft");
+        commentsController.init();
+    });
+    commentsController.$container.addClass("slideLeft");
+    commentsController.$container.appendTo(this.$container);
 
+    commentsController.on("clickBack", function() {
+        commentsController.$container.on("webkitAnimationEnd animationEnd", function() {
+            commentsController.$container.off("webkitAnimationEnd animationEnd")
+            commentsController.$container.removeClass("slideRight");
+            commentsController.$container.remove();
+            this.commentsController = null;
+        }.bind(this));
+        commentsController.$container.addClass("slideRight");
+    }.bind(this));
+    this.commentsController = commentsController;
 };
 
 FriendsController.prototype._rowIsVisible = function(row) {

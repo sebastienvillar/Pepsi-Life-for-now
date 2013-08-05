@@ -4,10 +4,11 @@ var requireArray = [
 	"helpers/serverRequest",
 	"views/imageCell",
 	"models/post",
-	"controllers/editMeController"
+	"controllers/editMeController",
+	"controllers/commentsController"
 ]
 
-define(requireArray, function(Controller, TableView, ServerRequest, ImageCell, Post, EditMeController) {
+define(requireArray, function(Controller, TableView, ServerRequest, ImageCell, Post, EditMeController, CommentsController) {
 var MeController = function() {
 	Controller.call(this);
 
@@ -170,7 +171,27 @@ MeController.prototype._didClickLike = function(cell, post) {
 };
 
 MeController.prototype._didClickComment = function(cell, post) {
+	if (this.commentsController)
+		return;
+	commentsController = new CommentsController(post);
+	commentsController.$container.on("webkitAnimationEnd animationEnd", function() {
+        commentsController.$container.off("webkitAnimationEnd animationEnd")
+        commentsController.$container.removeClass("slideLeft");
+        commentsController.init();
+    });
+    commentsController.$container.addClass("slideLeft");
+    commentsController.$container.appendTo(this.$container);
 
+    commentsController.on("clickBack", function() {
+        commentsController.$container.on("webkitAnimationEnd animationEnd", function() {
+            commentsController.$container.off("webkitAnimationEnd animationEnd")
+            commentsController.$container.removeClass("slideRight");
+            commentsController.$container.remove();
+            this.commentsController = null;
+        }.bind(this));
+        commentsController.$container.addClass("slideRight");
+    }.bind(this));
+    this.commentsController = commentsController;
 };
 
 MeController.prototype._rowIsVisible = function(row) {
