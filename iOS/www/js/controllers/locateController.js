@@ -130,6 +130,8 @@ LocateController.prototype._didClickMarker = function(marker, user) {
 };
 
 LocateController.prototype._didClickMarkerBubble = function(marker, user) {
+    if (this.userController)
+        return;
     var userController = new UserController(user);
     userController.$container.on("webkitAnimationEnd animationEnd", function() {
         userController.$container.off("webkitAnimationEnd animationEnd")
@@ -144,9 +146,11 @@ LocateController.prototype._didClickMarkerBubble = function(marker, user) {
             userController.$container.off("webkitAnimationEnd animationEnd")
             userController.$container.removeClass("slideRight");
             userController.$container.remove();
-        });
+            this.userController = null;
+        }.bind(this));
         userController.$container.addClass("slideRight");
     }.bind(this));
+    this.userController = userController;
 };
 
 LocateController.prototype._didClickAll = function() {
