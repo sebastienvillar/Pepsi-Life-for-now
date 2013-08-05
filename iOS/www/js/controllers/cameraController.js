@@ -39,6 +39,10 @@ var CameraController = function() {
 		{
 			effect: "desaturate",
 			value: {average: false}
+		},
+		{
+			effect: "brightness",
+			value: {contrast: 1.0}
 		}
 	]);
 
