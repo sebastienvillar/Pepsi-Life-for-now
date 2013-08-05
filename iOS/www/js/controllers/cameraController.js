@@ -27,12 +27,35 @@ var CameraController = function() {
 		var $filterCanvasContainer = $("<button>");
 		$filterCanvasContainer.addClass("filterCanvasContainer");
 		$filterCanvasContainer.appendTo(this.$filtersBar);
-		if (i == 0)
+		var $filterSelection = $("<div>");
+		$filterSelection.addClass("filterSelection");
+		$filterSelection.appendTo($filterCanvasContainer);
+		$filterTitle = $("<div>");
+		$filterTitle.addClass("filterTitle");
+		$filterTitle.appendTo($filterSelection);
+		if (i == 0) {
 			$filterCanvasContainer.addClass("extremeLeft");
-		else if (i == 4)
+			$filterSelection.addClass("extremeLeft");
+			$filterTitle.text("B & W");
+		}
+		else if (i == 1) {
+			$filterTitle.text("Sharp");
+		}
+		else if (i == 2) {
+			$filterSelection.addClass("selected");
+			$filterTitle.text("Normal");
+		}
+		else if (i == 3) {
+			$filterTitle.text("Blue");
+		}
+		else if (i == 4) {
+			$filterTitle.text("Red");
 			$filterCanvasContainer.addClass("extremeRight");
+			$filterSelection.addClass("extremeRight");
+		}
 		$filterCanvasContainer.on("tapone", this.didSelectFilter.bind(this, i));
 		this.filterCanvasContainers.push($filterCanvasContainer);
+
 	}
 
 	this.filters.push([
@@ -184,7 +207,7 @@ CameraController.prototype.showCamera = function(event) {
 			for (var i in this.filterCanvasContainers) {
 				var $container = this.filterCanvasContainers[i];
 				//Remove old canvas
-				$container.empty();
+				$container.find("canvas").remove();
 
 				var $canvas = $("<canvas>");
 				$canvas.attr("width", $container.width());
@@ -308,18 +331,20 @@ CameraController.prototype.didSelectFilter = function(i) {
 		this.$originalMainCanvas = this.$mainCanvas;
 	}
 
+	// Select filter
+	this.filterCanvasContainers[this.appliedFilterIndex].find(".filterSelection").removeClass("selected");
+	this.filterCanvasContainers[i].find(".filterSelection").addClass("selected");
+	////////
+
 	this.$mainCanvas.remove();
 	this.$mainCanvas = this.$originalMainCanvas;
 	this.$mainCanvas.appendTo(this.$mainCanvasContainer);
 
-	var spinner = new Spinner();
-	spinner.$container.addClass("spinner");
-	spinner.$container.appendTo(this.$mainContainer);
-
 	this.appliedFilterIndex = i;
 	var filters = this.filters[i];
-	this.$mainCanvas = this.applyFilters(this.$mainCanvas, filters);
-	spinner.$container.remove();
+ 	setTimeout(function() {
+		this.$mainCanvas = this.applyFilters(this.$mainCanvas, filters);
+	}.bind(this), 50);
 };
 
 CameraController.prototype.didClickSave = function(event) {

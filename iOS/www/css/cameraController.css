@@ -79,26 +79,61 @@
 
 #cameraController .filterCanvasContainer {
 	display: inline-block;
-	/*box-sizing: border-box;
-	-webkit-box-sizing: border-box;*/
 	width: 20%;
 	height: 69px;
 	padding: 0 1px 0 1px;
-	/*border-width: 0 1px 0 1px;
-	border-style: solid;
-	border-color: #181818;*/
-	overflow: hidden;
 	position: relative;
 }
 
 #cameraController .filterCanvasContainer.extremeLeft {
-	/*border-width: 0 1px 0 0;*/
 	padding: 0 0 0 1px;
 }
 
 #cameraController .filterCanvasContainer.extremeRight {
-	/*border-width: 0 0 0 1px;*/
 	padding: 0 0 0 1px;
+}
+
+#cameraController .filterSelection {
+	position: absolute;
+	left: -9px;
+	top: -17px;
+	right: -9px;
+	bottom: 0;
+	border-width: 17px 10px 0 10px;
+	border-style: solid;
+	border-color: transparent;
+	z-index: 2;
+}
+
+#cameraController .filterSelection.extremeLeft {
+	border-left-width: 0;
+	left: 0;
+}
+
+#cameraController .filterSelection.extremeRight {
+	border-right-width: 0;
+	right: 0;
+}
+
+#cameraController .filterSelection.selected {
+	border-color: #de0023;
+}
+
+#cameraController .filterTitle {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: -17px;
+	height: 17px;
+	font-size: 14px;
+	color: transparent;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#cameraController .filterSelection.selected > .filterTitle {
+	color: white;
 }
 
 #cameraController .textAreaContainer.slideUp {
