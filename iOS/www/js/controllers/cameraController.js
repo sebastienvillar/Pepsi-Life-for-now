@@ -356,42 +356,29 @@ CameraController.prototype.didClickSave = function(event) {
 		return;
 	}
 
-	var spinner = new Spinner();
-	spinner.$container.addClass("spinner");
-	spinner.$container.appendTo(this.$container);
-
 	////
 	this.$saveButton.off("tapone");
 	this.$backButton.off("tapone");
 
-	this.$filtersBar.detach();
-	this.$mainContainer.empty();
-	this.$mainContainer.remove();
+	var $uploadContainer = $("<div>");
+	$uploadContainer.addClass("uploadContainer");
+	var $uploadText = $("<p>");
+	$uploadText.text("Uploading");
+	$uploadText.addClass("uploadText");
+	$uploadText.appendTo($uploadContainer);
+	var spinner = new Spinner();
+	spinner.$container.addClass("spinner");
+	spinner.$container.appendTo($uploadContainer);
 
-	this.$textAreaContainer.remove();
-	this.$textAreaContainer = null;
-	this.$saveButton = null;
-	this.$backButton = null;
-	this.$textArea = null;
+	// this.$filtersBar.detach();
+	// this.$mainContainer.empty();
+	// this.$mainContainer.remove();
 
-	// this.$mainContainer.addClass("disappear");
-	// this.$mainContainer.on("webkitAnimationEnd animationEnd", function() {
-	// 	this.$mainContainer.off("webkitAnimationEnd animationEnd")
-	// 	this.$filtersBar.detach();
-	// 	this.$mainContainer.empty();
-	// 	this.$mainContainer.remove();
-	// 	this.$mainContainer.removeClass("disappear");
-	// }.bind(this));
-
-	// this.$textAreaContainer.addClass("disappear");
-	// this.$textAreaContainer.on("webkitAnimationEnd animationEnd", function() {
-	// 	this.$textAreaContainer.off("webkitAnimationEnd animationEnd")
-	// 	this.$textAreaContainer.remove();
-	// 	this.$textAreaContainer = null;
-	// 	this.$saveButton = null;
-	// 	this.$backButton = null;
-	// 	this.$textArea = null;
-	// }.bind(this));
+	// this.$textAreaContainer.remove();
+	// this.$textAreaContainer = null;
+	// this.$saveButton = null;
+	// this.$backButton = null;
+	// this.$textArea = null;
 
 	///
 
@@ -410,8 +397,8 @@ CameraController.prototype.didClickSave = function(event) {
 			image_url: image_url
 		});
 		request.onSuccess = function(json) {
+			$uploadContainer.remove();
 			alert("Post successfully saved");
-			spinner.$container.remove();
 			this.photoWasTaken = false;
 			this.$mainCanvasContainer = $("<div>");
 			this.$mainCanvasContainer.addClass("mainCanvasContainer");
@@ -425,6 +412,7 @@ CameraController.prototype.didClickSave = function(event) {
 			notificationCenter.trigger("postNotification", {postId: json["id"], notifier: this});
 		}.bind(this);
 		request.onError = function(status, message) {
+			$uploadContainer.remove();
 			alert(status + ":" + message);
 		};
 		request.execute();
@@ -441,14 +429,37 @@ CameraController.prototype.didClickSave = function(event) {
 			sendPost(json.image_url);
 		}.bind(this);
 		request.onError = function(status, message) {
+			$uploadContainer.remove();
 			alert(status + ":" + message);
 		};
 		request.execute();
 	}.bind(this);
 
-	var filters = this.filters[this.appliedFilterIndex];
-	var $newCanvas = this.applyFilters(this.$originalCanvas, filters);
-	sendCanvas($newCanvas[0]);
+
+	this.$mainContainer.addClass("disappear");
+	this.$mainContainer.on("webkitAnimationEnd animationEnd", function() {
+	}.bind(this));
+
+	this.$textAreaContainer.addClass("slideDown");
+	this.$textAreaContainer.on("webkitAnimationEnd animationEnd", function() {
+		this.$textAreaContainer.off("webkitAnimationEnd animationEnd")
+		this.$mainContainer.off("webkitAnimationEnd animationEnd")
+		this.$filtersBar.detach();
+		this.$mainContainer.empty();
+		this.$mainContainer.remove();
+		this.$mainContainer.removeClass("disappear");
+		this.$textAreaContainer.remove();
+		this.$textAreaContainer = null;
+		this.$saveButton = null;
+		this.$backButton = null;
+		this.$textArea = null;
+		$uploadContainer.appendTo(this.$container);
+		setTimeout(function() {
+			var filters = this.filters[this.appliedFilterIndex];
+			var $newCanvas = this.applyFilters(this.$originalCanvas, filters);
+			sendCanvas($newCanvas[0]);
+		}.bind(this), 100);
+	}.bind(this));
 };
 
 CameraController.prototype.didClickBack = function(event) {
