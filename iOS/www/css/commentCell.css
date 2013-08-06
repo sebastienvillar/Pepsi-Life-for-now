@@ -24,9 +24,10 @@
 	left: 4px;
 	border-radius: 11px;
 	background-position: center;
-	background-size: cover;
+	background-size: 24px 24px;
 	background-repeat: no-repeat;
-	background-image: url("../img/common/photo-substitute.png");
+	background-color: #3b3b3b;
+	background-image: url("../img/common/small-question-mark@2x.png");
 }
 
 #commentCell > #header > #avatarWrapper {

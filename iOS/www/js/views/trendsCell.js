@@ -91,8 +91,8 @@ function TrendsCell(post) {
 			this.setText(post.text);
 		if (post.tags != null)
 			this.setTags(post.tags);
-		//if (post.ownerImageUrl != null)
-			//this.setAvatar(post.ownerImageUrl);
+		if (post.ownerImageUrl != null)
+			this.setAvatar(post.ownerImageUrl);
 		if (post.ownerFriend != null) {
 			if (post.ownerFriend)
 				this.setAvatarColor("#d32433");

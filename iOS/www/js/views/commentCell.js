@@ -92,7 +92,7 @@ CommentCell.prototype.setText = function(text) {
 CommentCell.prototype.setAvatar = function(imageUrl) {
 	var image = new Image();
 	image.onload = function() {
-		this.$avatar.css("background-image", "url(" + imageUrl + ")");
+		this.$avatar.css({"background-image": "url(" + imageUrl + ")", "background-size": "cover"});
 	}.bind(this);
 	image.src = imageUrl;
 };

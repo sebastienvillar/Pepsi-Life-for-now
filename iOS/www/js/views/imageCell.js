@@ -100,12 +100,12 @@ function ImageCell(post) {
 			this.setText(post.text);
 		if (post.tags != null)
 			this.setTags(post.tags);
-		//if (post.imageUrl != null)
-		//	this.setImage(post.imageUrl);
+		if (post.imageUrl != null)
+			this.setImage(post.imageUrl);
 		if (post.seensCount != null)
 			this.setSeensCount(post.seensCount);
-		//if (post.ownerImageUrl != null)
-		//	this.setAvatar(post.ownerImageUrl);
+		if (post.ownerImageUrl != null)
+			this.setAvatar(post.ownerImageUrl);
 		if (post.ownerFriend != null) {
 			if (post.ownerFriend)
 				this.setAvatarColor("#d32433");
