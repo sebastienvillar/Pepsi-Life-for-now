@@ -34,7 +34,7 @@
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
-	background-image: url("../img/common/cell-image-substitute.png");
+	background-image: url("../img/common/cell-image-substitute@2x.png");
 }
 
 #imageCell #topContainer > #rightContainer {
@@ -74,7 +74,7 @@
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
-	background-image: url("../img/common/photo-substitute.png");
+	background-image: url("../img/common/photo-substitute@2x.png");
 }
 
 #imageCell #header > #username {
@@ -154,7 +154,9 @@
 	right: 79px;
 	width: 10px;
 	height: 9px;
-	background-image: url("../img/common/like-button.png");
+	background-image: url("../img/common/like-button@2x.png");
+	background-position: center;
+	background-size: 10px 9px;
 	background-repeat: no-repeat;
 }
 
@@ -182,11 +184,13 @@
 
 #imageCell #footer > #commentsIcon{
 	position: absolute;
-	top: 10px;
+	top: 9px;
 	right: 26px;
 	width: 10px;
 	height: 10px;
-	background-image: url("../img/common/comment-button-white.png");
+	background-image: url("../img/common/comment-button-white@2x.png");
+	background-position: center;
+	background-size: 10px 10px;
 	background-repeat: no-repeat;
 }
 
@@ -229,5 +233,7 @@
 	height: 10px;
 	vertical-align: top;
 	margin-top: 7px;
-	background-image: url("../img/common/eye-icon.png");
+	background-image: url("../img/common/eye-icon@2x.png");
+	background-position: center;
+	background-size: 16px 10px;
 }

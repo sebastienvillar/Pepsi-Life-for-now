@@ -34,7 +34,7 @@
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
-	background-image: url("../img/common/photo-substitute.png");
+	background-image: url("../img/common/photo-substitute@2x.png");
 }
 
 .trendsCell-avatarWrapper {
@@ -88,7 +88,9 @@
 	right: 79px;
 	width: 10px;
 	height: 9px;
-	background-image: url("../img/common/like-button.png");
+	background-image: url("../img/common/like-button@2x.png");
+	background-position: center;
+	background-size: 10px 9px;
 	background-repeat: no-repeat;
 }
 
@@ -116,11 +118,13 @@
 
 .trendsCell-commentsIcon {
 	position: absolute;
-	top: 10px;
+	top: 9px;
 	right: 26px;
 	width: 10px;
 	height: 10px;
-	background-image: url("../img/common/comment-button.png");
+	background-image: url("../img/common/comment-button@2x.png");
+	background-position: center;
+	background-size: 10px 10px;
 	background-repeat: no-repeat;
 }
 
