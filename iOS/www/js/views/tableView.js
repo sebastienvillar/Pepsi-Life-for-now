@@ -109,7 +109,7 @@ TableView.prototype.insertCellAtRow = function(cell, row) {
 		cell.$container.css("margin-top", this.spacing);
 
 	if (row == this.cells.length || this.cells.length == 0) {
-		cell.$container.appendTo(this.$container)
+		cell.$container.appendTo(this.$cellsContainer)
 		this.cells.push(cell);
 	}
 	else {
