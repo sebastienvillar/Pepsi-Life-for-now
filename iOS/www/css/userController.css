@@ -90,7 +90,8 @@
 	top: 0;
 	width: 50px;
 	height: 36px;
-	background-image: url("../img/common/back-arrow.png");
+	background-image: url("../img/common/back-arrow@2x.png");
+	background-size: 18px 14px;
 	background-repeat: no-repeat;
 	background-position: center;
 	background-color: white;

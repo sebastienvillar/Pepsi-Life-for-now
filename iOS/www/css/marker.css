@@ -12,11 +12,15 @@
 }
 
 #marker > #pin.red {
-	background-image: url("../img/map/pin-red.png");
+	background-image: url("../img/map/pin-red@2x.png");
+	background-position: center;
+	background-size: 65px 67px;
 }
 
 #marker > #pin.yellow {
-	background-image: url("../img/map/pin-yellow.png");
+	background-image: url("../img/map/pin-yellow@2x.png");
+	background-position: center;
+	background-size: 65px 67px;
 }
 
 #marker > #image {
@@ -29,7 +33,7 @@
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
-	background-image: url("../img/common/large-photo-substitute.png");
+	background-image: url("../img/common/photo-substitute@2x.png");
 }
 
 #marker > .bubble {
@@ -53,7 +57,9 @@
 	width: 80px;
 	height: 51px;
 	z-index: -1;
-	background-image: url("../img/map/bubble-left.png")
+	background-image: url("../img/map/bubble-left@2x.png");
+	background-position: center;
+	background-size: 80px 51px;
 }
 
 #marker > .bubble > .bubbleCenter {
@@ -64,7 +70,9 @@
 	height: 41px;
 	z-index: -1;
 	background-repeat: repeat-x;
-	background-image: url("../img/map/bubble-center.png")
+	background-image: url("../img/map/bubble-center@2x.png");
+	background-position: center;
+	background-size: 1px 41px
 }
 
 #marker > .bubble > .bubbleRight {
@@ -75,14 +83,16 @@
 	height: 41px;
 	z-index: -1;
 	background-repeat: no-repeat;
-	background-image: url("../img/map/bubble-right.png")
+	background-image: url("../img/map/bubble-right@2x.png");
+	background-position: center;
+	background-size: 8px 41px;
 }
 
 #marker .row > .postsCount {
 	display: table-cell;
 	vertical-align: top;
 	padding-left: 10px;
-	padding-top: 2px;
+	padding-top: 3px;
 	font-size: 23px;
 	font-weight: bold;
 	color: #e00028;
@@ -96,7 +106,8 @@
 	display: table-cell;
 	padding-left: 13px;
 	background-repeat: no-repeat;
-	background-image: url("../img/map/camera-icon.png");
+	background-image: url("../img/map/camera-icon@2x.png");
+	background-size: 11px 10px;
 	background-position: 2px 9px;
 }
 
@@ -118,6 +129,7 @@
 	display: table-cell;
 	padding-left: 16px;
 	background-repeat: no-repeat;
-	background-image: url("../img/map/disclosure-arrow.png");
+	background-image: url("../img/map/disclosure-arrow@2x.png");
+	background-size: 5px 10px;
 	background-position: 8px 13px;
 }
