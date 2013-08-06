@@ -29,6 +29,8 @@ var CommentsController = function(post) {
 		this.$textInput.trigger("focus");
 	}.bind(this));
 	this.$textInput.on("focus", function() {
+		if (this.didClickBack)
+			return;
 		$("body").on("touchmove", function(e) {
 			e.preventDefault();
 		});
@@ -101,6 +103,8 @@ CommentsController.prototype._didScrollToBottom = function() {
 };
 
 CommentsController.prototype._didClickBack = function() {
+	this.didClickBack = true;
+	this.$textInput.trigger("blur");
 	this.trigger("clickBack");
 };
 
