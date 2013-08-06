@@ -4,10 +4,11 @@ var requireArray = [
 	"views/tableView",
 	"helpers/serverRequest",
 	"models/comment",
-	"helpers/eventEmitter"
+	"helpers/eventEmitter",
+	"views/spinner"
 ];
 
-define(requireArray, function(Controller, CommentCell, TableView, ServerRequest, Comment, EventEmitter) {
+define(requireArray, function(Controller, CommentCell, TableView, ServerRequest, Comment, EventEmitter, Spinner) {
 var CommentsController = function(post) {
 	Controller.call(this);
 
@@ -111,7 +112,11 @@ CommentsController.prototype._didClickBack = function() {
 CommentsController.prototype._didClickSend = function() {
 	var text = this.$textInput.val();
 	if (text == "")
-		return;
+		return
+
+	var spinner = new Spinner();
+	spinner.$container.addClass("spinner");
+	spinner.$container.appendTo(this.$container);
 
 	this.$textInput.trigger("blur");
 	var request = new ServerRequest();
@@ -125,9 +130,11 @@ CommentsController.prototype._didClickSend = function() {
 		var comment = Comment.commentFromJSONObject(json);
 		this.$textInput.val("");
 		notificationCenter.trigger("commentNotification", {postId: this.post.id, comment: comment, notifier: this});
+		spinner.$container.remove();
 	}.bind(this);
 	request.onError = function(statusCode, message) {
 		alert("Error in CommentsController send comment request: " + statusCode + ": " + message);
+		spinner.$container.remove();
 	}.bind(this);
 	request.execute();
 };
