@@ -4,11 +4,8 @@ domReady(function() {
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
-
-    console.log("device ready");
     var requireArray = [
         "controllers/tabBarController",
-        "controllers/navigationController",
         "controllers/controller",
         "views/tableView",
         "views/trendsCell",
@@ -22,7 +19,7 @@ function onDeviceReady() {
         "helpers/eventEmitter"
     ];
 
-    require(requireArray, function(TabBarController, NavigationController, Controller, TableView, TrendsCell, TrendsController, CameraController, FriendsController, MeController, LocateController, Constants, ServerRequest, EventEmitter) {
+    require(requireArray, function(TabBarController, Controller, TableView, TrendsCell, TrendsController, CameraController, FriendsController, MeController, LocateController, Constants, ServerRequest, EventEmitter) {
 
         //Get username and password
         // var username = localStorage.getItem("username");

@@ -44,10 +44,16 @@ LocateController.prototype.init = function() {
 
     this.map = new google.maps.Map(this.$map[0], mapOptions);
 
+    var icon = {
+        url: "img/map/position-marker@2x.png",
+        scaledSize: new google.maps.Size(16, 16, "px", "px"),
+        anchor: new google.maps.Point(8, 8)
+    };
+
     var currentPositionMarker = new google.maps.Marker({
         position: mapOptions.center,
         map: this.map,
-        icon: "img/map/pin-current-position.png"
+        icon: icon,
     });
 
     currentPositionMarker.bindTo("position", this.currentPositionMVC);
