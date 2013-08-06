@@ -32,9 +32,10 @@
 	width: 50%;
 	height: 100%;
 	background-position: center;
-	background-size: cover;
+	background-size: 44px 73px;
 	background-repeat: no-repeat;
-	background-image: url("../img/common/cell-image-substitute@2x.png");
+	background-color: #3b3b3b;
+	background-image: url("../img/common/question-mark@2x.png");
 }
 
 #imageCell #topContainer > #rightContainer {
@@ -72,9 +73,10 @@
 	left: 4px;
 	border-radius: 11px;
 	background-position: center;
-	background-size: cover;
+	background-size: 24px 24px;
 	background-repeat: no-repeat;
-	background-image: url("../img/common/photo-substitute@2x.png");
+	background-color: #3b3b3b;
+	background-image: url("../img/common/small-question-mark@2x.png");
 }
 
 #imageCell #header > #username {

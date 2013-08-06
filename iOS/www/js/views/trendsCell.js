@@ -91,8 +91,8 @@ function TrendsCell(post) {
 			this.setText(post.text);
 		if (post.tags != null)
 			this.setTags(post.tags);
-		if (post.ownerImageUrl != null)
-			this.setAvatar(post.ownerImageUrl);
+		//if (post.ownerImageUrl != null)
+			//this.setAvatar(post.ownerImageUrl);
 		if (post.ownerFriend != null) {
 			if (post.ownerFriend)
 				this.setAvatarColor("#d32433");
@@ -177,7 +177,7 @@ TrendsCell.prototype.setTags = function(tags) {
 TrendsCell.prototype.setAvatar = function(imageUrl) {
 	var image = new Image();
 	image.onload = function() {
-		this.$avatar.css("background-image", "url(" + imageUrl + ")");
+		this.$avatar.css({"background-image": "url(" + imageUrl + ")", "background-size": "cover"});
 	}.bind(this);
 	image.src = imageUrl;
 };
