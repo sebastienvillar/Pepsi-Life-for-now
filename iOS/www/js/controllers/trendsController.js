@@ -79,7 +79,7 @@ TrendsController.prototype.pushNewCells = function() {
 	}.bind(this);
 	request.onError = function(statusCode, message) {
 		this.tableView.exitLoadingMode();
-		alert("Error in TrendsController get posts request: " + statusCode + ": " + message);
+		alert("Error", "The posts couldn't be loaded. Please check your internet connection.");
 	}.bind(this);
 	request.execute();
 };
@@ -115,7 +115,6 @@ TrendsController.prototype._didClickLike = function(cell, post) {
 	request.onError = function(status, message) {
 		if (statusCode != 403) {
 			post.liked = false;
-			alert("Error in TrendsController post like request: " + statusCode + ": " + message);
 		}
 	}.bind(this);
 	request.execute();
@@ -186,7 +185,6 @@ TrendsController.prototype._rowIsVisible = function(row) {
 	}.bind(this);
 	request.onError = function(status, message) {
 		if (statusCode != 403) {
-			alert("Error in Friends post seen request: " + statusCode + ": " + message);
 			post.seen = false;
 		}
 	}.bind(this);

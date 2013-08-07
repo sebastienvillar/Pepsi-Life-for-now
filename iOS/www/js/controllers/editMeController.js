@@ -92,7 +92,7 @@ EditMeController.prototype._didClickDoneButton = function() {
 		}.bind(this);
 		request.onError = function(status, message) {
 			finish(null);
-			alert(status + ":" + message);
+			alert("Error", "Oups, something bad happened. Please try again.");
 		};
 		request.execute();
 	}.bind(this);
@@ -117,7 +117,7 @@ EditMeController.prototype._didClickDoneButton = function() {
 			}.bind(this);
 			request.onError = function(status, message) {
 				finish(null);
-				alert(status + ":" + message);
+				alert("Error", "Oups, something bad happened. Please try again.");
 			};
 			request.execute();
 		}.bind(this);

@@ -92,7 +92,7 @@ var MeController = function() {
 			this.$avatar.css("background-image", "url(" + json.image_url + ")");
 	}.bind(this);
 	request.onError = function(status, message) {
-		alert(status + ":" + message);
+		alert("Error", "Your information couldn't be loaded. Please check your internet connection");
 	};
 	request.execute();
 
@@ -128,7 +128,7 @@ MeController.prototype.pushNewCells = function() {
 	}.bind(this);
 	request.onError = function(statusCode, message) {
 		this.tableView.exitLoadingMode();
-		alert("Error in MeController get posts request: " + statusCode + ": " + message);
+		alert("Error", "The posts couldn't be loaded. Please check your internet connection");
 	}.bind(this);
 	request.execute();
 };
@@ -163,7 +163,6 @@ MeController.prototype._didClickLike = function(cell, post) {
 	request.onError = function(status, message) {
 		if (statusCode != 403) {
 			post.like = false;
-			alert("Error in Friends post like request: " + statusCode + ": " + message);
 		}
 	}.bind(this);
 	request.execute();
@@ -209,7 +208,6 @@ MeController.prototype._rowIsVisible = function(row) {
 	}.bind(this);
 	request.onError = function(status, message) {
 		if (statusCode != 403) {
-			alert("Error in Friends post seen request: " + statusCode + ": " + message);
 			post.seen = false;
 		}
 	}.bind(this);
@@ -267,7 +265,7 @@ MeController.prototype._onPostNotification = function(notification) {
 		this.tableView.insertCellAtRow(cell, 0);
 	}.bind(this);
 	request.onError = function(statusCode, message) {
-		alert("Error in MeController get post request: " + statusCode + ": " + message);
+		alert("Error", "The posts couldn't be loaded. Please check your internet connection.");
 	}.bind(this);
 	request.execute();
 };

@@ -64,7 +64,7 @@ FriendsController.prototype.pushNewCells = function() {
 	}.bind(this);
 	request.onError = function(statusCode, message) {
 		this.tableView.exitLoadingMode();
-		alert("Error in FriendsController get posts request: " + statusCode + ": " + message);
+		alert("Error", "The posts couldn't be loaded. Please check your internet connection.");
 	}.bind(this);
 	request.execute();
 };
@@ -99,7 +99,6 @@ FriendsController.prototype._didClickLike = function(cell, post) {
 	request.onError = function(status, message) {
 		if (statusCode != 403) {
 			post.like = false;
-			alert("Error in Friends post like request: " + statusCode + ": " + message);
 		}
 	}.bind(this);
 	request.execute();
@@ -145,7 +144,6 @@ FriendsController.prototype._rowIsVisible = function(row) {
 	}.bind(this);
 	request.onError = function(status, message) {
 		if (statusCode != 403) {
-			alert("Error in Friends post seen request: " + statusCode + ": " + message);
 			post.seen = false;
 		}
 	}.bind(this);

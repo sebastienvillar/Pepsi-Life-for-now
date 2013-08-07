@@ -352,7 +352,7 @@ CameraController.prototype.didClickSave = function(event) {
 
 	var text = this.$textArea.val();
 	if (text == "") {
-		alert("Please enter a description");
+		alert("Error", "Please enter a description");
 		return;
 	}
 
@@ -403,7 +403,7 @@ CameraController.prototype.didClickSave = function(event) {
 
 		var request = new ServerRequest();
 		request.method = "POST";
-		request.path = "postss/";
+		request.path = "posts/";
 		request.body = JSON.stringify({
 			text: text,
 			tags: tags,
@@ -412,13 +412,13 @@ CameraController.prototype.didClickSave = function(event) {
 		request.onSuccess = function(json) {
 			$uploadContainer.remove();
 			reinitializeScreen();
-			alert("Post successfully saved");
+			alert("Success", "Post successfully saved.");
 			notificationCenter.trigger("postNotification", {postId: json["id"], notifier: this});
 		}.bind(this);
 		request.onError = function(status, message) {
 			$uploadContainer.remove();
 			reinitializeScreen();
-			alert("An error occured. Please try again");
+			alert("Error", "Oups, something bad happened. Please try again.");
 		};
 		request.execute();
 	}.bind(this);
@@ -436,7 +436,7 @@ CameraController.prototype.didClickSave = function(event) {
 		request.onError = function(status, message) {
 			$uploadContainer.remove();
 			reinitializeScreen();
-			alert("An error occured. Please try again");
+			alert("Error", "Oups, something bad happened. Please try again.");
 		};
 		request.execute();
 	}.bind(this);

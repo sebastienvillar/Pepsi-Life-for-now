@@ -32,6 +32,7 @@ function onDeviceReady() {
             request.method = "POST";
             request.path = "/users/";
             request.onSuccess = function(json) {
+                console.log("success");
                 localStorage.setItem("username", json.username);
                 localStorage.setItem("password", json.password);
                 Constants.credentials = {
@@ -41,7 +42,7 @@ function onDeviceReady() {
                 start();
             };
             request.onError = function(status, message) {
-                alert(status + ":" + message);
+                alert("Error", "Oups, something bad happened. Please check your internet connection and restart the application.");
             };
             request.execute();
         }

@@ -70,7 +70,7 @@ LocateController.prototype._didUpdatePosition = function(position) {
 };
 
 LocateController.prototype._didFailToUpdatePosition = function(position) {
-    alert("Fail to get your position");
+    alert("Error", "We couldn't find your position");
 };
 
 LocateController.prototype._didChangeBounds = function() {
@@ -121,7 +121,7 @@ LocateController.prototype._didChangeBounds = function() {
 
     }.bind(this);
     request.onError = function(statusCode, message) {
-        alert("Error in LocateController get users request: " + statusCode + ": " + message);
+        alert("Error", "The users couldn't be loaded. Please check your internet connection");
     }.bind(this);
     request.execute();
 };
