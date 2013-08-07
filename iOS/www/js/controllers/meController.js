@@ -84,12 +84,15 @@ var MeController = function() {
 	request.method = "GET";
 	request.path = "me/";
 	request.onSuccess = function(json) {
-		this.$username.text(json.name);
-		this.$description.text(json.description);
+		if (json.name)
+			this.$username.text(json.name);
+		if (json.description)
+			this.$description.text(json.description);
 		this.$likesCount.text(json.likes_count);
 		this.$postsCount.text(json.posts_count);
-		if (json.image_url)
+		if (json.image_url) {
 			this.$avatar.css("background-image", "url(" + json.image_url + ")");
+		}
 	}.bind(this);
 	request.onError = function(status, message) {
 		alert("Error", "Your information couldn't be loaded. Please check your internet connection");
