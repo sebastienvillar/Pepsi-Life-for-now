@@ -172,6 +172,7 @@ TrendsController.prototype._didSearch = function() {
 	this.posts = [];
 	this.tableView.removeAllRows();
 	this.pushNewCells();
+	return false;
 }
 
 TrendsController.prototype._rowIsVisible = function(row) {
