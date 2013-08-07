@@ -121,6 +121,9 @@ TableView.prototype.insertCellAtRow = function(cell, row) {
 		cell.$container.insertBefore(previousCell.$container);
 		this.cells.splice(row, 0, cell);
 	}
+
+	if (this._isCellVisible(cell))
+    	this.trigger("rowIsVisible", this.cells.indexOf(cell));
 };
 
 ///////////////////////////////
@@ -131,7 +134,7 @@ TableView.prototype._isCellVisible = function(cell) {
 	var top = 0;
 	var bottom = this.$container.outerHeight();
 	var cellTop = cell.$container.position().top;
-    var cellBottom = cellTop + cell.$container.outerHeight();
+    var cellBottom = cellTop + cell.$container.outerHeight() - 10;
     return ((cellBottom <= bottom) && (cellTop >= top));
 }
 
