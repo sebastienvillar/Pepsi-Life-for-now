@@ -7,7 +7,7 @@
 	bottom: 0;
 }
 
-#mainContainer {
+#cameraController > #mainContainer {
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -41,6 +41,16 @@
 	left: 50%;
 	margin-left: -10px;
 	margin-top: 5px;
+}
+
+#cameraController > #mainContainer > .spinner {
+	position: absolute;
+	width: 20px;
+	height: 24px;
+	left: 50%;
+	top: 50%;
+	margin-left: -10px;
+	margin-top: -12px;
 }
 
 #cameraController .uploadText {
