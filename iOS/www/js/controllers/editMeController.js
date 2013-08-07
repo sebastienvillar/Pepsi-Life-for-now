@@ -23,12 +23,14 @@ var EditMeController = function(name, description) {
 	this.$nameInput = $("<input>", {"id": "nameInput", "type": "text"});
 	this.$nameInput.appendTo(this.$form);
 	this.$nameInput.attr("placeholder", "Name");
-	this.$nameInput.val(name);
+	if (name)
+		this.$nameInput.val(name);
 
 	this.$descriptionInput = $("<input>", {"id": "descriptionInput", "type": "text"});
 	this.$descriptionInput.appendTo(this.$form);
 	this.$descriptionInput.attr("placeholder", "Description. Max 100 characters")
-	this.$descriptionInput.val(description);
+	if (description)
+		this.$descriptionInput.val(description);
 
 	this.$imageButton = $("<button>", {"id": "imageButton"});
 	this.$imageButton.appendTo(this.$form);
@@ -76,7 +78,7 @@ EditMeController.prototype._didClickDoneButton = function() {
 
 	var updateMe = function(imageURL) {
 		var newData = {
-			name: this.$nameInput.val(),
+			name: this.$nameInput.val() == "" ? "Unkown" : this.$nameInput.val(),
 			description: this.$descriptionInput.val()
 		};
 		if (imageURL)

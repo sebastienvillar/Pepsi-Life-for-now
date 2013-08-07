@@ -9,7 +9,7 @@ var requireArray = [
 ]
 
 define(requireArray, function(Controller, TableView, ServerRequest, ImageCell, Post, EditMeController, CommentsController) {
-var MeController = function() {
+var MeController = function(newUser) {
 	Controller.call(this);
 
 	this.$container.attr("id", "meController");
@@ -84,8 +84,7 @@ var MeController = function() {
 	request.method = "GET";
 	request.path = "me/";
 	request.onSuccess = function(json) {
-		if (json.name)
-			this.$username.text(json.name);
+		this.$username.text(json.name);
 		if (json.description)
 			this.$description.text(json.description);
 		this.$likesCount.text(json.likes_count);
@@ -100,6 +99,13 @@ var MeController = function() {
 	request.execute();
 
 	this.pushNewCells();
+	if (newUser) {
+		this.$editButton.off("tapone");
+		var editMeController = new EditMeController();
+		this.editMeController = editMeController;
+		editMeController.$container.appendTo(this.$container);
+		editMeController.on("meWasUpdated", this._onUpdate.bind(this));
+	}
 }
 
 MeController.prototype = new Controller();
@@ -220,34 +226,39 @@ MeController.prototype._rowIsVisible = function(row) {
 MeController.prototype._didClickEditButton = function(event) {
 	event.preventDefault();
 	this.$editButton.off("tapone");
-	editMeController = new EditMeController(this.$username.text(), this.$description.text());
+	var username = this.$username.text() == "Unkown" ? undefined : this.$username.text();
+	var editMeController = new EditMeController(username, this.$description.text());
+
+	this.editMeController = editMeController;
 	editMeController.$container.on("webkitAnimationEnd animationEnd", function() {
 		editMeController.$container.off("webkitAnimationEnd animationEnd")
 		editMeController.$container.removeClass("slideUp");
 	}.bind(this));
 	editMeController.$container.addClass("slideUp");
 	editMeController.$container.appendTo(this.$container);
-	editMeController.on("meWasUpdated", function(newData) {
-		if (newData) {
-			this.$username.text(newData.name);
-			this.$description.text(newData.description);
-			if (newData.image_url) {
-				this.$avatar.css("background-image", "url(" + newData.image_url + ")");
-				for (var i in this.posts) {
-					var post = this.posts[i];
-					post.imageUrl = image_url
-					var cell = this.tableView.cellForRow(i);
-					cell.setImage(post.imageUrl);
-				}
+	editMeController.on("meWasUpdated", this._onUpdate.bind(this));
+};
+
+MeController.prototype._onUpdate = function(newData) {
+	if (newData) {
+		this.$username.text(newData.name);
+		this.$description.text(newData.description);
+		if (newData.image_url) {
+			this.$avatar.css("background-image", "url(" + newData.image_url + ")");
+			for (var i in this.posts) {
+				var post = this.posts[i];
+				post.imageUrl = image_url
+				var cell = this.tableView.cellForRow(i);
+				cell.setImage(post.imageUrl);
 			}
 		}
+	}
 
-		editMeController.$container.on("webkitAnimationEnd animationEnd", function() {
-			editMeController.$container.remove();
-			this.$editButton.on("tapone", this._didClickEditButton.bind(this));
-		}.bind(this));
-		editMeController.$container.addClass("slideDown");
+	this.editMeController.$container.on("webkitAnimationEnd animationEnd", function() {
+		this.editMeController.$container.remove();
+		this.$editButton.on("tapone", this._didClickEditButton.bind(this));
 	}.bind(this));
+	this.editMeController.$container.addClass("slideDown");
 };
 
 MeController.prototype._onPostNotification = function(notification) {
