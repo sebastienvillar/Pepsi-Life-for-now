@@ -41,6 +41,8 @@ var TrendsController = function() {
 
 	notificationCenter.on("likeNotification", this._onLikeNotification.bind(this));
 	notificationCenter.on("seenNotification", this._onSeenNotification.bind(this));
+	notificationCenter.on("friendNotification", this._onFriendNotification.bind(this));
+	notificationCenter.on("unfriendNotification", this._onUnfriendNotification.bind(this));
 
 	this.pushNewCells();
 };
@@ -221,6 +223,26 @@ TrendsController.prototype._onSeenNotification = function(notification) {
 		var cell = this.tableView.cellForRow(this.posts.indexOf(post));
 		if (cell.setSeensCount)
 			cell.setSeensCount(cell.getSeensCount() + 1);
+	}
+};
+
+TrendsController.prototype._onFriendNotification = function(notification) {
+	for (var i in this.posts) {
+		var post = this.posts[i];
+		if (post.ownerId == notification.userId) {
+			var cell = this.tableView.cellForRow(i);
+			cell.setAvatarColor("#d32433");
+		}
+	}
+};
+
+TrendsController.prototype._onUnfriendNotification = function(notification) {
+	for (var i in this.posts) {
+		var post = this.posts[i];
+		if (post.ownerId == notification.userId) {
+			var cell = this.tableView.cellForRow(i);
+			cell.setAvatarColor("#c7d20c");
+		}
 	}
 };
 

@@ -25,6 +25,7 @@ define(function() {
 		this.commentsCount = 0;
 		this.ownerName = null;
 		this.ownerImageUrl = null;
+		this.ownerId = null;
 	};
 
 	Post.postFromJSONObject = function(jsonObject) {
@@ -49,6 +50,7 @@ define(function() {
 			post.ownerName = jsonObject.owner.name;
 			post.ownerImageUrl = jsonObject.owner.image_url;
 			post.ownerFriend = jsonObject.owner.friend;
+			post.ownerId = jsonObject.owner.id;
 		}
 		if (jsonObject.seen)
 			post.seen = jsonObject.seen;
