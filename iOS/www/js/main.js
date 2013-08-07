@@ -44,6 +44,19 @@ function onDeviceReady() {
         }
 
         function start(isNewUser) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                window._currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                var request = new ServerRequest();
+                request.method = "PUT";
+                request.path = "/me/geolocation"
+                request.body = JSON.stringify({
+                    coordinates: {
+                        lat: position.coords.latitude,
+                        long: position.coords.longitude
+                    }
+                });
+                request.execute();
+            }, null, {enableHighAccuracy: true});
             window.notificationCenter = new EventEmitter();
             var tabBarController = new TabBarController(isNewUser);
             $("body").append(tabBarController.$container);
