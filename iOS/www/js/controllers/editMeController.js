@@ -13,27 +13,20 @@ var EditMeController = function(name, description) {
 
 	this.$container.attr("id", "editMeController");
 
-	this.$form = $("<form>");
-	this.$form.appendTo(this.$container);
-	this.$form.on("submit", function() {
-		this.$doneButton.trigger('tapone');
-		return false;
-	}.bind(this));
-
 	this.$nameInput = $("<input>", {"id": "nameInput", "type": "text"});
-	this.$nameInput.appendTo(this.$form);
+	this.$nameInput.appendTo(this.$container);
 	this.$nameInput.attr("placeholder", "Name");
 	if (name)
 		this.$nameInput.val(name);
 
 	this.$descriptionInput = $("<input>", {"id": "descriptionInput", "type": "text"});
-	this.$descriptionInput.appendTo(this.$form);
+	this.$descriptionInput.appendTo(this.$container);
 	this.$descriptionInput.attr("placeholder", "Description. Max 100 characters")
 	if (description)
 		this.$descriptionInput.val(description);
 
 	this.$imageButton = $("<button>", {"id": "imageButton"});
-	this.$imageButton.appendTo(this.$form);
+	this.$imageButton.appendTo(this.$container);
 	this.$imageButton.text("Choose your image");
 	this.$imageButton.on("tapone", this._didClickImageButton.bind(this));
 

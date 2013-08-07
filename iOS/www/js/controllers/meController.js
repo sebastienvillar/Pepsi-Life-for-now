@@ -90,7 +90,7 @@ var MeController = function(newUser) {
 		this.$likesCount.text(json.likes_count);
 		this.$postsCount.text(json.posts_count);
 		if (json.image_url) {
-			this.$avatar.css("background-image", "url(" + json.image_url + ")");
+			this.$avatar.css({"background-image": "url(" + json.image_url + ")", "background-size": "cover"});
 		}
 	}.bind(this);
 	request.onError = function(status, message) {
@@ -244,12 +244,12 @@ MeController.prototype._onUpdate = function(newData) {
 		this.$username.text(newData.name);
 		this.$description.text(newData.description);
 		if (newData.image_url) {
-			this.$avatar.css("background-image", "url(" + newData.image_url + ")");
+			this.$avatar.css({"background-image": "url(" + newData.image_url + ")", "background-size": "cover"});
 			for (var i in this.posts) {
 				var post = this.posts[i];
-				post.imageUrl = image_url
+				post.imageUrl = newData.image_url
 				var cell = this.tableView.cellForRow(i);
-				cell.setImage(post.imageUrl);
+				cell.setAvatar(post.imageUrl);
 			}
 		}
 	}

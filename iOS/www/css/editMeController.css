@@ -86,10 +86,7 @@
 	}
 }
 
-#editMeController > form {
-}
-
-#editMeController > form input {
+#editMeController input {
 	display: block;
 	position: relative;
 	background-color: #cac9cb;
@@ -105,15 +102,15 @@
 	font-size: 15px;
 }
 
-#editMeController > form > #nameInput {
+#editMeController > #nameInput {
 	margin-top: 50px;
 }
 
-#editMeController > form > #descriptionInput {
+#editMeController > #descriptionInput {
 	margin-top: 15px;
 }
 
-#editMeController > form > #imageButton {
+#editMeController > #imageButton {
 	display: block;
 	position: relative;
 	margin: auto;
@@ -130,6 +127,6 @@
 	color: white;
 }
 
-#editMeController > form > #doneButton {
+#editMeController > #doneButton {
 	width: 100px;
 }
