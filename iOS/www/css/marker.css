@@ -30,10 +30,11 @@
 	width: 27px;
 	height: 27px;
 	border-radius: 50%;
-	background-repeat: no-repeat;
-	background-size: cover;
 	background-position: center;
-	background-image: url("../img/common/photo-substitute@2x.png");
+	background-size: 24px 24px;
+	background-color: #3b3b3b;
+	background-repeat: no-repeat;
+	background-image: url("../img/common/small-question-mark@2x.png");
 }
 
 #marker > .bubble {

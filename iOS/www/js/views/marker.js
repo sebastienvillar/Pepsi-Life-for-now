@@ -22,7 +22,7 @@ var Marker = function(user) {
     this.$image.appendTo(this.$container);
     this.$image.on("tapone", this._didClick.bind(this));
     if (this.user.image_url)
-    	this.$image.css("background-image", "url(" + this.user.image_url + ")");
+    	this.$image.css({"background-image": "url(" + this.user.image_url + ")", "background-size": "cover"});
 }
 
 Marker.prototype = $.extend({}, google.maps.OverlayView.prototype, EventEmitter.prototype, Marker.prototype);
