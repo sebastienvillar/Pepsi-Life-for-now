@@ -17,10 +17,12 @@ define(["helpers/constants"], function(Constants) {
 		request.onload = function() {
 			var response = JSON.parse(request.responseText);
 			if (response.status == 200) {
-				this.onSuccess(response.body);
+				if (this.onSuccess)
+					this.onSuccess(response.body);
 			}
 			else {
-				this.onError(request.status, response.message);
+				if (this.onError)
+					this.onError(request.status, response.message);
 			}
 		}.bind(this);
 		var url = Constants.SERVER_URL + this.path + "?api_key=" + Constants.SERVER_API_KEY;
