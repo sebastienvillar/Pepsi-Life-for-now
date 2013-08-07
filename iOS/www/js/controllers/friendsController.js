@@ -64,7 +64,7 @@ FriendsController.prototype.pushNewCells = function() {
 		}
 		if (this.posts.length == 0 && !this.$noPostsMessage) {
 			this.$noPostsMessage = $("<p>");
-			this.$noPostsMessage.html("No posts yet.<br/>Go make some new friends!");
+			this.$noPostsMessage.html("No post yet.<br/>Go make some new friends!");
 			this.$noPostsMessage.appendTo(this.$container);
 		}
 		else if (this.posts.length != 0 && this.$noPostsMessage)
