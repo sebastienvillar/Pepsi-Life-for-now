@@ -76,6 +76,13 @@ TrendsController.prototype.pushNewCells = function() {
 
 			this.tableView.pushCell(cell);
 		}
+		if (this.posts.length == 0 && !this.$noPostsMessage && !this.currentSearchTag) {
+			this.$noPostsMessage = $("<p>");
+			this.$noPostsMessage.html("No posts yet.<br/>Be the first one!");
+			this.$noPostsMessage.appendTo(this.$container);
+		}
+		else if (this.posts.length != 0 && this.$noPostsMessage)
+			this.$noPostsMessage.remove();
 	}.bind(this);
 	request.onError = function(statusCode, message) {
 		this.tableView.exitLoadingMode();
