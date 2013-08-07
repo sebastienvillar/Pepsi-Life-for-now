@@ -15,16 +15,18 @@ var TrendsController = function() {
 
 	this.$container.attr("id", "trendsController");
 	this.$searchForm = $("<form>");
-	this.$searchForm.attr("id", "trendsController-searchForm");
 	this.$searchForm.appendTo(this.$container);
+	this.$searchFieldDiv = $("<div>");
+	this.$searchFieldDiv.appendTo(this.$searchForm);
 	this.$searchField = $("<input>");
-	this.$searchField.attr("id", "trendsController-searchField");
 	this.$searchField.attr("type", "search");
 	this.$searchField.attr("placeholder", "Search a tag");
-	this.$searchField.appendTo(this.$searchForm);
+	this.$searchField.appendTo(this.$searchFieldDiv);
+	this.$glass = $("<div>");
+	this.$glass.appendTo(this.$searchFieldDiv);
 	this.tableView = new TableView();
 	this.tableView.setCellsSpacing("12px");
-	this.tableView.$container.attr("id", "trendsController-tableView")
+	this.tableView.$container.attr("id", "tableView")
 	this.tableView.$cellsContainer.attr("id", "cellsContainer");
 	this.tableView.$container.appendTo(this.$container);
 	this.postsRemaining = true;
