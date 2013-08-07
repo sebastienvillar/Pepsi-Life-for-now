@@ -9,8 +9,9 @@ var requireArray = [
 ]
 
 define(requireArray, function(Controller, TableView, ServerRequest, ImageCell, Post, EditMeController, CommentsController) {
-var MeController = function(newUser) {
+var MeController = function(newUser, callback) {
 	Controller.call(this);
+	this.callback = callback;
 
 	this.$container.attr("id", "meController");
 
@@ -92,9 +93,11 @@ var MeController = function(newUser) {
 		if (json.image_url) {
 			this.$avatar.css({"background-image": "url(" + json.image_url + ")", "background-size": "cover"});
 		}
+		this.callback();
 	}.bind(this);
 	request.onError = function(status, message) {
 		alert("Error", "Your information couldn't be loaded. Please check your internet connection");
+		this.callback();
 	};
 	request.execute();
 

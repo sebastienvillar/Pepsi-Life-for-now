@@ -10,8 +10,9 @@ var requireArray = [
 
 
 define(requireArray, function(Controller, TableView, TrendsCell, ImageCell, ServerRequest, Post, CommentsController) {
-var TrendsController = function() {
+var TrendsController = function(callback) {
 	Controller.call(this);
+	this.callback = callback;
 
 	this.$container.attr("id", "trendsController");
 	this.$searchForm = $("<form>");
@@ -87,10 +88,12 @@ TrendsController.prototype.pushNewCells = function() {
 		}
 		else if (this.posts.length != 0 && this.$noPostsMessage)
 			this.$noPostsMessage.remove();
+		this.callback();
 	}.bind(this);
 	request.onError = function(statusCode, message) {
 		this.tableView.exitLoadingMode();
 		alert("Error", "The posts couldn't be loaded. Please check your internet connection.");
+		this.callback();
 	}.bind(this);
 	request.execute();
 };

@@ -6,7 +6,7 @@ var requireArray = [
 ];
 
 define(requireArray, function(Controller, ServerRequest, Marker, UserController) {
-var LocateController = function() {
+var LocateController = function(callback) {
 	Controller.call(this);
 
 	this.$container.attr("id", "locateController");
@@ -22,6 +22,7 @@ var LocateController = function() {
 
     notificationCenter.on("friendNotification", this._onFriendNotification.bind(this));
     notificationCenter.on("unfriendNotification", this._onUnfriendNotification.bind(this));
+    callback();
 };
 
 

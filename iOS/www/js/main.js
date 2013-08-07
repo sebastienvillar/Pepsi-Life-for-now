@@ -58,7 +58,9 @@ function onDeviceReady() {
                 request.execute();
             }, null, {enableHighAccuracy: true});
             window.notificationCenter = new EventEmitter();
-            var tabBarController = new TabBarController(isNewUser);
+            var tabBarController = new TabBarController(isNewUser, function() {
+                navigator.splashscreen.hide();
+            });
             $("body").append(tabBarController.$container);
         }
     });
