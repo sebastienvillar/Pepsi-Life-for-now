@@ -21,7 +21,8 @@ var LocateController = function() {
     this.currentPositionMVC.set("position", new google.maps.LatLng(-21.115141, 55.536384));
     this.selectedMarker = null;
     this.usersBydIds = {};
-    navigator.geolocation.getCurrentPosition(this._didUpdatePosition.bind(this), this._didFailToUpdatePosition.bind(this), null);
+
+    navigator.geolocation.getCurrentPosition(this._didUpdatePosition.bind(this), null, {enableHighAccuracy: true});
 
     notificationCenter.on("friendNotification", this._onFriendNotification.bind(this));
     notificationCenter.on("unfriendNotification", this._onUnfriendNotification.bind(this));
@@ -29,6 +30,17 @@ var LocateController = function() {
 
 
 LocateController.prototype = new Controller();
+
+LocateController.prototype.didAppear = function() {
+    this.positionIntervalId = setInterval(function() {
+        navigator.geolocation.getCurrentPosition(this._didUpdatePosition.bind(this), null, {enableHighAccuracy: true});
+    }.bind(this), 10000);
+};
+
+LocateController.prototype.didDisappear = function() {
+    if (this.positionIntervalId)
+        clearInterval(this.positionIntervalId);
+};
 
 LocateController.prototype.init = function() {
     this.initalized = true;
@@ -66,11 +78,8 @@ LocateController.prototype.init = function() {
 //////////////
 
 LocateController.prototype._didUpdatePosition = function(position) {
+    console.log("did update:", position.coords.longitude);
     this.currentPositionMVC.set("position", new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-};
-
-LocateController.prototype._didFailToUpdatePosition = function(position) {
-    alert("Error", "We couldn't find your position");
 };
 
 LocateController.prototype._didChangeBounds = function() {
