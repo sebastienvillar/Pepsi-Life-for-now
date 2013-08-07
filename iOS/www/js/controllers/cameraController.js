@@ -382,6 +382,19 @@ CameraController.prototype.didClickSave = function(event) {
 
 	///
 
+	var reinitializeScreen = function() {
+		this.photoWasTaken = false;
+		this.$mainCanvasContainer = $("<div>");
+		this.$mainCanvasContainer.addClass("mainCanvasContainer");
+		this.$mainCanvasContainer.appendTo(this.$mainContainer)
+		this.$retakeButton = $("<button>");
+		this.$retakeButton.addClass("whiteButton");
+		this.$retakeButton.text("RETAKE");
+		this.$retakeButton.appendTo(this.$mainContainer);
+		this.$retakeButton.on("tapone", this.showCamera.bind(this));
+		this.$mainContainer.appendTo(this.$container);
+	}.bind(this);
+
 	var sendPost = function(image_url) {
 		var regex = /\B(#\w*)/g;
 		var tags = text.match(regex);
@@ -390,7 +403,7 @@ CameraController.prototype.didClickSave = function(event) {
 
 		var request = new ServerRequest();
 		request.method = "POST";
-		request.path = "posts/";
+		request.path = "postss/";
 		request.body = JSON.stringify({
 			text: text,
 			tags: tags,
@@ -398,22 +411,14 @@ CameraController.prototype.didClickSave = function(event) {
 		});
 		request.onSuccess = function(json) {
 			$uploadContainer.remove();
+			reinitializeScreen();
 			alert("Post successfully saved");
-			this.photoWasTaken = false;
-			this.$mainCanvasContainer = $("<div>");
-			this.$mainCanvasContainer.addClass("mainCanvasContainer");
-			this.$mainCanvasContainer.appendTo(this.$mainContainer)
-			this.$retakeButton = $("<button>");
-			this.$retakeButton.addClass("whiteButton");
-			this.$retakeButton.text("RETAKE");
-			this.$retakeButton.appendTo(this.$mainContainer);
-			this.$retakeButton.on("tapone", this.showCamera.bind(this));
-			this.$mainContainer.appendTo(this.$container);
 			notificationCenter.trigger("postNotification", {postId: json["id"], notifier: this});
 		}.bind(this);
 		request.onError = function(status, message) {
 			$uploadContainer.remove();
-			alert(status + ":" + message);
+			reinitializeScreen();
+			alert("An error occured. Please try again");
 		};
 		request.execute();
 	}.bind(this);
@@ -430,7 +435,8 @@ CameraController.prototype.didClickSave = function(event) {
 		}.bind(this);
 		request.onError = function(status, message) {
 			$uploadContainer.remove();
-			alert(status + ":" + message);
+			reinitializeScreen();
+			alert("An error occured. Please try again");
 		};
 		request.execute();
 	}.bind(this);
@@ -444,10 +450,10 @@ CameraController.prototype.didClickSave = function(event) {
 	this.$textAreaContainer.on("webkitAnimationEnd animationEnd", function() {
 		this.$textAreaContainer.off("webkitAnimationEnd animationEnd")
 		this.$mainContainer.off("webkitAnimationEnd animationEnd")
+		this.$mainContainer.removeClass("disappear");
 		this.$filtersBar.detach();
 		this.$mainContainer.empty();
 		this.$mainContainer.remove();
-		this.$mainContainer.removeClass("disappear");
 		this.$textAreaContainer.remove();
 		this.$textAreaContainer = null;
 		this.$saveButton = null;
