@@ -227,6 +227,7 @@ CameraController.prototype.showCamera = function(event) {
 	var onError = function() {
 		clearTimeout(this.timer);
 		this.clearMainContainer();
+		this.$container.css("background-color", "black");
 
 		this.$retakeButton = $("<button>");
 		this.$retakeButton.addClass("whiteButton");
@@ -258,6 +259,7 @@ CameraController.prototype.showCamera = function(event) {
 
 	this.timer = setTimeout(function() {
 		this.clearMainContainer();
+		this.$container.css("background-color", "black");
 
 		//Show spinner
 		this.spinner = new Spinner();
@@ -441,7 +443,7 @@ CameraController.prototype.didClickSave = function(event) {
 		request.execute();
 	}.bind(this);
 
-
+	this.$container.css("background-color", "#124c8f");
 	this.$mainContainer.addClass("disappear");
 	this.$mainContainer.on("webkitAnimationEnd animationEnd", function() {
 	}.bind(this));
