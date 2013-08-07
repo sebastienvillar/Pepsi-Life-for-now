@@ -17,12 +17,8 @@ var LocateController = function() {
     this.$filterButton.text("ALL");
     this.$filterButton.on("tapone", this._didClickAll.bind(this));
     this.onlyFriends = false;
-    this.currentPositionMVC = new google.maps.MVCObject();
-    this.currentPositionMVC.set("position", new google.maps.LatLng(-21.115141, 55.536384));
     this.selectedMarker = null;
     this.usersBydIds = {};
-
-    navigator.geolocation.getCurrentPosition(this._didUpdatePosition.bind(this), null, {enableHighAccuracy: true});
 
     notificationCenter.on("friendNotification", this._onFriendNotification.bind(this));
     notificationCenter.on("unfriendNotification", this._onUnfriendNotification.bind(this));
@@ -32,9 +28,11 @@ var LocateController = function() {
 LocateController.prototype = new Controller();
 
 LocateController.prototype.didAppear = function() {
-    this.positionIntervalId = setInterval(function() {
-        navigator.geolocation.getCurrentPosition(this._didUpdatePosition.bind(this), null, {enableHighAccuracy: true});
-    }.bind(this), 10000);
+    if (window._currentPosition) {
+        this.positionIntervalId = setInterval(function() {
+            navigator.geolocation.getCurrentPosition(this._didUpdatePosition.bind(this), null, {enableHighAccuracy: true});
+        }.bind(this), 10000);
+    }
 };
 
 LocateController.prototype.didDisappear = function() {
@@ -45,9 +43,12 @@ LocateController.prototype.didDisappear = function() {
 LocateController.prototype.init = function() {
     this.initalized = true;
     this.markers = {};
+
+    var center = window._currentPosition ? window._currentPosition : new google.maps.LatLng(-21.115141, 55.536384);
+
     var mapOptions = {
         zoom: 8,
-        center: this.currentPositionMVC.get("position"),
+        center: center,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         disableDefaultUI: true,
         maxZoom: 12,
@@ -62,13 +63,16 @@ LocateController.prototype.init = function() {
         anchor: new google.maps.Point(8, 8)
     };
 
-    var currentPositionMarker = new google.maps.Marker({
-        position: mapOptions.center,
-        map: this.map,
-        icon: icon,
-    });
-
-    currentPositionMarker.bindTo("position", this.currentPositionMVC);
+    if (window._currentPosition) {
+        var currentPositionMarker = new google.maps.Marker({
+            position: window._currentPosition,
+            map: this.map,
+            icon: icon,
+        });
+        this.currentPositionMVC = new google.maps.MVCObject();
+        this.currentPositionMVC.set("position", center);
+        currentPositionMarker.bindTo("position", this.currentPositionMVC);
+    }
 
     google.maps.event.addListener(this.map, 'bounds_changed', this._didChangeBounds.bind(this));
 };
@@ -78,8 +82,10 @@ LocateController.prototype.init = function() {
 //////////////
 
 LocateController.prototype._didUpdatePosition = function(position) {
-    console.log("did update:", position.coords.longitude);
-    this.currentPositionMVC.set("position", new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
+    console.log("update");
+    window._currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    if (this.currentPositionMVC)
+        this.currentPositionMVC.set("position", window._currentPosition);
 };
 
 LocateController.prototype._didChangeBounds = function() {
