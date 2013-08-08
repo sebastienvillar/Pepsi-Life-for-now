@@ -99,6 +99,7 @@ function TrendsCell(post) {
 			else
 				this.setAvatarColor("#c7d20c");
 		}
+		this.setLiked(post.liked);
 	}
 }
 
@@ -116,6 +117,13 @@ TrendsCell.prototype.setLikesCount = function(count) {
 TrendsCell.prototype.getLikesCount = function() {
 	return this._likesCount;
 };
+
+TrendsCell.prototype.setLiked = function(liked) {
+	if (liked)
+		this.$likesIcon.addClass("full");
+	else
+		this.$likesIcon.removeClass("full");
+}
 
 TrendsCell.prototype.setCommentsCount = function(count) {
 	this._commentsCount = count > 999 ? 999 : count;

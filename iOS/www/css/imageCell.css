@@ -165,10 +165,14 @@
 	right: 79px;
 	width: 10px;
 	height: 9px;
-	background-image: url("../img/common/like-button@2x.png");
+	background-image: url("../img/common/empty-like-button@2x.png");
 	background-position: center;
 	background-size: 10px 9px;
 	background-repeat: no-repeat;
+}
+
+#imageCell #footer > #likesIcon.full {
+	background-image: url("../img/common/like-button@2x.png");
 }
 
 #imageCell #footer > #likesCount {

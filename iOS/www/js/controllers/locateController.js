@@ -83,7 +83,6 @@ LocateController.prototype.init = function() {
 //////////////
 
 LocateController.prototype._didUpdatePosition = function(position) {
-    console.log("update");
     window._currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
     if (this.currentPositionMVC)
         this.currentPositionMVC.set("position", window._currentPosition);

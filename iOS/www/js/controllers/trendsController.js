@@ -124,6 +124,7 @@ TrendsController.prototype._didClickLike = function(cell, post) {
 	request.onSuccess = function(json) {
 		post.likesCount++;
 		cell.setLikesCount(cell.getLikesCount() + 1);
+		cell.setLiked(true);
 		notificationCenter.trigger("likeNotification", {postId: post.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
@@ -215,6 +216,7 @@ TrendsController.prototype._onLikeNotification = function(notification) {
 		post.likesCount++;
 		var cell = this.tableView.cellForRow(this.posts.indexOf(post));
 		cell.setLikesCount(cell.getLikesCount() + 1);
+		cell.setLiked(true);
 	}
 };
 

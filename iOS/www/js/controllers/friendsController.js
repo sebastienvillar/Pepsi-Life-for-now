@@ -104,6 +104,7 @@ FriendsController.prototype._didClickLike = function(cell, post) {
 	request.method = "POST";
 	request.onSuccess = function(json) {
 		cell.setLikesCount(cell.getLikesCount() + 1);
+		cell.setLiked(true);
 		notificationCenter.trigger("likeNotification", {postId: post.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
@@ -169,6 +170,7 @@ FriendsController.prototype._onLikeNotification = function(notification) {
 		post.likesCount++;
 		var cell = this.tableView.cellForRow(this.posts.indexOf(post));
 		cell.setLikesCount(cell.getLikesCount() + 1);
+		cell.setLiked(true);
 	}
 };
 

@@ -113,6 +113,7 @@ function ImageCell(post) {
 			else
 				this.setAvatarColor("#c7d20c");
 		}
+		this.setLiked(post.liked);
 	}
 }
 
@@ -130,6 +131,13 @@ ImageCell.prototype.setLikesCount = function(count) {
 ImageCell.prototype.getLikesCount = function() {
 	return this._likesCount;
 };
+
+ImageCell.prototype.setLiked = function(liked) {
+	if (liked)
+		this.$likesIcon.addClass("full");
+	else
+		this.$likesIcon.removeClass("full");
+}
 
 ImageCell.prototype.setCommentsCount = function(count) {
 	this._commentsCount = count > 999 ? 999 : count;
