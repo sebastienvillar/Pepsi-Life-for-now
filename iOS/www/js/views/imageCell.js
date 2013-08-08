@@ -1,8 +1,9 @@
 var requireArray = [
-	"helpers/eventEmitter"
+	"helpers/eventEmitter",
+	"views/spinner"
 ];
 
-define(requireArray, function(EventEmitter) {
+define(requireArray, function(EventEmitter, Spinner) {
 function ImageCell(post) {
 	EventEmitter.call(this);
 
@@ -206,8 +207,13 @@ ImageCell.prototype.setAvatar = function(imageUrl) {
 
 ImageCell.prototype.setImage = function(imageUrl) {
 	var image = new Image();
+	var spinner = new Spinner();
+	spinner.$container.addClass("spinner");
+	spinner.$container.appendTo(this.$leftContainer);
+	this.$leftContainer.css("background-image", "none");
 	image.onload = function() {
 		this.$leftContainer.css({"background-image": "url(" + imageUrl + ")", "background-size": "cover"});
+		spinner.$container.remove();
 	}.bind(this);
 	image.src = imageUrl;
 };

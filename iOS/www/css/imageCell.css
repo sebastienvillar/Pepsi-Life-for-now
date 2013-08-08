@@ -28,6 +28,7 @@
 }
 
 #imageCell #topContainer > #leftContainer {
+	position: relative;
 	display: table-cell;
 	width: 50%;
 	height: 100%;
@@ -36,6 +37,14 @@
 	background-repeat: no-repeat;
 	background-color: #3b3b3b;
 	background-image: url("../img/common/question-mark@2x.png");
+}
+
+#imageCell #leftContainer > .spinner {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -10px;
+	margin-top: -11px;
 }
 
 #imageCell #topContainer > #rightContainer {
