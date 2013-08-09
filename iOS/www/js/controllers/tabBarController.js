@@ -8,17 +8,10 @@ var requireArray = [
 ];
 
 define(requireArray, function(Controller, TrendsController, CameraController, FriendsController, MeController, LocateController) {
-function TabBarController(isNewUser) {
+function TabBarController() {
 	Controller.call(this);
 
 	this.$container.attr("id", "tabbarController");
-	this.childControllers = [
-		new TrendsController(), 
-		new LocateController(),
-		new CameraController(),
-		new FriendsController(), 
-		new MeController(isNewUser)
-	];
 	this.currentChildController = null;
 	this.$content = $("<div>", {id: "tabbar-content"});
 	this.$container.append(this.$content);
@@ -50,17 +43,26 @@ function TabBarController(isNewUser) {
 			}.bind(this));
 		}).bind(this)(i);
 	}
-
-	if (isNewUser)
-		this.setCurrentChildController(this.childControllers[4]);
-	else
-		this.setCurrentChildController(this.childControllers[0]);
 }
 
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
 
 TabBarController.prototype = new Controller();
+
+TabBarController.prototype.init = function(isNewUser) {
+	this.childControllers = [
+		new TrendsController(), 
+		new LocateController(),
+		new CameraController(),
+		new FriendsController(), 
+		new MeController(isNewUser)
+	];
+	if (isNewUser)
+		this.setCurrentChildController(this.childControllers[4]);
+	else
+		this.setCurrentChildController(this.childControllers[0]);
+}
 
 TabBarController.prototype.setCurrentChildController = function(childController) {
 	if (childController != this.currentChildController) {

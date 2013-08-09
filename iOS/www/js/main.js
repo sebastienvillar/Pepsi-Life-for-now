@@ -20,7 +20,7 @@ function onDeviceReady() {
         if (!username || !password) {
             var request = new ServerRequest();
             request.method = "POST";
-            request.path = "/users/";
+            request.path = "users/";
             request.onSuccess = function(json) {
                 localStorage.setItem("username", json.username);
                 localStorage.setItem("password", json.password);
@@ -48,7 +48,7 @@ function onDeviceReady() {
                 window._currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 var request = new ServerRequest();
                 request.method = "PUT";
-                request.path = "/me/geolocation"
+                request.path = "me/geolocation"
                 request.body = JSON.stringify({
                     coordinates: {
                         lat: position.coords.latitude,
@@ -59,11 +59,11 @@ function onDeviceReady() {
             }, null, {enableHighAccuracy: true});
             window.notificationCenter = new EventEmitter();
 
-            var tabBarController = new TabBarController(isNewUser);
+            var tabBarController = new TabBarController();
 
             var request = new ServerRequest();
             request.method = "GET";
-            request.path = "/ad/";
+            request.path = "ad/";
             request.onSuccess = function(json) {
                 var duration = Math.round(json.duration);
                 var $ad = $("<div>");
@@ -100,14 +100,15 @@ function onDeviceReady() {
             };
 
             request.onError = function(status, message) {
-                if (status == 404) {
+                if (status == 404)
                     $("body").append(tabBarController.$container);
-                    navigator.splashscreen.hide();
-                }
-                else
+                else 
                     alert("Error", "Oups, something bad happened. Please check your internet connection and restart the application.");
+                navigator.splashscreen.hide();
             };
             request.execute();
+
+            tabBarController.init(isNewUser);
         }
     });
 };
