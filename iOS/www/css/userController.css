@@ -104,8 +104,26 @@
 	padding: 0 15px 0 15px;
 	height: 36px;
 	background-color: #e00127;
+	overflow: hidden
+}
+
+#userController > #friendButton > #friendIcon {
+	float: left;
+	width: 15px;
+	height: 36px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 15px 17px;
+	background-image: url("../img/user/user@2x.png");
+}
+
+#userController > #friendButton > #friendText {
+	float: left;
 	color: #ffffff;
 	font-size: 10px;
+	line-height: 36px;
+	vertical-align: middle;
+	margin-left: 10px
 }
 
 

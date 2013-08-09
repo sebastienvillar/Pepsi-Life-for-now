@@ -76,12 +76,16 @@ var UserController = function(user) {
 
 	this.$friendButton = $("<button>", {"id": "friendButton"});
 	this.$friendButton.appendTo(this.$container);
+	this.$friendIcon = $("<div>", {"id": "friendIcon"});
+	this.$friendIcon.appendTo(this.$friendButton);
+	this.$friendText = $("<div>", {"id": "friendText"});
+	this.$friendText.appendTo(this.$friendButton);
 	if (this.user.friend) {
-		this.$friendButton.text("REMOVE");
+		this.$friendText.text("REMOVE");
 		this.$friendButton.on("tapone", this._didClickRemove.bind(this));
 	}
 	else {
-		this.$friendButton.text("ADD");
+		this.$friendText.text("ADD");
 		this.$friendButton.on("tapone", this._didClickAdd.bind(this));
 	}
 
@@ -244,7 +248,7 @@ UserController.prototype._didClickAdd = function() {
 		}
 		this.$avatarWrapper.css("background-color", "#d32433");
 		this.user.friend = true;
-		this.$friendButton.text("REMOVE");
+		this.$friendText.text("REMOVE");
 		this.$friendButton.on("tapone", this._didClickRemove.bind(this));
 		this.$backButton.on("tapone", this._didClickBack.bind(this));
 		notificationCenter.trigger("friendNotification", {userId: this.user.id, notifier: this});
@@ -271,7 +275,7 @@ UserController.prototype._didClickRemove = function() {
 		}
 		this.$avatarWrapper.css("background-color", "#c7d20c");
 		this.user.friend = false;
-		this.$friendButton.text("ADD");
+		this.$friendText.text("ADD");
 		this.$friendButton.on("tapone", this._didClickAdd.bind(this));
 		this.$backButton.on("tapone", this._didClickBack.bind(this));
 		notificationCenter.trigger("unfriendNotification", {userId: this.user.id, notifier: this});
