@@ -38,6 +38,11 @@
 	background-image: url("../img/common/small-question-mark@2x.png");
 }
 
+.trendsCell-avatar.withImage {
+	background-size: cover;
+	background-color: transparent;
+}
+
 .trendsCell-avatarWrapper {
 	position: absolute;
 	left: 11px;

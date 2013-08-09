@@ -208,7 +208,8 @@ ImageCell.prototype.setTags = function(tags) {
 ImageCell.prototype.setAvatar = function(imageUrl) {
 	var image = new Image();
 	image.onload = function() {
-		this.$avatar.css({"background-image": "url(" + imageUrl + ")", "background-size": "cover"});
+		this.$avatar.css("background-image", "url(" + imageUrl + ")");
+		this.$avatar.addClass("withImage");
 	}.bind(this);
 	image.src = imageUrl;
 };

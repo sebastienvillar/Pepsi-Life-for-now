@@ -58,6 +58,11 @@
 	background-size: 44px 73px;
 }
 
+#meController #tableView > #header > #avatarWrapper > #avatar.withImage {
+	background-size: cover;
+	background-color: transparent;
+}
+
 #meController #tableView > #header > #username {
 	display: block;
 	font-size: 14px;

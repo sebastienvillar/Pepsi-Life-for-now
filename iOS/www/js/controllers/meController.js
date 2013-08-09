@@ -90,7 +90,8 @@ var MeController = function(newUser) {
 		this.$likesCount.text(json.likes_count);
 		this.$postsCount.text(json.posts_count);
 		if (json.image_url) {
-			this.$avatar.css({"background-image": "url(" + json.image_url + ")", "background-size": "cover"});
+			this.$avatar.css("background-image", "url(" + json.image_url + ")");
+			this.$avatar.addClass("withImage");
 		}
 	}.bind(this);
 	request.onError = function(status, message) {

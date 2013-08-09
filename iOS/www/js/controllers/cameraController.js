@@ -239,6 +239,7 @@ CameraController.prototype.showCamera = function(event) {
 			//Create a new canvas and add retake button
 			this.$mainCanvasContainer = $("<div>");
 			this.$mainCanvasContainer.addClass("mainCanvasContainer");
+			this.$container.css("background-color", "#124c8f");
 		}
 
 		else {

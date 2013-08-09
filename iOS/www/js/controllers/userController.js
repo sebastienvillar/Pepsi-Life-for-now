@@ -101,8 +101,10 @@ var UserController = function(user) {
 	this.$description.text(this.user.description);
 	this.$likesCount.text(this.user.likes_count);
 	this.$postsCount.text(this.user.posts_count);
-	if (this.user.image_url)
-		this.$avatar.css({"background-image": "url(" + this.user.image_url + ")", "background-size": "cover"});
+	if (this.user.image_url) {
+		this.$avatar.css("background-image", "url(" + this.user.image_url + ")");
+		this.$avatar.addClass("withImage");
+	}
 }
 
 UserController.prototype = $.extend({}, EventEmitter.prototype, UserController.prototype);

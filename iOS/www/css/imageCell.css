@@ -88,6 +88,11 @@
 	background-image: url("../img/common/small-question-mark@2x.png");
 }
 
+#imageCell #avatarWrapper > #avatar.withImage {
+	background-size: cover;
+	background-color: transparent;
+}
+
 #imageCell #header > #username {
 	position: absolute;
 	font-size: 10px;
