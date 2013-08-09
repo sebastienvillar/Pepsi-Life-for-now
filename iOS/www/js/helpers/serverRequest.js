@@ -15,15 +15,12 @@ define(["helpers/constants"], function(Constants) {
 		var request = new XMLHttpRequest();
 
 		var timeout = setTimeout(function() {
-			console.log("timeout: ", timeout);
 			request.abort();
 			if (this.onError)
 				this.onError(408, "Request timed out");
 		}.bind(this), 45000);
-		console.log(this.path + " : " +  timeout);
 
 		request.onload = function() {
-			console.log("clear timeout: ", timeout);
 			clearTimeout(timeout);
 			var response = JSON.parse(request.responseText);
 			if (response.status == 200) {
@@ -44,14 +41,13 @@ define(["helpers/constants"], function(Constants) {
 				queryParameter = queryParameter.replace("#", "%23");
 			url += "&" + key + "=" + queryParameter;
 		}
-		request.open(this.method, url, true);
 		if (Constants.credentials)
 			request.open(this.method, url, true, Constants.credentials.username, Constants.credentials.password);
 		else
-			request.open(this.method, url, true)
-		request.setRequestHeader("Cache-Control", "no-cache")
+			request.open(this.method, url, true);
+		request.setRequestHeader("Cache-Control", "no-cache");
 		if (this.jsonHeader)
-			request.setRequestHeader("Content-Type", "application/json")
+			request.setRequestHeader("Content-Type", "application/json");
 		if (this.body)
 			request.send(this.body);
 		else
