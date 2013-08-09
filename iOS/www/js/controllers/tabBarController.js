@@ -8,35 +8,16 @@ var requireArray = [
 ];
 
 define(requireArray, function(Controller, TrendsController, CameraController, FriendsController, MeController, LocateController) {
-function TabBarController(isNewUser, readyCallback) {
+function TabBarController(isNewUser) {
 	Controller.call(this);
-
-	var ignoreCallback = false;
-	var callbackCount = 0;
-	var callback = function() {
-		if (!ignoreCallback) {
-			callbackCount++;
-			if (callbackCount == 5) {
-				readyCallback();
-				ignoreCallback = true;
-			}
-		}
-	}
-
-	setTimeout(function() {
-		if (!ignoreCallback) {
-			readyCallback();
-			ignoreCallback = true;
-		}	
-	}, 7000);
 
 	this.$container.attr("id", "tabbarController");
 	this.childControllers = [
-		new TrendsController(callback), 
-		new LocateController(callback),
-		new CameraController(callback),
-		new FriendsController(callback), 
-		new MeController(isNewUser, callback)
+		new TrendsController(), 
+		new LocateController(),
+		new CameraController(),
+		new FriendsController(), 
+		new MeController(isNewUser)
 	];
 	this.currentChildController = null;
 	this.$content = $("<div>", {id: "tabbar-content"});

@@ -5,7 +5,7 @@ var requireArray = [
 ];
 
 define(requireArray, function(Controller, Spinner, ServerRequest) {
-var CameraController = function(callback) {
+var CameraController = function() {
 	Controller.call(this);
 
 	this.$container.attr("id", "cameraController");
@@ -103,7 +103,6 @@ var CameraController = function(callback) {
 			value: {red:0.5, green:0, blue:0}
 		}
 	]);
-	callback();
 };
 
 CameraController.prototype = new Controller();

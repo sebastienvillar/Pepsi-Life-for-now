@@ -32,3 +32,43 @@ html, body {
 	overflow: hidden;
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, "Arial";
 }
+
+body > .ad {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-repeat: none;
+	background-size: cover;
+	background-position: center;
+}
+
+body > .ad > div {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 50px;
+	background-color: white;
+	text-align: center;
+}
+
+body > .ad > div > span {
+	color: black;
+}
+
+body > .ad > div > span > .text {
+	font-size: 24px;
+	vertical-align: middle;
+	text-align: center;
+	line-height: 50px;
+}
+
+body > .ad > div > span > .counter {
+	padding-left: 10px;
+	font-size: 36px;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 50px;
+}

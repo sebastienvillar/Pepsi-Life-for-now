@@ -58,10 +58,51 @@ function onDeviceReady() {
                 request.execute();
             }, null, {enableHighAccuracy: true});
             window.notificationCenter = new EventEmitter();
-            var tabBarController = new TabBarController(isNewUser, function() {
-                navigator.splashscreen.hide();
-            });
-            $("body").append(tabBarController.$container);
+
+            var tabBarController = new TabBarController(isNewUser);
+
+            var request = new ServerRequest();
+            request.method = "GET";
+            request.path = "/ad/";
+            request.onSuccess = function(json) {
+                var duration = Math.round(json.duration);
+                var $ad = $("<div>");
+                $ad.addClass("ad");
+                var $counterContainer = $("<div>");
+                $counterContainer.appendTo($ad);
+                var $textContainer = $("<span>");
+                $textContainer.appendTo($counterContainer);
+                var $text = $("<span>");
+                $text.addClass("text");
+                $text.text("App in");
+                $text.appendTo($textContainer);
+                var $counter = $("<span>");
+                $counter.addClass("counter");
+                $counter.text(duration)
+                $counter.appendTo($textContainer);
+                var image = new Image;
+                image.onload = function() {
+                    $ad.css("background-image", "url(" + image.src + ")");
+                    $ad.appendTo($("body"));
+                    var counter = duration;
+                    var interval = setInterval(function() {
+                        counter--;
+                        $counter.text(counter);
+                    }, 1000);
+                    setTimeout(function() {
+                        $("body").append(tabBarController.$container);
+                        $ad.remove();
+                        clearInterval(interval);
+                    }, duration * 1000);
+                    navigator.splashscreen.hide();
+                };
+                image.src = json.image_url;
+            };
+
+            request.onError = function(status, message) {
+                alert("Error", "Oups, something bad happened. Please check your internet connection and restart the application.");
+            };
+            request.execute();
         }
     });
 };
