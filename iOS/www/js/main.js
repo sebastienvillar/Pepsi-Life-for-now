@@ -43,6 +43,20 @@ function onDeviceReady() {
             start(false);
         }
 
+        var geolocationCallback = function(position) {
+            window._currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            var request = new ServerRequest();
+            request.method = "PUT";
+            request.path = "me/geolocation"
+            request.body = JSON.stringify({
+                coordinates: {
+                    lat: position.coords.latitude,
+                    long: position.coords.longitude
+                }
+            });
+            request.execute();
+        }
+
         function start(isNewUser) {
             window.notificationCenter = new EventEmitter();
 
@@ -80,19 +94,7 @@ function onDeviceReady() {
                         $("body").append(tabBarController.$container);
                         $ad.remove();
 
-                        navigator.geolocation.getCurrentPosition(function(position) {
-                            window._currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                            var request = new ServerRequest();
-                            request.method = "PUT";
-                            request.path = "me/geolocation"
-                            request.body = JSON.stringify({
-                                coordinates: {
-                                    lat: position.coords.latitude,
-                                    long: position.coords.longitude
-                                }
-                            });
-                            request.execute();
-                        }, null, {enableHighAccuracy: true});
+                        navigator.geolocation.getCurrentPosition(geolocationCallback, null, {enableHighAccuracy: true});
                         
                         clearInterval(interval);
                     }, duration * 1000);
@@ -102,8 +104,10 @@ function onDeviceReady() {
             };
 
             request.onError = function(status, message) {
-                if (status == 404)
-                    $("body").append(tabBarController.$container);
+                if (status == 404) {
+                    $("body").append(tabBarController.$container);       
+                    navigator.geolocation.getCurrentPosition(geolocationCallback, null, {enableHighAccuracy: true});
+                }
                 else 
                     alert("Error", "Oups, something bad happened. Please check your internet connection and restart the application.");
                 navigator.splashscreen.hide();
