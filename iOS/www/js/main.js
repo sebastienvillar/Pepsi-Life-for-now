@@ -100,7 +100,12 @@ function onDeviceReady() {
             };
 
             request.onError = function(status, message) {
-                alert("Error", "Oups, something bad happened. Please check your internet connection and restart the application.");
+                if (status == 404) {
+                    $("body").append(tabBarController.$container);
+                    navigator.splashscreen.hide();
+                }
+                else
+                    alert("Error", "Oups, something bad happened. Please check your internet connection and restart the application.");
             };
             request.execute();
         }
