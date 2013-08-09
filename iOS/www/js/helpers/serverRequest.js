@@ -13,7 +13,15 @@ define(["helpers/constants"], function(Constants) {
 	ServerRequest.prototype.execute = function() {
 
 		var request = new XMLHttpRequest();
+
+		var timeout = setTimeout(function() {
+			request.abort();
+			if (this.onError)
+				this.onError(408, "Request timed out");
+		}.bind(this), 45000);
+
 		request.onload = function() {
+			clearTimeout(timeout);
 			var response = JSON.parse(request.responseText);
 			if (response.status == 200) {
 				if (this.onSuccess)
@@ -24,6 +32,8 @@ define(["helpers/constants"], function(Constants) {
 					this.onError(response.status, response.message);
 			}
 		}.bind(this);
+
+
 		var url = Constants.SERVER_URL + this.path + "?api_key=" + Constants.SERVER_API_KEY;
 		for (var key in this.queryParameters) {
 			var queryParameter = this.queryParameters[key];
@@ -32,7 +42,6 @@ define(["helpers/constants"], function(Constants) {
 			url += "&" + key + "=" + queryParameter;
 		}
 		request.open(this.method, url, true);
-
 		if (Constants.credentials)
 			request.open(this.method, url, true, Constants.credentials.username, Constants.credentials.password);
 		else
