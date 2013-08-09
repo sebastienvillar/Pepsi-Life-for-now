@@ -21,6 +21,7 @@ define(function() {
 		this.creationDate = null;
 		this.ownerName = null;
 		this.ownerImageUrl = null;
+		this.ownerFriend = null;
 	};
 
 	Comment.commentFromJSONObject = function(jsonObject) {
@@ -35,8 +36,9 @@ define(function() {
 			comment.creationDate = parseDate(jsonObject.creation_date);
 		comment.ownerName = jsonObject.owner.name;
 		comment.ownerImageUrl = jsonObject.owner.image_url;
-		if (jsonObject.owner.friend != null)
+		if (jsonObject.owner.friend != undefined) {
 			comment.ownerFriend = jsonObject.owner.friend;
+		}
 		return comment;
 	};
 
