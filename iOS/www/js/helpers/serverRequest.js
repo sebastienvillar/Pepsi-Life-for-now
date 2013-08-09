@@ -21,7 +21,7 @@ define(["helpers/constants"], function(Constants) {
 			}
 			else {
 				if (this.onError)
-					this.onError(request.status, response.message);
+					this.onError(response.status, response.message);
 			}
 		}.bind(this);
 		var url = Constants.SERVER_URL + this.path + "?api_key=" + Constants.SERVER_API_KEY;
