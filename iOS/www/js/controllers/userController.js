@@ -138,7 +138,7 @@ UserController.prototype.pushNewCells = function() {
 			this.tableView.pushCell(cell);
 		}
 	}.bind(this);
-	request.onError = function(statusCode, message) {
+	request.onError = function(status, message) {
 		this.tableView.exitLoadingMode();
 		alert("Error", "The posts couldn't be loaded. Please check your internet connection.");
 	}.bind(this);
@@ -174,7 +174,7 @@ UserController.prototype._didClickLike = function(cell, post) {
 		notificationCenter.trigger("likeNotification", {postId: post.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
-		if (statusCode != 403) {
+		if (status != 403) {
 			post.like = false;
 		}
 	}.bind(this);
@@ -220,7 +220,7 @@ UserController.prototype._rowIsVisible = function(row) {
 		notificationCenter.trigger("seenNotification", {postId: post.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
-		if (statusCode != 403) {
+		if (status != 403) {
 			post.seen = false;
 		}
 	}.bind(this);

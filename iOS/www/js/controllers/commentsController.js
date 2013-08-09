@@ -87,7 +87,7 @@ CommentsController.prototype.pushNewCells = function() {
 			this.tableView.pushCell(cell);
 		}
 	}.bind(this);
-	request.onError = function(statusCode, message) {
+	request.onError = function(status, message) {
 		this.tableView.exitLoadingMode();
 		alert("Error", "The comments couldn't be loaded. Please check your internet connection");
 	}.bind(this);
@@ -132,7 +132,7 @@ CommentsController.prototype._didClickSend = function() {
 		notificationCenter.trigger("commentNotification", {postId: this.post.id, comment: comment, notifier: this});
 		spinner.$container.remove();
 	}.bind(this);
-	request.onError = function(statusCode, message) {
+	request.onError = function(status, message) {
 		alert("Error", "Oups, something bad happened. Please try again");
 		spinner.$container.remove();
 	}.bind(this);

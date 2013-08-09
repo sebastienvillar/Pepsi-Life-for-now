@@ -15,12 +15,15 @@ define(["helpers/constants"], function(Constants) {
 		var request = new XMLHttpRequest();
 
 		var timeout = setTimeout(function() {
+			console.log("timeout: ", timeout);
 			request.abort();
 			if (this.onError)
 				this.onError(408, "Request timed out");
 		}.bind(this), 45000);
+		console.log(this.path + " : " +  timeout);
 
 		request.onload = function() {
+			console.log("clear timeout: ", timeout);
 			clearTimeout(timeout);
 			var response = JSON.parse(request.responseText);
 			if (response.status == 200) {

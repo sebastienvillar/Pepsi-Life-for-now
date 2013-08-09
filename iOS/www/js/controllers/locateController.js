@@ -134,7 +134,7 @@ LocateController.prototype._didChangeBounds = function() {
         this.markers = newMarkers;
 
     }.bind(this);
-    request.onError = function(statusCode, message) {
+    request.onError = function(status, message) {
         alert("Error", "The users couldn't be loaded. Please check your internet connection");
     }.bind(this);
     request.execute();
