@@ -156,6 +156,7 @@ CameraController.prototype.showCamera = function(event) {
 		this.clearMainContainer();
 		var image = new Image();
 
+		this.$container.css("background-color", "black");
 		this.$mainContainer.empty();
 		this.$mainCanvasContainer = $("<div>");
 		this.$mainCanvasContainer.addClass("mainCanvasContainer");
