@@ -41,10 +41,9 @@ define(["helpers/constants"], function(Constants) {
 				queryParameter = queryParameter.replace("#", "%23");
 			url += "&" + key + "=" + queryParameter;
 		}
+		request.open(this.method, url, true);
 		if (Constants.credentials)
-			request.open(this.method, url, true, Constants.credentials.username, Constants.credentials.password);
-		else
-			request.open(this.method, url, true);
+			request.setRequestHeader("Authorization", "Basic " + btoa(Constants.credentials.username + ":" + Constants.credentials.password));
 		request.setRequestHeader("Cache-Control", "no-cache");
 		if (this.jsonHeader)
 			request.setRequestHeader("Content-Type", "application/json");
