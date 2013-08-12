@@ -171,7 +171,7 @@ TrendsController.prototype._didSearch = function() {
 	}
 
 	if (tag == this.currentSearchTag)
-		return;
+		return false;
 
 	this.currentSearchTag = tag;
 	this.posts = [];
