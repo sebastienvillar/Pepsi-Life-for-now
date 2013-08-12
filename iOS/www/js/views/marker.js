@@ -10,29 +10,40 @@ var Marker = function(user) {
 
 	this.user = user;
 	this.position = new google.maps.LatLng(this.user.coordinate.latitude, this.user.coordinate.longitude);
-	this.$container = $("<div>", {"id": "marker"});
 
-	this.$pin = $("<div>", {"id": "pin"});
-	var pinClass = this.user.friend ? "red": "yellow";
-    this.$pin.addClass(pinClass);
-    this.$pin.on("tapone", this._didClick.bind(this));
-    this.$pin.appendTo(this.$container);
+	this.$container = $("<div>", {"id": "marker"});
+	var containerClass = this.user.friend ? "red": "yellow";
+    this.$container.addClass(containerClass);
+    this.$container.appendTo(this.$container);
 
     this.$image = $("<div>", {"id": "image"});
     this.$image.appendTo(this.$container);
-    this.$image.on("tapone", this._didClick.bind(this));
-    if (this.user.image_url)
+    if (this.user.image_url) {
     	this.$image.css({"background-image": "url(" + this.user.image_url + ")", "background-size": "cover"});
+    	this.$image.addClass("withImage");
+    }
+
+    this.$shadow = $("<div>", {"id": "markerShadow"});
+    this.$clickableContainer = $("<div>", {"id": "markerClickableContainer"});
+    this.$clickableArea = $("<div>", {"id": "markerClickableArea"});
+    this.$clickableArea.on("tapone", this._didClick.bind(this));
+    this.$clickableArea.appendTo(this.$clickableContainer);
 }
 
 Marker.prototype = $.extend({}, google.maps.OverlayView.prototype, EventEmitter.prototype, Marker.prototype);
 Marker.prototype.onAdd = function() {
-	var $pane = $(this.getPanes().overlayMouseTarget);
-	this.$container.appendTo($pane);
+	var $imagePane = $(this.getPanes().overlayImage);
+	this.$container.appendTo($imagePane);
+	var $shadowPane = $(this.getPanes().overlayShadow);
+	this.$shadow.appendTo($shadowPane);
+	var $clickablePane = $(this.getPanes().overlayMouseTarget);
+	this.$clickableContainer.appendTo($clickablePane);
 };
 
 Marker.prototype.onRemove = function() {
 	this.$container.remove();
+	this.$shadow.remove();
+	this.$clickableContainer.remove();
 };
 
 Marker.prototype.draw = function() {
@@ -40,7 +51,10 @@ Marker.prototype.draw = function() {
 	var pixelPosition = projection.fromLatLngToDivPixel(this.position);
 	pixelPosition.x = Math.round(pixelPosition.x) - 22;
 	pixelPosition.y = Math.round(pixelPosition.y) - 64;
+
 	this.$container.css({left: pixelPosition.x + "px", top: pixelPosition.y + "px"});
+	this.$shadow.css({left: pixelPosition.x + 12 + "px", top: pixelPosition.y + 33 + "px"});
+	this.$clickableContainer.css({left: pixelPosition.x + "px", top: pixelPosition.y + "px"});
 };
 
 Marker.prototype.addBubble = function() {
@@ -76,14 +90,27 @@ Marker.prototype.addBubble = function() {
 	this.$disclosureArrow.addClass("disclosureArrow");
 
 	this.$row.appendTo(this.$bubble);
-	this.$bubble.on("tapone", this._didClickBubble.bind(this));
 	this.$bubble.appendTo(this.$container);
+	this.$bubbleClickableArea = $("<div>");
+	this.$bubbleClickableArea.css({
+		"width": this.$bubble.width(),
+		"height": "40px",
+		"z-index": 2,
+		"position": "absolute",
+		"top": "-50px",
+		"left": "-42px"
+	});
+	this.$bubbleClickableArea.on("tapone", this._didClickBubble.bind(this));
+	this.$bubbleClickableArea.appendTo(this.$clickableContainer);
 }
 
 Marker.prototype.removeBubble = function() {
-	if (this.$bubble)
+	if (this.$bubble) {
 		this.$bubble.remove();
+		this.$bubbleClickableArea.remove();
+	}
 	this.$bubble = null;
+	this.$bubbleClickableArea = null;
 }
 
 /////////////////

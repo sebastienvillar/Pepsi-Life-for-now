@@ -1,40 +1,39 @@
 #marker {
 	position: absolute;
-	width: 65px;
-	height: 67px;
-}
-
-#marker > #pin {
 	background-color: transparent;
 	background-repeat: no-repeat;
-	width: 65px;
-	height: 67px;
+	width: 43px;
+	height: 63px;
 }
 
-#marker > #pin.red {
+#marker.red {
 	background-image: url("../img/map/pin-red@2x.png");
 	background-position: center;
-	background-size: 65px 67px;
+	background-size: 43px 63px;
 }
 
-#marker > #pin.yellow {
+#marker.yellow {
 	background-image: url("../img/map/pin-yellow@2x.png");
 	background-position: center;
-	background-size: 65px 67px;
+	background-size: 43px 63px;
 }
 
 #marker > #image {
 	position: absolute;
-	left: 9px;
-	top: 8px;
-	width: 27px;
-	height: 27px;
+	left: 4px;
+	top: 4px;
+	width: 35px;
+	height: 35px;
 	border-radius: 50%;
 	background-position: center;
-	background-size: 24px 24px;
+	background-size: 35px 35px;
 	background-color: #3b3b3b;
 	background-repeat: no-repeat;
 	background-image: url("../img/common/small-question-mark@2x.png");
+}
+
+#marker > #image.withImage {
+	background-color: transparent;
 }
 
 #marker > .bubble {
@@ -133,4 +132,26 @@
 	background-image: url("../img/map/disclosure-arrow@2x.png");
 	background-size: 5px 10px;
 	background-position: 8px 13px;
+}
+
+#markerShadow {
+	position: absolute;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	width: 53px;
+	height: 31px;
+	background-image: url("../img/map/pin-shadow@2x.png");
+	background-position: center;
+	background-size: 53px 31px;	
+}
+
+#markerClickableContainer {
+	position: absolute;
+	width: 43px;
+	height: 63px;
+}
+
+#markerClickableContainer > #markerClickableArea {
+	width: 100%;
+	height: 100%;
 }
