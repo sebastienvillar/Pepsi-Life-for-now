@@ -72,7 +72,11 @@ Marker.prototype.addBubble = function() {
 	this.$bubbleRight.addClass("bubbleRight");
 	this.$bubbleRight.appendTo(this.$bubble);
 
+	this.$textContainer = $("<div>");
+	this.$textContainer.addClass("textContainer");
+	this.$textContainer.appendTo(this.$bubble);
 	this.$row = $("<div>");
+	this.$row.appendTo(this.$textContainer);
 	this.$row.addClass("row");
 	this.$postsCount = $("<div>");
 	this.$postsCount.addClass("postsCount");
@@ -89,7 +93,6 @@ Marker.prototype.addBubble = function() {
 	this.$disclosureArrow.appendTo(this.$row);
 	this.$disclosureArrow.addClass("disclosureArrow");
 
-	this.$row.appendTo(this.$bubble);
 	this.$bubble.appendTo(this.$container);
 	this.$bubbleClickableArea = $("<div>");
 	this.$bubbleClickableArea.css({
