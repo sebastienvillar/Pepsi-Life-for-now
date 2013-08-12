@@ -78,10 +78,12 @@
 
 #userController #tableView > #cellsContainer {
 	padding: 8px;
+	background-color: #124c8f;
 }
 
 #userController #tableView > #header {
 	padding-top: 19px;
+	background-color: #124c8f;
 }
 
 #userController > #backButton {

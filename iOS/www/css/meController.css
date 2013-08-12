@@ -18,10 +18,12 @@
 
 #meController #tableView > #cellsContainer {
 	padding: 8px;
+	background-color: #124c8f;
 }
 
 #meController #tableView > #header {
 	padding-top: 19px;
+	background-color: #124c8f;
 }
 
 #meController > button {

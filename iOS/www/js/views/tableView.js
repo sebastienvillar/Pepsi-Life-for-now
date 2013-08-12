@@ -47,7 +47,11 @@ function TableView() {
 TableView.prototype = new EventEmitter();
 
 TableView.prototype.setHeader = function($header) {
+	if (this.$header)
+		this.$header.remove();
+
 	this.$container.prepend($header);
+	this.$header = $header;
 };
 
 TableView.prototype.setCellsSpacing = function(spacing) {
