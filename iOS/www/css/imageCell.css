@@ -5,7 +5,6 @@
 	border-bottom-left-radius: 4px;
 	box-shadow: 0 4px #0d305e;
 	padding-bottom: 5px;
-
 }
 
 #imageCell > #topContainer {
@@ -240,9 +239,9 @@
 #imageCell #footer > #seensCount {
 	display: inline-block;
 	margin-left: 8px;
-	margin-top: 1px;
-	font-size: 54px;
-	line-height: 45px;
+	margin-top: 4px;
+	font-size: 41px;
+	line-height: 41px;
 	font-weight: bold;
 	color: white;
 }
