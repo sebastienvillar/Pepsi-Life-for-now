@@ -46,8 +46,8 @@ EditMeController.prototype._didClickImageButton = function() {
 	var cameraOptions = { 
 		destinationType: Camera.DestinationType.FILE_URI,
 		sourcetype: Camera.PictureSourceType.CAMERA,
-		targetWidth: 400,
-		targetHeight: 400
+		targetWidth: 300,
+		targetHeight: 300
 	}
 
 	var onCameraSuccess = function(fileURI) {

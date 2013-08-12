@@ -148,8 +148,8 @@ CameraController.prototype.showCamera = function(event) {
 	var cameraOptions = { 
 		destinationType: Camera.DestinationType.FILE_URI,
 		sourcetype: Camera.PictureSourceType.CAMERA,
-		targetWidth: 1000,
-		targetHeight: 1000
+		targetWidth: 700,
+		targetHeight: 700
 	}
 	var onCameraSuccess = function(fileURI) {
 		clearTimeout(this.timer);
