@@ -106,6 +106,9 @@ var MeController = function(newUser) {
 		this.editMeController = editMeController;
 		editMeController.$container.appendTo(this.$container);
 		editMeController.on("meWasUpdated", this._onUpdate.bind(this));
+		//force css reload
+		editMeController.$container[0].offsetHeight;
+		editMeController.$container.addClass("slide");
 	}
 }
 
@@ -234,9 +237,11 @@ MeController.prototype._didClickEditButton = function(event) {
 
 	this.editMeController = editMeController;
 	editMeController.$container.appendTo(this.$container);
+	editMeController.$container.addClass("withTransition");
 
 	//force reload of css
     editMeController.$container[0].offsetHeight;
+
     editMeController.$container.addClass("slide");
 
 	editMeController.$container.on("webkitTransitionEnd transitionend", function() {
@@ -261,6 +266,7 @@ MeController.prototype._onUpdate = function(newData) {
 		}
 	}
 
+	this.editMeController.$container.addClass("withTransition");
 	this.editMeController.$container.on("webkitTransitionEnd transitionend", function() {
         this.editMeController.$container.off("webkitTransitionEnd transitionend")
         this.editMeController.$container.remove();

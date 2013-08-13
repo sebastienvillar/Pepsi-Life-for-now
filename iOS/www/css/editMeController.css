@@ -5,6 +5,9 @@
 	top: 100%;
 	bottom: -100%;
 	background-color: white;
+}
+
+#editMeController.withTransition {
 	transition: transform 0.3s ease-in-out;
 	-webkit-transition: -webkit-transform 0.3s ease-in-out;
 }
