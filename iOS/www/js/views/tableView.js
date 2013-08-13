@@ -22,7 +22,7 @@ function TableView() {
 	//Events
 
 	this.$container.scroll(function(e) {
-		if (this.$cellsContainer.outerHeight() + this.$cellsContainer.scrollTop() == this.$cellsContainer[0].scrollHeight) {
+		if (this.$container.outerHeight() + this.$container.scrollTop() == this.$container[0].scrollHeight) {
 			this.trigger("didScrollToBottom");
 		}
 
