@@ -153,22 +153,23 @@ LocateController.prototype._didClickMarkerBubble = function(marker, user) {
     if (this.userController)
         return;
     var userController = new UserController(user);
-    userController.$container.on("webkitAnimationEnd animationEnd", function() {
-        userController.$container.off("webkitAnimationEnd animationEnd")
-        userController.$container.removeClass("slideLeft");
+    userController.$container.on("webkitTransitionEnd transitionend", function() {
+        userController.$container.off("webkitTransitionEnd transitionend")
         userController.init();
     });
-    userController.$container.addClass("slideLeft");
     userController.$container.appendTo(this.$container);
 
+    //force reload of css
+    userController.$container[0].offsetHeight;
+    userController.$container.addClass("slide");
+
     userController.on("clickBack", function() {
-        userController.$container.on("webkitAnimationEnd animationEnd", function() {
-            userController.$container.off("webkitAnimationEnd animationEnd")
-            userController.$container.removeClass("slideRight");
+        userController.$container.on("webkitTransitionEnd transitionend", function() {
+            userController.$container.off("webkitTransitionEnd transitionend")
             userController.$container.remove();
             this.userController = null;
         }.bind(this));
-        userController.$container.addClass("slideRight");
+       userController.$container.removeClass("slide");
     }.bind(this));
     this.userController = userController;
 };

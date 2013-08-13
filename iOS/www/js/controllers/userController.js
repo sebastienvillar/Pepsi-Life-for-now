@@ -189,22 +189,23 @@ UserController.prototype._didClickComment = function(cell, post) {
 	if (this.commentsController)
 		return;
 	var commentsController = new CommentsController(post);
-	commentsController.$container.on("webkitAnimationEnd animationEnd", function() {
-        commentsController.$container.off("webkitAnimationEnd animationEnd")
-        commentsController.$container.removeClass("slideLeft");
+	commentsController.$container.on("webkitTransitionEnd transitionend", function() {
+        commentsController.$container.off("webkitTransitionEnd transitionend")
         commentsController.init();
     });
-    commentsController.$container.addClass("slideLeft");
     commentsController.$container.appendTo(this.$container);
 
+    //force reload of css
+    commentsController.$container[0].offsetHeight;
+    commentsController.$container.addClass("slide");
+
     commentsController.on("clickBack", function() {
-        commentsController.$container.on("webkitAnimationEnd animationEnd", function() {
-            commentsController.$container.off("webkitAnimationEnd animationEnd")
-            commentsController.$container.removeClass("slideRight");
+        commentsController.$container.on("webkitTransitionEnd transitionend", function() {
+            commentsController.$container.off("webkitTransitionEnd transitionend")
             commentsController.$container.remove();
             this.commentsController = null;
         }.bind(this));
-        commentsController.$container.addClass("slideRight");
+       commentsController.$container.removeClass("slide");
     }.bind(this));
     this.commentsController = commentsController;
 };

@@ -308,9 +308,8 @@ CameraController.prototype.showTextArea = function(event) {
 	this.$backButton = $("<button>");
 	this.$backButton.addClass("whiteButton backArrow");
 
-	this.$textAreaContainer.on("webkitAnimationEnd animationEnd", function(){
-		this.$textAreaContainer.off("webkitAnimationEnd animationEnd")
-		this.$textAreaContainer.removeClass("slideUp");
+	this.$textAreaContainer.on("webkitTransitionEnd transitionend", function(){
+		this.$textAreaContainer.off("webkitTransitionEnd transitionend")
 		$("body").on('touchmove', function(e) {
     		e.preventDefault();
 		}, false);
@@ -323,8 +322,12 @@ CameraController.prototype.showTextArea = function(event) {
 	}.bind(this)); 
 
 	this.$textArea.addClass("textArea");
-	this.$textAreaContainer.addClass("slideUp");
 	this.$textArea.appendTo(this.$textAreaContainer);
+
+	//force css reload
+	this.$textAreaContainer[0].offsetHeight;
+
+	this.$textAreaContainer.addClass("slide");
 };
 
 CameraController.prototype.didSelectFilter = function(i) {
@@ -360,7 +363,6 @@ CameraController.prototype.didClickSave = function(event) {
 		return;
 	}
 
-	////
 	this.$saveButton.off("tapone");
 	this.$backButton.off("tapone");
 
@@ -373,18 +375,6 @@ CameraController.prototype.didClickSave = function(event) {
 	var spinner = new Spinner();
 	spinner.$container.addClass("spinner");
 	spinner.$container.appendTo($uploadContainer);
-
-	// this.$filtersBar.detach();
-	// this.$mainContainer.empty();
-	// this.$mainContainer.remove();
-
-	// this.$textAreaContainer.remove();
-	// this.$textAreaContainer = null;
-	// this.$saveButton = null;
-	// this.$backButton = null;
-	// this.$textArea = null;
-
-	///
 
 	var reinitializeScreen = function() {
 		this.photoWasTaken = false;
@@ -445,16 +435,14 @@ CameraController.prototype.didClickSave = function(event) {
 		request.execute();
 	}.bind(this);
 
+	this.$container.addClass("animatedBackground");
 	this.$container.css("background-color", "#124c8f");
-	this.$mainContainer.addClass("disappear");
-	this.$mainContainer.on("webkitAnimationEnd animationEnd", function() {
-	}.bind(this));
+	this.$textArea.blur();
 
-	this.$textAreaContainer.addClass("slideDown");
-	this.$textAreaContainer.on("webkitAnimationEnd animationEnd", function() {
-		this.$textAreaContainer.off("webkitAnimationEnd animationEnd")
-		this.$mainContainer.off("webkitAnimationEnd animationEnd")
+	this.$textAreaContainer.on("webkitTransitionEnd transitionend", function() {
+		this.$textAreaContainer.off("webkitTransitionEnd transitionend")
 		this.$mainContainer.removeClass("disappear");
+		this.$container.removeClass("animatedBackground");
 		this.$filtersBar.detach();
 		this.$mainContainer.empty();
 		this.$mainContainer.remove();
@@ -470,6 +458,9 @@ CameraController.prototype.didClickSave = function(event) {
 			sendCanvas($newCanvas[0]);
 		}.bind(this), 100);
 	}.bind(this));
+
+	this.$textAreaContainer.removeClass("slide");
+	this.$mainContainer.addClass("disappear");
 };
 
 CameraController.prototype.didClickBack = function(event) {

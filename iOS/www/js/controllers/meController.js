@@ -183,22 +183,23 @@ MeController.prototype._didClickComment = function(cell, post) {
 	if (this.commentsController)
 		return;
 	var commentsController = new CommentsController(post);
-	commentsController.$container.on("webkitAnimationEnd animationEnd", function() {
-        commentsController.$container.off("webkitAnimationEnd animationEnd")
-        commentsController.$container.removeClass("slideLeft");
+	commentsController.$container.on("webkitTransitionEnd transitionend", function() {
+        commentsController.$container.off("webkitTransitionEnd transitionend")
         commentsController.init();
     });
-    commentsController.$container.addClass("slideLeft");
     commentsController.$container.appendTo(this.$container);
 
+    //force reload of css
+    commentsController.$container[0].offsetHeight;
+    commentsController.$container.addClass("slide");
+
     commentsController.on("clickBack", function() {
-        commentsController.$container.on("webkitAnimationEnd animationEnd", function() {
-            commentsController.$container.off("webkitAnimationEnd animationEnd")
-            commentsController.$container.removeClass("slideRight");
+        commentsController.$container.on("webkitTransitionEnd transitionend", function() {
+            commentsController.$container.off("webkitTransitionEnd transitionend")
             commentsController.$container.remove();
             this.commentsController = null;
         }.bind(this));
-        commentsController.$container.addClass("slideRight");
+       commentsController.$container.removeClass("slide");
     }.bind(this));
     this.commentsController = commentsController;
 };
@@ -232,12 +233,16 @@ MeController.prototype._didClickEditButton = function(event) {
 	var editMeController = new EditMeController(username, this.$description.text());
 
 	this.editMeController = editMeController;
-	editMeController.$container.on("webkitAnimationEnd animationEnd", function() {
-		editMeController.$container.off("webkitAnimationEnd animationEnd")
-		editMeController.$container.removeClass("slideUp");
-	}.bind(this));
-	editMeController.$container.addClass("slideUp");
 	editMeController.$container.appendTo(this.$container);
+
+	//force reload of css
+    editMeController.$container[0].offsetHeight;
+    editMeController.$container.addClass("slide");
+
+	editMeController.$container.on("webkitTransitionEnd transitionend", function() {
+        editMeController.$container.off("webkitTransitionEnd transitionend")
+    });
+	editMeController.$container.addClass("slide");
 	editMeController.on("meWasUpdated", this._onUpdate.bind(this));
 };
 
@@ -256,11 +261,12 @@ MeController.prototype._onUpdate = function(newData) {
 		}
 	}
 
-	this.editMeController.$container.on("webkitAnimationEnd animationEnd", function() {
-		this.editMeController.$container.remove();
-		this.$editButton.on("tapone", this._didClickEditButton.bind(this));
-	}.bind(this));
-	this.editMeController.$container.addClass("slideDown");
+	this.editMeController.$container.on("webkitTransitionEnd transitionend", function() {
+        this.editMeController.$container.off("webkitTransitionEnd transitionend")
+        this.editMeController.$container.remove();
+        this.$editButton.on("tapone", this._didClickEditButton.bind(this));
+    }.bind(this));
+	this.editMeController.$container.removeClass("slide");
 };
 
 MeController.prototype._onPostNotification = function(notification) {

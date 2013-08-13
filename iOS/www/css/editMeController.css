@@ -2,9 +2,16 @@
 	position: absolute;
 	left: 0;
 	right: 0;
-	top: 0;
-	bottom: 0;
+	top: 100%;
+	bottom: -100%;
 	background-color: white;
+	transition: transform 0.3s ease-in-out;
+	-webkit-transition: -webkit-transform 0.3s ease-in-out;
+}
+
+#editMeController.slide {
+	transform: translate3d(0, -100%, 0);
+	-webkit-transform: translate3d(0, -100%, 0);
 }
 
 #editMeController > button {
@@ -24,66 +31,6 @@
 	left: 50%;
 	margin-left: -10px;
 	margin-top: -11px;
-}
-
-#editMeController.slideUp {
-	/*name duration timing delay iteration-count direction*/
-	-webkit-animation: slideUp 0.3s ease-in-out 0 1;
-	animation: slideUp 0.3s ease-in-out 0 1;
-}
-
-@-webkit-keyframes slideUp {
-	0% {
-		top: 100%;
-		bottom: -100%;
-	}
-
-	100% {
-		top: 0%;
-		bottom: 0%;
-	}
-}
-
-@keyframes slideUp {
-	0% {
-		top: 100%;
-		bottom: -100%;
-	}
-
-	100% {
-		top: 0%;
-		bottom: 0%;
-	}
-}
-
-#editMeController.slideDown {
-	/*name duration timing delay iteration-count direction*/
-	-webkit-animation: slideDown 0.3s ease-in-out 0 1;
-	animation: slideDown 0.3s ease-in-out 0 1;
-}
-
-@-webkit-keyframes slideDown {
-	0% {
-		top: 0%;
-		bottom: 0%;
-	}
-
-	100% {
-		top: 100%;
-		bottom: -100%;
-	}
-}
-
-@keyframes slideDown {
-	0% {
-		top: 0%;
-		bottom: 0%;
-	}
-
-	100% {
-		top: 100%;
-		bottom: -100%;
-	}
 }
 
 #editMeController input {

@@ -7,12 +7,23 @@
 	bottom: 0;
 }
 
+#cameraController.animatedBackground {
+	transition: background-color 0.3s ease-in-out;
+	-webkit-transition: background-color 0.3s ease-in-out;
+}
+
 #cameraController > #mainContainer {
 	position: absolute;
 	left: 0;
 	right: 0;
 	top: 0;
 	bottom: 0;
+	transition: transform 0.3s ease-in-out;
+	-webkit-transition: -webkit-transform 0.3s ease-in-out;
+}
+
+#cameraController > #mainContainer.disappear {
+	opacity: 0;
 }
 
 #cameraController .mainCanvasContainer {
@@ -163,56 +174,19 @@
 	color: white;
 }
 
-#cameraController .textAreaContainer.slideUp {
-	/*name duration timing delay iteration-count direction*/
-	-webkit-animation: slideUp 0.3s ease-in-out 0 1;
-	animation: slideUp 0.3s ease-in-out 0 1;
+#cameraController .textAreaContainer {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -100%;
+	top: 100%;
+	transition: transform 0.3s ease-in-out;
+	-webkit-transition: -webkit-transform 0.3s ease-in-out;
 }
 
-@-webkit-keyframes slideUp {
-	0% {
-		top: 100%;
-	}
-
-	100% {
-		top: 0%;
-	}
-}
-
-@keyframes slideUp {
-	0% {
-		top: 100%;
-	}
-
-	100% {
-		top: 0%;
-	}
-}
-
-#cameraController .textAreaContainer.slideDown {
-	/*name duration timing delay iteration-count direction*/
-	-webkit-animation: slideDown 0.3s ease-in-out 0 1;
-	animation: slideDown 0.3s ease-in-out 0 1;
-}
-
-@-webkit-keyframes slideDown {
-	0% {
-		top: 0%;
-	}
-
-	100% {
-		top: 100%;
-	}
-}
-
-@keyframes slideDown {
-	0% {
-		top: 0%;
-	}
-
-	100% {
-		top: 100%;
-	}
+#cameraController .textAreaContainer.slide {
+	transform: translate3d(0, -100%, 0);
+	-webkit-transform: translate3d(0, -100%, 0);
 }
 
 #cameraController .textArea {
@@ -231,38 +205,4 @@
 	padding: 8px;
 	font-size: 16px;
 	overflow: hidden;
-}
-
-#cameraController .textAreaContainer {
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	top: 0;
-}
-
-#cameraController .disappear {
-/*name duration timing delay iteration-count direction*/
-	-webkit-animation: disappear 0.3s ease-in 0 1;
-	animation: disappear 0.3s ease-in 0 1;
-}
-
-@-webkit-keyframes disappear {
-	0% {
-		opacity: 1;
-	}
-
-	100% {
-		opacity: 0;
-	}
-}
-
-@keyframes disappear {
-	0% {
-		opacity: 1;
-	}
-
-	100% {
-		opacity: 0;
-	}
 }
