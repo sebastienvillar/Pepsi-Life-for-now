@@ -228,7 +228,7 @@ MeController.prototype._rowIsVisible = function(row) {
 MeController.prototype._didClickEditButton = function(event) {
 	event.preventDefault();
 	this.$editButton.off("tapone");
-	var username = this.$username.text() == "Unkown" ? undefined : this.$username.text();
+	var username = this.$username.text() == "Unkown" ? "" : this.$username.text();
 	var editMeController = new EditMeController(username, this.$description.text());
 
 	this.editMeController = editMeController;

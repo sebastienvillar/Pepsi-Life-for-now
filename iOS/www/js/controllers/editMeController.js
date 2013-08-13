@@ -12,6 +12,8 @@ var EditMeController = function(name, description) {
 	EventEmitter.call(this);
 
 	this.$container.attr("id", "editMeController");
+	this.name = name;
+	this.description = description;
 
 	this.$nameInput = $("<input>", {"id": "nameInput", "type": "text"});
 	this.$nameInput.appendTo(this.$container);
@@ -68,6 +70,11 @@ EditMeController.prototype._didClickDoneButton = function() {
 		spinner.$container.remove();
 		this.trigger("meWasUpdated", newData);
 	}.bind(this);
+
+	if (this.name == this.$nameInput.val() && this.description == this.$descriptionInput.val() && !this.imageURI) {
+		finish(null);
+		return;
+	}
 
 	var updateMe = function(imageURL) {
 		var newData = {
