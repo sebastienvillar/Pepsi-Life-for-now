@@ -160,6 +160,7 @@ CameraController.prototype.showCamera = function(event) {
 		this.clearMainContainer();
 		var image = new Image();
 
+		this.didSelectFilter(2);
 		this.$container.css("background-color", "black");
 		this.$mainContainer.empty();
 		this.$mainCanvasContainer = $("<div>");
