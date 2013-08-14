@@ -1,4 +1,4 @@
-window.alert = function(title, message) {
+window.alert = function(title, message, callback) {
     var $alert = $("<div>", {"id": "alert"});
     $alert.on("touchstart", function(e) {
         e.stopImmediatePropagation();
@@ -21,6 +21,8 @@ window.alert = function(title, message) {
     $button.text("OK");
     $button.on("tapone", function() {
         $alert.remove();
+        if (callback)
+            callback();
     });
    
     $alert.appendTo($("body"));
