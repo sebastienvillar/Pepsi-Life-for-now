@@ -41,7 +41,7 @@ LocateController.prototype.didDisappear = function() {
 };
 
 LocateController.prototype.init = function() {
-    this.initalized = true;
+    this.initialized = true;
     this.markers = {};
 
     var center = window._currentPosition ? window._currentPosition : new google.maps.LatLng(-21.115141, 55.536384);
