@@ -5,11 +5,12 @@ var requireArray = [
 	"views/imageCell",
 	"helpers/serverRequest",
 	"models/post",
-	"controllers/commentsController"
+	"controllers/commentsController",
+	"controllers/userController"
 ];
 
 
-define(requireArray, function(Controller, TableView, TrendsCell, ImageCell, ServerRequest, Post, CommentsController) {
+define(requireArray, function(Controller, TableView, TrendsCell, ImageCell, ServerRequest, Post, CommentsController, UserController) {
 var TrendsController = function() {
 	Controller.call(this);
 
@@ -32,6 +33,7 @@ var TrendsController = function() {
 	this.postsRemaining = true;
 	this.posts = [];
 	this.postsByIds = {};
+	this.usernameClicked = false;
 
 	this.currentSearchTag = null;
 
@@ -77,6 +79,7 @@ TrendsController.prototype.pushNewCells = function() {
 			cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
 			cell.on("didClickComment", this._didClickComment.bind(this, cell, post));
 			cell.on("didClickTag", this._didClickTag.bind(this));
+			cell.on("didClickUsername", this._didClickUsername.bind(this, post));
 
 			this.tableView.pushCell(cell);
 		}
@@ -107,7 +110,6 @@ TrendsController.prototype._didScrollToBottom = function() {
 };
 
 TrendsController.prototype._didSelectRow = function(row) {
-
 };
 
 TrendsController.prototype._didClickLike = function(cell, post) {
@@ -161,6 +163,42 @@ TrendsController.prototype._didClickTag = function(tag) {
 	this.$searchField.val(tag);
 	this._didSearch();
 }
+
+TrendsController.prototype._didClickUsername = function(post) {
+	if (this.usernameClicked)
+        return;
+
+    this.usernameClicked = true;
+	var request = new ServerRequest();
+	request.path = "users/" + post.ownerId;
+	request.method = "GET";
+	request.onSuccess = function(json) {
+		var user = json;
+    	var userController = new UserController(user);
+    	userController.$container.on("webkitTransitionEnd transitionend", function() {
+        	userController.$container.off("webkitTransitionEnd transitionend")
+        	userController.init();
+    	});
+    	userController.$container.appendTo(this.$container);
+
+    	//force reload of css
+    	userController.$container[0].offsetHeight;
+    	userController.$container.addClass("slide");
+
+    	userController.on("clickBack", function() {
+	        userController.$container.on("webkitTransitionEnd transitionend", function() {
+    	        userController.$container.off("webkitTransitionEnd transitionend")
+        	    userController.$container.remove();
+            	this.usernameClicked = false;
+        	}.bind(this));
+       	userController.$container.removeClass("slide");
+    	}.bind(this));
+	}.bind(this);
+	request.onError = function(status, message) {
+		alert("Error", "Oups, something bad happened. Please try again");
+	};
+	request.execute();
+};
 
 TrendsController.prototype._didSearch = function() {
 	this.$searchField.blur();

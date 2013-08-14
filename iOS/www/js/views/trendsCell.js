@@ -65,6 +65,11 @@ function TrendsCell(post) {
 	this.$commentsCount.addClass("trendsCell-commentsCount");
 	this.$commentsCount.appendTo(this.$header);
 
+	this.$usernameClickArea = $("<div>");
+	this.$usernameClickArea.addClass("trendsCell-usernameClickArea");
+	this.$usernameClickArea.appendTo(this.$header);
+	this.$usernameClickArea.on("tapone", didClickUsername.bind(this));
+
 	//Body
 	this.$body = $("<div>");
 	this.$body.addClass("trendsCell-body");
@@ -221,6 +226,11 @@ function didClickComment(event) {
 function didClickTag(tag, event) {
 	event.stopPropagation();
 	this.trigger("didClickTag", tag);
+}
+
+function didClickUsername() {
+	event.stopPropagation();
+	this.trigger("didClickUsername");
 }
 
 return TrendsCell;

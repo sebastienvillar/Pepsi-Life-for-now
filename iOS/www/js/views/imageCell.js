@@ -44,6 +44,10 @@ function ImageCell(post) {
 	this.$date = $("<p>", {"id": "date"});
 	this.$date.appendTo(this.$header);
 
+	this.$usernameClickArea = $("<div>", {"id": "usernameClickArea"});
+	this.$usernameClickArea.appendTo(this.$header);
+	this.$usernameClickArea.on("tapone", didClickUsername.bind(this));
+
 	//Body
 	this.$body = $("<div>", {"id": "body"});
 	this.$body.appendTo(this.$rightContainer);
@@ -257,6 +261,11 @@ function didClickComment(event) {
 function didClickTag(tag, event) {
 	event.stopPropagation();
 	this.trigger("didClickTag", tag);
+}
+
+function didClickUsername() {
+	event.stopPropagation();
+	this.trigger("didClickUsername");
 }
 
 return ImageCell;

@@ -100,6 +100,8 @@ var UserController = function(user) {
 
 	notificationCenter.on("likeNotification", this._onLikeNotification.bind(this));
 	notificationCenter.on("seenNotification", this._onSeenNotification.bind(this));
+	notificationCenter.on("unfriendNotification", this._onUnfriendNotification.bind(this));
+	notificationCenter.on("friendNotification", this._onFriendNotification.bind(this));
 	
 	this.$username.text(this.user.name);
 	this.$description.text(this.user.description);
@@ -138,7 +140,6 @@ UserController.prototype.pushNewCells = function() {
 			var cell = new ImageCell(post);
 			cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
 			cell.on("didClickComment", this._didClickComment.bind(this, cell, post));
-
 			this.tableView.pushCell(cell);
 		}
 	}.bind(this);
@@ -232,7 +233,9 @@ UserController.prototype._rowIsVisible = function(row) {
 	request.execute();
 };
 
-UserController.prototype._didClickAdd = function() {
+UserController.prototype._didClickAdd = function(event) {
+	event.preventDefault();
+	console.log("add");
 	this.$friendButton.off("tapone");
 	this.$backButton.off("tapone");
 	var request = new ServerRequest();
@@ -242,16 +245,6 @@ UserController.prototype._didClickAdd = function() {
 		friend: this.user.id
 	});
 	request.onSuccess = function(json) {
-		for (var i in this.posts) {
-			this.posts[i].friend = true;
-			var cell = this.tableView.cellForRow(i);
-			cell.setAvatarColor("#d32433");
-		}
-		this.$avatarWrapper.css("background-color", "#d32433");
-		this.user.friend = true;
-		this.$friendText.text("REMOVE");
-		this.$friendButton.on("tapone", this._didClickRemove.bind(this));
-		this.$backButton.on("tapone", this._didClickBack.bind(this));
 		notificationCenter.trigger("friendNotification", {userId: this.user.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
@@ -262,23 +255,15 @@ UserController.prototype._didClickAdd = function() {
 	request.execute();
 };
 
-UserController.prototype._didClickRemove = function() {
+UserController.prototype._didClickRemove = function(event) {
+	event.preventDefault();
+	console.log("remove");
 	this.$friendButton.off("tapone");
 	this.$backButton.off("tapone");
 	var request = new ServerRequest();
 	request.path = "me/friends/" + this.user.id;
 	request.method = "delete";
 	request.onSuccess = function(json) {
-		for (var i in this.posts) {
-			this.posts[i].friend = false;
-			var cell = this.tableView.cellForRow(i);
-			cell.setAvatarColor("#c7d20c");
-		}
-		this.$avatarWrapper.css("background-color", "#c7d20c");
-		this.user.friend = false;
-		this.$friendText.text("ADD");
-		this.$friendButton.on("tapone", this._didClickAdd.bind(this));
-		this.$backButton.on("tapone", this._didClickBack.bind(this));
 		notificationCenter.trigger("unfriendNotification", {userId: this.user.id, notifier: this});
 	}.bind(this);
 	request.onError = function(status, message) {
@@ -317,6 +302,42 @@ UserController.prototype._onSeenNotification = function(notification) {
 		var cell = this.tableView.cellForRow(this.posts.indexOf(post));
 		if (cell.setSeensCount)
 			cell.setSeensCount(cell.getSeensCount() + 1);
+	}
+};
+
+UserController.prototype._onUnfriendNotification = function(notification) {
+	if (notification.userId == this.user.id) {
+		console.log("unfriend");
+		for (var i in this.posts) {
+			this.posts[i].friend = false;
+			var cell = this.tableView.cellForRow(i);
+			cell.setAvatarColor("#c7d20c");
+		}
+		this.$avatarWrapper.css("background-color", "#c7d20c");
+		this.user.friend = false;
+		this.$friendText.text("ADD");
+		this.$friendButton.off("tapone");
+		this.$backButton.off("tapone");
+		this.$friendButton.on("tapone", this._didClickAdd.bind(this));
+		this.$backButton.on("tapone", this._didClickBack.bind(this));
+	}
+};
+
+UserController.prototype._onFriendNotification = function(notification) {
+	if (notification.userId == this.user.id) {
+		console.log("friend");
+		for (var i in this.posts) {
+			this.posts[i].friend = true;
+			var cell = this.tableView.cellForRow(i);
+			cell.setAvatarColor("#d32433");
+		}
+		this.$avatarWrapper.css("background-color", "#d32433");
+		this.user.friend = true;
+		this.$friendText.text("REMOVE");
+		this.$friendButton.off("tapone");
+		this.$backButton.off("tapone");
+		this.$friendButton.on("tapone", this._didClickRemove.bind(this));
+		this.$backButton.on("tapone", this._didClickBack.bind(this));
 	}
 };
 

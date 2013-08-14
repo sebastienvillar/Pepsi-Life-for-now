@@ -4,11 +4,12 @@ var requireArray = [
 	"views/imageCell",
 	"helpers/serverRequest",
 	"models/post",
-	"controllers/commentsController"
+	"controllers/commentsController",
+	"controllers/userController"
 ];
 
 
-define(requireArray, function(Controller, TableView, ImageCell, ServerRequest, Post, CommentsController) {
+define(requireArray, function(Controller, TableView, ImageCell, ServerRequest, Post, CommentsController, UserController) {
 var FriendsController = function() {
 	Controller.call(this);
 
@@ -21,6 +22,7 @@ var FriendsController = function() {
 	this.postsRemaining = true;
 	this.posts = [];
 	this.postsByIds = {};
+	this.usernameClicked = false;
 
 	//Event Handlers
 	this.tableView.on("didScrollToBottom", this._didScrollToBottom.bind(this));
@@ -58,16 +60,22 @@ FriendsController.prototype.pushNewCells = function() {
 
 			cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
 			cell.on("didClickComment", this._didClickComment.bind(this, cell, post));
+			cell.on("didClickUsername", this._didClickUsername.bind(this, post));
 
 			this.tableView.pushCell(cell);
 		}
 		if (this.posts.length == 0 && !this.$noPostsMessage) {
 			this.$noPostsMessage = $("<p>");
 			this.$noPostsMessage.html("No post yet.<br/>Go make some new friends!");
-			this.$noPostsMessage.appendTo(this.$container);
+			if (this.userController)
+				this.$noPostsMessage.insertBefore(this.userController.$container);
+			else
+				this.$noPostsMessage.appendTo(this.$container);
 		}
-		else if (this.posts.length != 0 && this.$noPostsMessage)
+		else if (this.posts.length != 0 && this.$noPostsMessage) {
 			this.$noPostsMessage.remove();
+			this.$noPostsMessage = null;
+		}
 	}.bind(this);
 	request.onError = function(status, message) {
 		this.tableView.exitLoadingMode();
@@ -135,6 +143,44 @@ FriendsController.prototype._didClickComment = function(cell, post) {
        commentsController.$container.removeClass("slide");
     }.bind(this));
     this.commentsController = commentsController;
+};
+
+FriendsController.prototype._didClickUsername = function(post) {
+	if (this.usernameClicked)
+        return;
+
+    this.usernameClicked = true;
+	var request = new ServerRequest();
+	request.path = "users/" + post.ownerId;
+	request.method = "GET";
+	request.onSuccess = function(json) {
+		var user = json;
+    	var userController = new UserController(user);
+    	this.userController = userController;
+    	userController.$container.on("webkitTransitionEnd transitionend", function() {
+        	userController.$container.off("webkitTransitionEnd transitionend")
+        	userController.init();
+    	});
+    	userController.$container.appendTo(this.$container);
+
+    	//force reload of css
+    	userController.$container[0].offsetHeight;
+    	userController.$container.addClass("slide");
+
+    	userController.on("clickBack", function() {
+	        userController.$container.on("webkitTransitionEnd transitionend", function() {
+    	        userController.$container.off("webkitTransitionEnd transitionend")
+        	    userController.$container.remove();
+            	this.usernameClicked = false;
+            	this.userController = null;
+        	}.bind(this));
+       	userController.$container.removeClass("slide");
+    	}.bind(this));
+	}.bind(this);
+	request.onError = function(status, message) {
+		alert("Error", "Oups, something bad happened. Please try again");
+	};
+	request.execute();
 };
 
 FriendsController.prototype._rowIsVisible = function(row) {

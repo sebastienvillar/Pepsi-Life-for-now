@@ -24,6 +24,14 @@
 	background-color: #d5d5d5;
 }
 
+.trendsCell-usernameClickArea {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 120px;
+}
+
 .trendsCell-avatar {
 	position: absolute;
 	width: 20px;

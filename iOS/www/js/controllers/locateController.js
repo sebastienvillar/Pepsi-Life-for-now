@@ -18,7 +18,7 @@ var LocateController = function() {
     this.$filterButton.on("tapone", this._didClickAll.bind(this));
     this.onlyFriends = false;
     this.selectedMarker = null;
-    this.usersBydIds = {};
+    this.usersByIds = {};
 
     notificationCenter.on("friendNotification", this._onFriendNotification.bind(this));
     notificationCenter.on("unfriendNotification", this._onUnfriendNotification.bind(this));
@@ -108,10 +108,10 @@ LocateController.prototype._didChangeBounds = function() {
         var newMarkers = {};
         for (var i in this.users) {
             var user = this.users[i];
+            this.usersByIds[user.id] = user;
             if (this.onlyFriends)
                 user.friend = true;
             if (!this.markers[user.id]) {
-                this.usersBydIds[user.id] = user;
                 var marker = new Marker(user);
                 marker.setMap(this.map);
                 marker.on("click", this._didClickMarker.bind(this, marker, user));
@@ -122,7 +122,7 @@ LocateController.prototype._didChangeBounds = function() {
 
         for (var key in this.markers) {
             if (!newMarkers[key]) {
-                this.usersBydIds[key] = null;
+                delete this.usersByIds[key];
                 var marker = this.markers[key];
                 if (marker == this.selectedMarker) {
                     this.selectedMarker.removeBubble();
@@ -132,7 +132,6 @@ LocateController.prototype._didChangeBounds = function() {
             }
         }
         this.markers = newMarkers;
-
     }.bind(this);
     request.onError = function(status, message) {
         alert("Error", "The users couldn't be loaded. Please check your internet connection");
@@ -191,12 +190,11 @@ LocateController.prototype._didClickFriends = function() {
 };
 
 LocateController.prototype._onFriendNotification = function(notification) {
-    var user = this.usersBydIds[notification.userId];
+    var user = this.usersByIds[notification.userId];
     if (user) {
         var oldMarker = this.markers[user.id];
         oldMarker.setMap(null);
         oldMarker.removeBubble();
-        this.markers[user.id] = null;
         var marker = new Marker(user);
         marker.setMap(this.map);
         marker.on("click", this._didClickMarker.bind(this, marker, user));
@@ -210,12 +208,11 @@ LocateController.prototype._onFriendNotification = function(notification) {
 };
 
 LocateController.prototype._onUnfriendNotification = function(notification) {
-    var user = this.usersBydIds[notification.userId];
+    var user = this.usersByIds[notification.userId];
     if (user) {
         var oldMarker = this.markers[user.id];
         oldMarker.setMap(null);
         oldMarker.removeBubble();
-        this.markers[user.id] = null;
         if (!this.onlyFriends) {
             var marker = new Marker(user);
             marker.setMap(this.map);
@@ -226,6 +223,10 @@ LocateController.prototype._onUnfriendNotification = function(notification) {
                 marker.addBubble();
             }
             this.markers[user.id] = marker;
+        }
+        else {
+            delete this.markers[user.id];
+            delete this.usersByIds[user.id];
         }
     }
 };
