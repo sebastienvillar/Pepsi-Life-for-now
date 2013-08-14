@@ -39,7 +39,7 @@ var CameraController = function() {
 			$filterTitle.text("B & W");
 		}
 		else if (i == 1) {
-			$filterTitle.text("Sharp");
+			$filterTitle.text("Sober");
 		}
 		else if (i == 2) {
 			$filterSelection.addClass("selected");
@@ -71,12 +71,16 @@ var CameraController = function() {
 
 	this.filters.push([
 		{
-			effect: "sharpen",
-			value: {amount: 0.7}
+			effect: "hsl",
+			value: {hue:0, saturation:-50, lightness:0}
 		},
 		{
 			effect: "brightness",
-			value: {brightness:40, contrast:0.7}
+			value: {contrast: 0.5}
+		},
+		{
+			effect: "coloradjust",
+			value: {red:0.05, green:0, blue:0}
 		}
 	]);
 
