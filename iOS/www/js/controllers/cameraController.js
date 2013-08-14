@@ -13,7 +13,6 @@ var CameraController = function() {
 	this.$mainContainer.appendTo(this.$container);
 	this.$originalCanvas = $("<canvas>");
 	this.$background = null;
-	this.firstLaunch = true;
 	this.photoWasTaken = false;
 	this.applyingFilter = false;
 	this.appliedFilterIndex = 2;
@@ -111,21 +110,13 @@ var CameraController = function() {
 
 CameraController.prototype = new Controller();
 
-CameraController.prototype.setBackground = function($background) {
-	this.$background = $background;
-};
-
-CameraController.prototype.removeBackground = function() {
-	if (this.$background)
-		this.$background.detach();
-	this.$background = null
+CameraController.prototype.setBackgroundController = function(backgroundController) {
+	this.backgroundController = backgroundController;
 };
 
 CameraController.prototype.didAppear = function() {
-	if (this.firstLaunch) {
+	if (!this.photoWasTaken)
 		this.showCamera();
-		this.firstLaunch = false;
-	}
 };
 
 CameraController.prototype.didDisappear = function() {
@@ -160,8 +151,8 @@ CameraController.prototype.showCamera = function(event) {
 		this.clearMainContainer();
 		var image = new Image();
 
+		this.$container.addClass("black");
 		this.didSelectFilter(2);
-		this.$container.css("background-color", "black");
 		this.$mainContainer.empty();
 		this.$mainCanvasContainer = $("<div>");
 		this.$mainCanvasContainer.addClass("mainCanvasContainer");
@@ -233,7 +224,12 @@ CameraController.prototype.showCamera = function(event) {
 	var onError = function() {
 		clearTimeout(this.timer);
 		this.clearMainContainer();
-		this.$container.css("background-color", "black");
+
+		if (!this.photoWasTaken) {
+			this.$container.removeClass("black");
+			this.tabBarController.setCurrentChildController(this.backgroundController);
+			return;
+		}
 
 		this.$retakeButton = $("<button>");
 		this.$retakeButton.addClass("whiteButton");
@@ -241,21 +237,12 @@ CameraController.prototype.showCamera = function(event) {
 		this.$retakeButton.appendTo(this.$mainContainer);
 		this.$retakeButton.on("tapone", this.showCamera.bind(this));
 
-		if (!this.photoWasTaken) {
-			//Create a new canvas and add retake button
-			this.$mainCanvasContainer = $("<div>");
-			this.$mainCanvasContainer.addClass("mainCanvasContainer");
-			this.$container.css("background-color", "#124c8f");
-		}
-
-		else {
-			this.$filtersBar.appendTo(this.$mainContainer);
-			this.$nextButton = $("<button>");
-			this.$nextButton.addClass("redButton");
-			this.$nextButton.text("NEXT");
-			this.$nextButton.on("tapone", this.showTextArea.bind(this));
-			this.$nextButton.appendTo(this.$mainContainer);
-		}
+		this.$filtersBar.appendTo(this.$mainContainer);
+		this.$nextButton = $("<button>");
+		this.$nextButton.addClass("redButton");
+		this.$nextButton.text("NEXT");
+		this.$nextButton.on("tapone", this.showTextArea.bind(this));
+		this.$nextButton.appendTo(this.$mainContainer);
 
 		this.$mainCanvasContainer.insertBefore(this.$retakeButton);
 		if (this.spinner)
@@ -266,7 +253,7 @@ CameraController.prototype.showCamera = function(event) {
 
 	this.timer = setTimeout(function() {
 		this.clearMainContainer();
-		this.$container.css("background-color", "black");
+		this.$container.addClass("black");
 
 		//Show spinner
 		this.spinner = new Spinner();
@@ -276,7 +263,6 @@ CameraController.prototype.showCamera = function(event) {
 };
 
 CameraController.prototype.clearMainContainer = function() {
-	this.removeBackground();
 	this.$filtersBar.detach();
 	if (this.$mainCanvasContainer)
 		this.$mainCanvasContainer.detach();
@@ -386,12 +372,13 @@ CameraController.prototype.didClickSave = function(event) {
 		this.$mainCanvasContainer = $("<div>");
 		this.$mainCanvasContainer.addClass("mainCanvasContainer");
 		this.$mainCanvasContainer.appendTo(this.$mainContainer)
-		this.$retakeButton = $("<button>");
-		this.$retakeButton.addClass("whiteButton");
-		this.$retakeButton.text("RETAKE");
-		this.$retakeButton.appendTo(this.$mainContainer);
-		this.$retakeButton.on("tapone", this.showCamera.bind(this));
 		this.$mainContainer.appendTo(this.$container);
+	}.bind(this);
+
+	var alertCallback = function() {
+		this.$container.removeClass("blue");
+		if (this.tabBarController.currentChildController == this)
+			this.tabBarController.setCurrentChildController(this.backgroundController);
 	}.bind(this);
 
 	var sendPost = function(image_url) {
@@ -411,13 +398,13 @@ CameraController.prototype.didClickSave = function(event) {
 		request.onSuccess = function(json) {
 			$uploadContainer.remove();
 			reinitializeScreen();
-			alert("Success", "Post successfully saved.");
 			notificationCenter.trigger("postNotification", {postId: json["id"], notifier: this});
+			alert("Success", "Post successfully saved.", alertCallback);
 		}.bind(this);
 		request.onError = function(status, message) {
 			$uploadContainer.remove();
 			reinitializeScreen();
-			alert("Error", "Oups, something bad happened. Please try again.");
+			alert("Error", "Oups, something bad happened. Please try again.", alertCallback);
 		};
 		request.execute();
 	}.bind(this);
@@ -435,19 +422,17 @@ CameraController.prototype.didClickSave = function(event) {
 		request.onError = function(status, message) {
 			$uploadContainer.remove();
 			reinitializeScreen();
-			alert("Error", "Oups, something bad happened. Please try again.");
+			alert("Error", "Oups, something bad happened. Please try again.", alertCallback);
 		};
 		request.execute();
 	}.bind(this);
 
-	this.$container.addClass("animatedBackground");
-	this.$container.css("background-color", "#124c8f");
+	this.$container.addClass("animatedBackground blue");
 	this.$textArea.blur();
 
 	this.$textAreaContainer.on("webkitTransitionEnd transitionend", function() {
 		this.$textAreaContainer.off("webkitTransitionEnd transitionend")
 		this.$mainContainer.removeClass("disappear");
-		this.$container.removeClass("animatedBackground");
 		this.$filtersBar.detach();
 		this.$mainContainer.empty();
 		this.$mainContainer.remove();
@@ -456,6 +441,7 @@ CameraController.prototype.didClickSave = function(event) {
 		this.$saveButton = null;
 		this.$backButton = null;
 		this.$textArea = null;
+		this.$container.removeClass("animatedBackground black")
 		$uploadContainer.appendTo(this.$container);
 		setTimeout(function() {
 			var filters = this.filters[this.appliedFilterIndex];

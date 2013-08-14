@@ -7,6 +7,14 @@
 	bottom: 0;
 }
 
+#cameraController.black {
+	background-color: black;
+}
+
+#cameraController.blue {
+	background-color: #124c8f;
+}
+
 #cameraController.animatedBackground {
 	transition: background-color 0.3s ease-in-out;
 	-webkit-transition: background-color 0.3s ease-in-out;

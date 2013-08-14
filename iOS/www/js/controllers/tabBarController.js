@@ -68,17 +68,19 @@ TabBarController.prototype.init = function(isNewUser) {
 
 TabBarController.prototype.setCurrentChildController = function(childController) {
 	if (childController != this.currentChildController) {
+		childController.tabBarController = this;
 		var index = this.childControllers.indexOf(childController);
 		this.buttons[index].toggleClass("selected");
-		if (childController == this.childControllers[2] && childController.firstLaunch)
-				childController.setBackground(this.currentChildController.$container);
+		if (childController == this.childControllers[2])
+				childController.setBackgroundController(this.currentChildController);
 
-		this.$content.append(childController.$container);
+		if (!$.contains(document.documentElement, childController.$container[0]))
+			this.$content.append(childController.$container);
 
 		if (this.currentChildController) {
 			var index = this.childControllers.indexOf(this.currentChildController);
 			this.buttons[index].toggleClass("selected");
-			if (childController != this.childControllers[2] || !childController.firstLaunch)
+			if (childController != this.childControllers[2])
 				this.currentChildController.$container.detach();
 			this.currentChildController.didDisappear();
 		}
