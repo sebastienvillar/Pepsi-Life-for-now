@@ -235,7 +235,6 @@ UserController.prototype._rowIsVisible = function(row) {
 
 UserController.prototype._didClickAdd = function(event) {
 	event.preventDefault();
-	console.log("add");
 	this.$friendButton.off("tapone");
 	this.$backButton.off("tapone");
 	var request = new ServerRequest();
@@ -257,7 +256,6 @@ UserController.prototype._didClickAdd = function(event) {
 
 UserController.prototype._didClickRemove = function(event) {
 	event.preventDefault();
-	console.log("remove");
 	this.$friendButton.off("tapone");
 	this.$backButton.off("tapone");
 	var request = new ServerRequest();
@@ -307,7 +305,6 @@ UserController.prototype._onSeenNotification = function(notification) {
 
 UserController.prototype._onUnfriendNotification = function(notification) {
 	if (notification.userId == this.user.id) {
-		console.log("unfriend");
 		for (var i in this.posts) {
 			this.posts[i].friend = false;
 			var cell = this.tableView.cellForRow(i);
@@ -325,7 +322,6 @@ UserController.prototype._onUnfriendNotification = function(notification) {
 
 UserController.prototype._onFriendNotification = function(notification) {
 	if (notification.userId == this.user.id) {
-		console.log("friend");
 		for (var i in this.posts) {
 			this.posts[i].friend = true;
 			var cell = this.tableView.cellForRow(i);

@@ -129,6 +129,7 @@ Marker.prototype._didClickBubble = function() {
 	this.trigger("clickBubble");
 }
 
+
 return Marker;
 
 });

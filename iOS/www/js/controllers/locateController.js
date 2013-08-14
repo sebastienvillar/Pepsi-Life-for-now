@@ -129,6 +129,7 @@ LocateController.prototype._didChangeBounds = function() {
                     this.selectedMarker = null;
                 }
                 marker.setMap(null);
+                marker = null; //Delete overlay
             }
         }
         this.markers = newMarkers;
@@ -192,9 +193,11 @@ LocateController.prototype._didClickFriends = function() {
 LocateController.prototype._onFriendNotification = function(notification) {
     var user = this.usersByIds[notification.userId];
     if (user) {
+        user.friend = true;
         var oldMarker = this.markers[user.id];
         oldMarker.setMap(null);
         oldMarker.removeBubble();
+        oldMarker = null; // Delete overlay
         var marker = new Marker(user);
         marker.setMap(this.map);
         marker.on("click", this._didClickMarker.bind(this, marker, user));
@@ -210,9 +213,11 @@ LocateController.prototype._onFriendNotification = function(notification) {
 LocateController.prototype._onUnfriendNotification = function(notification) {
     var user = this.usersByIds[notification.userId];
     if (user) {
+        user.friend = false;
         var oldMarker = this.markers[user.id];
         oldMarker.setMap(null);
         oldMarker.removeBubble();
+        oldMarker = null; // Delete overlay
         if (!this.onlyFriends) {
             var marker = new Marker(user);
             marker.setMap(this.map);
