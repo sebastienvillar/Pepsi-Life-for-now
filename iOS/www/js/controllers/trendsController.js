@@ -47,6 +47,7 @@ var TrendsController = function() {
 	notificationCenter.on("seenNotification", this._onSeenNotification.bind(this));
 	notificationCenter.on("friendNotification", this._onFriendNotification.bind(this));
 	notificationCenter.on("unfriendNotification", this._onUnfriendNotification.bind(this));
+	notificationCenter.on("tagNotification", this._onTagNotification.bind(this));
 
 	this.pushNewCells();
 };
@@ -160,8 +161,7 @@ TrendsController.prototype._didClickComment = function(cell, post) {
 };
 
 TrendsController.prototype._didClickTag = function(tag) {
-	this.$searchField.val(tag);
-	this._didSearch();
+	notificationCenter.trigger("tagNotification", {tag: tag, notifier: this});
 }
 
 TrendsController.prototype._didClickUsername = function(post) {
@@ -287,6 +287,11 @@ TrendsController.prototype._onUnfriendNotification = function(notification) {
 			cell.setAvatarColor("#c7d20c");
 		}
 	}
+};
+
+TrendsController.prototype._onTagNotification = function(notification) {
+	this.$searchField.val(notification.tag);
+	this._didSearch();
 };
 
 return TrendsController;

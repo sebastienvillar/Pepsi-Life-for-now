@@ -140,6 +140,7 @@ UserController.prototype.pushNewCells = function() {
 			var cell = new ImageCell(post);
 			cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
 			cell.on("didClickComment", this._didClickComment.bind(this, cell, post));
+			cell.on("didClickTag", this._didClickTag.bind(this));
 			this.tableView.pushCell(cell);
 		}
 	}.bind(this);
@@ -275,6 +276,10 @@ UserController.prototype._didClickRemove = function(event) {
 UserController.prototype._didClickBack = function() {
 	this.$backButton.off("tapone");
 	this.trigger("clickBack");
+};
+
+UserController.prototype._didClickTag = function(tag) {
+	notificationCenter.trigger("tagNotification", {tag: tag, notifier: this});
 };
 
 UserController.prototype._onLikeNotification = function(notification) {

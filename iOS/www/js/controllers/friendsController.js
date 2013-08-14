@@ -61,6 +61,7 @@ FriendsController.prototype.pushNewCells = function() {
 			cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
 			cell.on("didClickComment", this._didClickComment.bind(this, cell, post));
 			cell.on("didClickUsername", this._didClickUsername.bind(this, post));
+			cell.on("didClickTag", this._didClickTag.bind(this))
 
 			this.tableView.pushCell(cell);
 		}
@@ -97,6 +98,10 @@ FriendsController.prototype._didScrollToBottom = function() {
 
 FriendsController.prototype._didSelectRow = function(row) {
 
+};
+
+FriendsController.prototype._didClickTag = function(tag) {
+	notificationCenter.trigger("tagNotification", {tag: tag, notifier: this});
 };
 
 FriendsController.prototype._didClickLike = function(cell, post) {

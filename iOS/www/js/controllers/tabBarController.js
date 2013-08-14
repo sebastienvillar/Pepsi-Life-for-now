@@ -43,6 +43,8 @@ function TabBarController() {
 			}.bind(this));
 		}).bind(this)(i);
 	}
+
+	notificationCenter.on("tagNotification", this._onTagNotification.bind(this));
 }
 
 ////////////////////////////////////////////////////////////////
@@ -85,6 +87,10 @@ TabBarController.prototype.setCurrentChildController = function(childController)
 			childController.init();
 		childController.didAppear();
 	}
+};
+
+TabBarController.prototype._onTagNotification = function(tag) {
+	this.setCurrentChildController(this.childControllers[0]);
 };
 
 return TabBarController;

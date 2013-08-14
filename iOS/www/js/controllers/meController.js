@@ -135,6 +135,7 @@ MeController.prototype.pushNewCells = function() {
 
 			cell.on("didClickLike", this._didClickLike.bind(this, cell, post));
 			cell.on("didClickComment", this._didClickComment.bind(this, cell, post));
+			cell.on("didClickTag", this._didClickTag.bind(this));
 
 			this.tableView.pushCell(cell);
 		}
@@ -249,6 +250,10 @@ MeController.prototype._didClickEditButton = function(event) {
     });
 	editMeController.$container.addClass("slide");
 	editMeController.on("meWasUpdated", this._onUpdate.bind(this));
+};
+
+MeController.prototype._didClickTag = function(tag) {
+	notificationCenter.trigger("tagNotification", {tag: tag, notifier: this});
 };
 
 MeController.prototype._onUpdate = function(newData) {
