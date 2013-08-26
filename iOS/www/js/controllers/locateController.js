@@ -105,24 +105,22 @@ LocateController.prototype._didChangeBounds = function() {
 
     request.onSuccess = function(json) {
         this.users = json.users || json.friends;
-        var newMarkers = {};
+        this.usersByIds = {};
         for (var i in this.users) {
             var user = this.users[i];
             this.usersByIds[user.id] = user;
-            if (this.onlyFriends)
-                user.friend = true;
+
             if (!this.markers[user.id]) {
                 var marker = new Marker(user);
                 marker.setMap(this.map);
                 marker.on("click", this._didClickMarker.bind(this, marker, user));
                 marker.on("clickBubble", this._didClickMarkerBubble.bind(this, marker, user));
+                this.markers[user.id] = marker;
             }
-            newMarkers[user.id] = marker ? marker : this.markers[user.id];
         }
 
         for (var key in this.markers) {
-            if (!newMarkers[key]) {
-                delete this.usersByIds[key];
+            if (!this.usersByIds[key]) {
                 var marker = this.markers[key];
                 if (marker == this.selectedMarker) {
                     this.selectedMarker.removeBubble();
@@ -130,9 +128,9 @@ LocateController.prototype._didChangeBounds = function() {
                 }
                 marker.setMap(null);
                 marker = null; //Delete overlay
+                delete this.markers[key];
             }
         }
-        this.markers = newMarkers;
     }.bind(this);
     request.onError = function(status, message) {
         alert("Error", "The users couldn't be loaded. Please check your internet connection");
