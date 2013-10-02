@@ -128,6 +128,17 @@
 - (void)keyboardWillShowOrHide:(NSNotification*)notif
 {
     if (![@"true" isEqualToString :[self settingForKey:@"KeyboardShrinksView"]]) {
+		if (IsAtLeastiOSVersion(@"7.0")) {
+			self.webView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+			if ([notif.name isEqualToString:UIKeyboardWillShowNotification]) {
+				CGRect keyboardFrame = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+				keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
+				self.webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, -keyboardFrame.size.height, 0);
+			}
+			else {
+				self.webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+			}
+		}
         return;
     }
     BOOL showEvent = [notif.name isEqualToString:UIKeyboardWillShowNotification];
