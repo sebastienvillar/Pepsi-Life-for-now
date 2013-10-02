@@ -4,6 +4,11 @@ domReady(function() {
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
+		 
+	if (parseFloat(window.device.version) === 7.0 && window.device.platform === "iOS") {
+		 document.body.style.top = "20px";
+	}
+		 
     var requireArray = [
         "controllers/tabBarController",
         "helpers/constants",
