@@ -466,7 +466,7 @@ CameraController.prototype.didClickBack = function(event) {
 		this.$textAreaContainer.remove();
 		
 	}.bind(this));
-	this.$textAreaContainer.addClass("slideDown");
+	this.$textAreaContainer.removeClass("slide");
 };
 
 CameraController.prototype.applyFilters = function($canvas, filters) {

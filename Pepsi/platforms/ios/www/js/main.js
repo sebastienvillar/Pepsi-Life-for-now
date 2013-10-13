@@ -8,6 +8,24 @@ function onDeviceReady() {
 	if (parseFloat(window.device.version) === 7.0 && window.device.platform === "iOS") {
 		 document.body.style.top = "20px";
 	}
+
+    document.addEventListener("resume", onResume, false);
+
+    function onResume() {
+        if (navigator.connection.type == Connection.NONE) {
+            alert("Error", "You must be connected to the internet to use this application. Please check your internet connection and try again", function() {
+                onResume();
+            });
+        }
+    }
+
+    function onStart() {
+        if (navigator.connection.type == Connection.NONE) {
+            alert("Error", "You must be connected to the internet to use this application. Please check your internet connection and restart the application")
+        }
+    }
+
+    onStart();
 		 
     var requireArray = [
         "controllers/tabBarController",

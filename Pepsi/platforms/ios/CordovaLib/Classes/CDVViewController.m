@@ -142,10 +142,10 @@
         return;
     }
     BOOL showEvent = [notif.name isEqualToString:UIKeyboardWillShowNotification];
-
+	
     CGRect keyboardFrame = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
-
+	
     CGRect newFrame = self.view.bounds;
     if (showEvent) {
         newFrame.size.height -= keyboardFrame.size.height;
@@ -161,10 +161,6 @@
             [[UIDevice currentDevice] systemVersion]
             );
     }
-}
-	
-- (UIStatusBarStyle)preferredStatusBarStyle {
-	return UIStatusBarStyleLightContent;
 }
 
 - (void)printMultitaskingInfo
@@ -191,6 +187,10 @@
     }
 
     return [self.whitelist URLIsAllowed:url];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+	return UIStatusBarStyleLightContent;
 }
 
 - (void)loadSettings
