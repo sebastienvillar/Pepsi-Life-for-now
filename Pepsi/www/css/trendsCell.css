@@ -90,10 +90,11 @@
 
 .trendsCell-likesButton {
 	position: absolute;
-	top: 4px;
-	right: 58px;
-	width: 40px;
-	height: 28px;
+	top: -10px;
+	right: 56px;
+	width: 44px;
+	height: 56px;
+	background-color: yellow;
 }
 
 .trendsCell-likesIcon {
@@ -106,6 +107,7 @@
 	background-position: center;
 	background-size: 10px 9px;
 	background-repeat: no-repeat;
+	pointer-events: none;
 }
 
 .trendsCell-likesIcon.full {
@@ -124,6 +126,7 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	pointer-events: none;
 }
 
 .trendsCell-commentsButton {
@@ -144,6 +147,7 @@
 	background-position: center;
 	background-size: 10px 10px;
 	background-repeat: no-repeat;
+	pointer-events: none;
 }
 
 .trendsCell-commentsCount {
@@ -158,6 +162,7 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	pointer-events: none;
 }
 
 /*Body*/

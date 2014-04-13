@@ -9,6 +9,7 @@ function TableView() {
 
 	this.$container = $("<div>");
 	this.$container.css({"overflow": "scroll", "-webkit-overflow-scrolling": "touch"});
+	this.$container[0].addEventListener("touchstart", function(event){});
 	this.$cellsContainer = $("<div>");
 	this.$cellsContainer.appendTo(this.$container);
 	this.loading = false;

@@ -74,6 +74,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor blackColor];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -105,6 +106,7 @@
 {
     // Black base color for background matches the native apps
     theWebView.backgroundColor = [UIColor blackColor];
+    theWebView.frame = CGRectMake(0, 20, [UIScreen mainScreen].applicationFrame.size.width, [UIScreen mainScreen].applicationFrame.size.height);
 
     return [super webViewDidFinishLoad:theWebView];
 }

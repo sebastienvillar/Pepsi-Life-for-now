@@ -214,6 +214,7 @@ TrendsCell.prototype.setSelected = function(selected) {
 //////////////////////////////
 
 function didClickLike(event) {
+	alert("did like");
 	event.stopPropagation();
 	this.trigger("didClickLike");
 }
